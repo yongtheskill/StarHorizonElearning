@@ -1,0 +1,33 @@
+.promo i {
+    font-size: 7rem;
+    color: #f7ca23;
+}
+
+.promo-header {
+    font-size: 1.7rem;
+}
+
+.promo-caption {
+    font-size: 1.1rem;
+}
+
+.home-laptop {
+    height: 60vh;
+}
+
+.laptop-img {
+    position: absolute;
+}
+
+.login-button {
+    font-weight: 700;
+    position: absolute;
+    top: 66%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.image-overlay-container {
+    position: relative;
+}

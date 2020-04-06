@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block css %}
+<link type="text/css" rel="stylesheet" href="{% static "home/home.css" %}"/>
+{% endblock %}
+
+{% block fullWidthContent %}
+<div class="accent-1 full-height valign-wrapper">
+    <div class="margin-centre">
+        <div class="image-overlay-container">
+            <img class="home-laptop" src="{% static "img/laptop.png" %}" alt="Laptop">
+                <a class="waves-effect waves-light btn-large login-button accent-2 black-text">Log In</a>        
+            </img>
+        </div>
+        
+    </div>
+</div>
+<div>
+    <div class="container" style="padding-top: 75px;">
+        <div class="row">
+            <div class="col s12 m10 offset-m1">
+
+            <div class="row">
+                <div class="col s12 m4">
+                <div class="center promo">
+                    <i class="material-icons">flash_on</i>
+                    <p class="promo-header">Quick and Easy Learning</p>
+                    <p class="promo-caption">Whether at home or in your classroom, the e-learning experience is smooth and unaffected by the situation. In the midst of extraneous circumstances, StarHorizon's e-learning platform provides students with the same quality lessons on financial literacy and entrepreneurship.</p>
+                </div>
+                </div>
+
+                <div class="col s12 m4">
+                <div class="center promo">
+                    <i class="material-icons">group</i>
+                    <p class="promo-header">Interactive and Engaging</p>
+                    <p class="promo-caption">We place great emphasis on the learning process on and offline. Financial literacy and entrepreneurship is taught without long boring lectures and reading. Here, we prioritise interactive learning which gauges student understanding and keeps them engaged to the course.</p>
+                </div>
+                </div>
+
+                <div class="col s12 m4">
+                <div class="center promo">
+                    <i class="material-icons">settings</i>
+                    <p class="promo-header">Added Functionality</p>
+                    <p class="promo-caption">On top of the courses provided, we have many features to ensure students can have the highest quality learning, such as live lessons, interactive quizzes and features to incentivise active learning. Students will always be able to pose questions and clarifications through live chat.</p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block javascript %}
+{% load static %}
+<!-- change navbar colours based on scroll -->
+<script>
+    $(document).ready(function(){
+        $(window).scroll(function(){
+        var light_pos = $(window).height();
+        var menu_pos = $('.nav-wrapper').offset().top;
+        var menu_height = $('.nav-wrapper').height();
+        var scroll = $(window).scrollTop();
+        
+        if(menu_pos >= light_pos) {
+            $('.navlinks').addClass('black-text');
+            $('.navlinks').removeClass('text-primary');
+            $(".brand-logo").attr("src", "{% static "img/StarHorizonLogoDark.png" %}")
+        }
+        else {
+            $('.navlinks').addClass('text-primary');
+            $('.navlinks').removeClass('black-text');
+            $(".brand-logo").attr("src", "{% static "img/StarHorizonLogo.png" %}")
+        }
+        
+    })
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+/* navbar colours */
+nav ul a {
+    color: inherit;
+  }
+
+nav .brand-logo {
+    color: #f7ca23;
+  }
+
+nav img.brand-logo {
+    height: 50px;
+    margin-top: 10px;
+  }
+
+.navbar-fixed {
+    height: 0px;
+}
+
+/* full browser window */
+.full-height {
+    height: 100vh;
+}
+.full-width {
+    width: 99vw;
+}
+
+
+/*centre*/
+.margin-centre {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* button */
+.btn,
+.btn-large {
+  border-radius: 10px;
+}
+
+.btn-large {
+    font-size: 1.5rem;
+}
+
+
+/* colours */
+
+.primary {
+    background-color: #f5f5fa;
+}
+
+.text-primary {
+    color: #f5f5fa;
+}
+
+.accent-1 {
+    background-color: #0e143f;
+}
+
+.text-accent-1 {
+    color: #0e143f;
+}
+
+.accent-2 {
+    background-color: #f7ca23;
+}
+
+.text-accent-2 {
+    color: #f7ca23;
+}
