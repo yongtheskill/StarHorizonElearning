@@ -19,11 +19,18 @@
         <div class="container">
           <div class="nav-wrapper black-text">
             <!-- if logged in -->
-            <img class="brand-logo" src="{% static "img/StarHorizonLogo.png" %}" alt="Star Horizon Logo">
-            <ul class="navlinks right hide-on-med-and-down text-primary">
+            <a href="/"><img class="brand-logo" src="{% static "img/StarHorizonLogoDark.png" %}"
+              alt="Star Horizon Logo"></a>
+            <ul class="navlinks right hide-on-med-and-down">
               <li><a href="#">Lorem</a></li>
               <li><a href="#">Ipsum</a></li>
               <li><a href="#">Dolor</a></li>
+              {% if user.is_authenticated %}
+              <li><a href='/account/manage'>Manage Account</a></li>
+              <li><a href='/logout'>Log Out</a></li>
+              {% else %}
+              <li><a href='/login'>Login</a></li>
+              {% endif %}
             </ul>
           </div>
         </div>

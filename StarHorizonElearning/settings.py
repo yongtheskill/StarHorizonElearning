@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'home.apps.HomeConfig',
+    'accountManagement.apps.AccountmanagementConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,3 +125,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     'static/',
 ]
+
+AUTH_USER_MODEL = 'accountManagement.User'
+
+LOGIN_URL = '/login'

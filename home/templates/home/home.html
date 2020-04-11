@@ -12,7 +12,11 @@
     <div class="margin-centre">
         <div class="image-overlay-container">
             <img class="home-laptop" src="{% static "img/laptop.png" %}" alt="Laptop">
-                <a class="waves-effect waves-light btn-large login-button accent-2 black-text">Log In</a>        
+                {% if user.is_authenticated %}
+                <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/logout">Log Out</a>
+                {% else %}
+                <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/login">Log In</a>
+                {% endif %}        
             </img>
         </div>
         
@@ -61,8 +65,8 @@
 {% load static %}
 <!-- change navbar colours based on scroll -->
 <script>
-    $(document).ready(function(){
-        $(window).scroll(function(){
+    
+    function navbarColour() {
         var light_pos = $(window).height();
         var menu_pos = $('.nav-wrapper').offset().top;
         var menu_height = $('.nav-wrapper').height();
@@ -78,8 +82,11 @@
             $('.navlinks').removeClass('black-text');
             $(".brand-logo").attr("src", "{% static "img/StarHorizonLogo.png" %}")
         }
-        
-    })
-    })
+    }
+    
+    window.onload = navbarColour;
+
+    $(window).scroll( navbarColour )
+
 </script>
 {% endblock %}

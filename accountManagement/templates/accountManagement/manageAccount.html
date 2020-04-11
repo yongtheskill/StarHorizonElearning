@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Account{% endblock %}
+
+{% block css %}
+<style>
+    /* label underline focus color */
+    .row .input-field input:focus {
+      border-bottom: 1px solid #0e143f !important;
+      box-shadow: 0 1px 0 0 #0e143f !important;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<br><br>
+<h2 class="center-align">Manage Account</h2>
+
+{% if forcePwChange %}
+<p class="flow-text red-text"><i class="material-icons prefix small">warning</i>Please change your password and enter your particulars</p>
+{% endif %}
+
+<div class="row left-align">
+  <a class="btn-small waves-effect waves-light accent-2" href="/account/manage/password" name="pwchange">Change Password</a>
+</div>
+
+<form method="POST" enctype="multipart/form-data" action="/account/manage/">{% csrf_token %}
+  <input type="hidden" name="projectAction" value="create" />
+
+  <div class="row">
+    <div class="input-field col s12 l12">
+      <i class="material-icons prefix accent-1-text">mode_edit</i>
+      <input class="black-text text-darken-4" type="text" name="email" id="briefDescription" required="" value="{{ email }}">
+      <label class="black-text text-darken-4" for="briefDescription">Email</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12 l12">
+      <i class="material-icons prefix accent-1-text">mode_edit</i>
+      <input class="black-text text-darken-4" type="text" name="phoneNumber" id="briefDescription" required="" value="{{ phoneNumber }}">
+      <label class="black-text text-darken-4" for="briefDescription">Phone Number</label>
+    </div>
+  </div>
+
+  <div class="row center-align">
+    <button class="btn-large waves-effect waves-light accent-2" type="submit" name="action">Submit</button>
+  </div>
+</form>
+
+{% endblock %}

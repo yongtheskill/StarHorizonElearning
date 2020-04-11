@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+
+<br><br>
+<div>
+    <h3 class="center-align">Are you sure you want to log out?</h3>
+</div>
+
+<br><br>
+<form method="POST">
+    {% csrf_token %}
+    <div class="center-align">
+        <button class="waves-effect waves-light btn-large accent-2 black-text" type="submit"><i
+                class="material-icons right">exit_to_app</i>Log out</button>
+    </div>
+</form>
+{% endblock %}
