@@ -3,9 +3,27 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+class Course(models.Model):
+    
+    courseName = models.CharField(max_length=200, verbose_name="course name")
+    courseInstitution = models.CharField(max_length=200, verbose_name="institution", null=True)
+    courseDescription = models.CharField(max_length=5000, verbose_name="course description", null=True, default=None)
+
+    def __str__(self):
+         return self.courseName
+
 class User(AbstractUser):
 
-    phoneNumber = models.CharField(verbose_name='phone number', max_length=20, blank=True, null=True, default=None)
+    institution = models.CharField(max_length=200, blank=True, null=True)
+    phoneNumber = models.CharField(verbose_name="phone number", max_length=20, blank=True, null=True, default=None)
+    
+    ACC_TYPES = [
+        ('Teacher', 'Teacher'),
+        ('Student', 'Student'),
+    ]
+    accountType = models.CharField(verbose_name="account type", max_length=16, choices=ACC_TYPES, default="Administrator")
+    courses = models.ManyToManyField(Course)
+    
 
     def __str__(self):
         return self.username

@@ -2,9 +2,20 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django import forms
 
-from .models import User
+from .models import User, Course
 
 # Register your models here.
+
+class CourseAdmin(admin.ModelAdmin):
+
+    fieldsets = (
+        (None, {'fields': ('courseName',)}),
+        ('Details', {'fields': ('courseInstitution', 'courseDescription', )}),
+    )
+
+    def __str__(self):
+        return self.courseName
+
 
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -34,14 +45,15 @@ class UserAdmin(BaseUserAdmin):
     
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'phoneNumber',)}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'phoneNumber', 'accountType', 'institution', )}),
+        ('Course info', {'fields': ('courses', )}),
         ('Permissions', {'fields': ('is_superuser',)}),
         #('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', )}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'phoneNumber', 'first_name', 'last_name')}
+            'fields': ('username', 'password1', 'password2', 'email', 'phoneNumber', 'first_name', 'last_name', 'accountType', 'institution', )}
         ),
     )
     
@@ -50,3 +62,4 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Course, CourseAdmin)

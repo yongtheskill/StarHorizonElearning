@@ -4,10 +4,11 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
-from accountManagement.models import User
+from .models import User, Course
 
 # Create your views here.
 
+# Login Page
 def loginHome(request):
 
     if request.user.is_authenticated:
@@ -45,7 +46,7 @@ def loginHome(request):
 
     return render(request, 'accountManagement/login.html', context)
     
-    
+# Logout Page
 def logoutHome(request):
 
     if request.POST:
@@ -54,7 +55,7 @@ def logoutHome(request):
 
     return render(request, 'accountManagement/logout.html')
 
-
+# Manage Account Page
 @login_required
 def manageAccount(request):
     context = {'email': request.user.email, 'phoneNumber': request.user.phoneNumber}
@@ -69,7 +70,7 @@ def manageAccount(request):
     
     return render(request, 'accountManagement/manageAccount.html', context)
 
-
+# Change password page
 @login_required
 def changePassword(request):
 
@@ -85,3 +86,12 @@ def changePassword(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'accountManagement/changePassword.html', {'form': form})
+
+# Allows teachers to view details of all their students
+@login_required
+def studentView(request):
+
+    allStudents = list(User.objects.filter(group_id = classId))
+    course = Course.objects.get(id = classId)
+
+    context = {"course": course, "Students": allStudents, }
