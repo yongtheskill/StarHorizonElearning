@@ -2,19 +2,30 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django import forms
 
-from .models import User, Course
+from .models import User, Course, StudentClass
 
 # Register your models here.
 
 class CourseAdmin(admin.ModelAdmin):
 
+    readonly_fields = ('id', )
+
     fieldsets = (
         (None, {'fields': ('courseName',)}),
-        ('Details', {'fields': ('courseInstitution', 'courseDescription', )}),
+        ('Details', {'fields': ('courseInstitution', 'courseDescription', 'id')}),
     )
 
     def __str__(self):
         return self.courseName
+
+class StudentClassAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('id', )
+
+    fieldsets = (
+        (None, {'fields': ('className',)}),
+        ('Details', {'fields':('classInstitution', 'id')}),
+    )
 
 
 class UserCreationForm(forms.ModelForm):
@@ -46,7 +57,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'phoneNumber', 'accountType', 'institution', )}),
-        ('Course info', {'fields': ('courses', )}),
+        ('Course info', {'fields': ('classes', )}),
         ('Permissions', {'fields': ('is_superuser',)}),
         #('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', )}),
     )
@@ -63,3 +74,4 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Course, CourseAdmin)
+admin.site.register(StudentClass, StudentClassAdmin)

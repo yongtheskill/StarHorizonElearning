@@ -12,6 +12,17 @@ class Course(models.Model):
     def __str__(self):
          return self.courseName
 
+
+class StudentClass(models.Model):
+
+    className = models.CharField(max_length=200, verbose_name="class name")
+    classInstitution = models.CharField(max_length=200, verbose_name="institution", null=True)
+    courses = models.ManyToManyField(Course)
+
+    def __str__(self):
+        return self.className
+
+
 class User(AbstractUser):
 
     institution = models.CharField(max_length=200, blank=True, null=True)
@@ -22,7 +33,7 @@ class User(AbstractUser):
         ('Student', 'Student'),
     ]
     accountType = models.CharField(verbose_name="account type", max_length=16, choices=ACC_TYPES, default="Administrator")
-    courses = models.ManyToManyField(Course)
+    classes = models.ManyToManyField(StudentClass)
     
 
     def __str__(self):
