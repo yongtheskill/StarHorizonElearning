@@ -18,19 +18,25 @@
       <nav class="transparent z-depth-0">
         <div class="container">
           <div class="nav-wrapper black-text">
-            <!-- if logged in -->
             <a href="/"><img class="brand-logo" src="{% static "img/StarHorizonLogoDark.png" %}"
               alt="Star Horizon Logo"></a>
             <ul class="navlinks right hide-on-med-and-down">
               <li><a href="#">Lorem</a></li>
               <li><a href="#">Ipsum</a></li>
-              <li><a href="#">Dolor</a></li>
+
+              <!-- if teacher -->
+              {% if user.accountType == "Teacher" %}
+              <li><a href="/videoLessons/manage">Video Lessons</a></li>
+              {% endif %}
+
+              <!-- if logged in -->
               {% if user.is_authenticated %}
               <li><a href='/account/manage'>Manage Account</a></li>
               <li><a href='/logout'>Log Out</a></li>
               {% else %}
               <li><a href='/login'>Login</a></li>
               {% endif %}
+
             </ul>
           </div>
         </div>
@@ -48,8 +54,9 @@
     {% endblock %}
 
     <!--JavaScript at end of body for optimized loading-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{% static "js/materialize.min.js" %}"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
     {% block javascript %}
     {% endblock %}

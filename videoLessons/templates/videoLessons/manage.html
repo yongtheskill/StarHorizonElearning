@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Video Lessons{% endblock %}
+
+{% block css %}
+<style>
+    /* pagination colours */
+    .tabs .tab a {
+        color: #0e143f;
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background-color: #00000031;
+    }
+    .tabs .tab a:hover, .tabs .tab a.active {
+        color: #0e143f;
+    }
+    .tabs .indicator {
+        background-color: #0e143f;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<br><br>
+<h2 class="center-align">Manage Video Lessons</h2>
+
+<div class="row">
+    <div class="col s12 m10 l6">
+        <ul class="tabs">
+            <li class="tab col s3"><a href="#all">All Videos</a></li>
+            <li class="tab col s3"><a href="#assign">Assign Videos</a></li>
+            <li class="tab col s3"><a href="#add">Add Videos</a></li>
+        </ul>
+    </div>
+
+    <div id="all" class="col s12">
+        ALL VUDEOSSSSAZZZ
+
+    </div>
+
+    <div id="assign" class="col s12">
+        ASSIGNNN
+    
+    </div>
+
+    <div id="add" class="col s12">
+        +++++++++++++
+    
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+
+$(document).ready(function(){
+    $('.tabs').tabs({ swipeable: true, duration: 300 });
+  });
+
+</script>
+
+{% endblock %}
