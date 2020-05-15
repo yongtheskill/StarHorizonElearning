@@ -46,8 +46,59 @@
     </div>
 
     <div id="add" class="col s12">
-        +++++++++++++
-    
+        <div>
+            <h4>Add New Video</h4>
+            <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <input type="hidden" name="managementAction" value="create" />
+
+                <div class="row">
+                    <div class="input-field col s12 m8">
+                        <i class="material-icons text-accent-1 prefix">mode_edit</i>
+                        <input class="black-text" type="text" name="videoName" id="id_videoName" autofocus required>
+                        <label class="black-text" for="id_videoName">Video Name</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <i class="material-icons text-accent-1 prefix">code</i>
+                        <input disabled class="grey-text text-darken-1" type="text" name="videoID" id="id_videoID" value="{{videoIDtoUse}}" required>
+                        <label class="black-text text-darken-4" for="id_videoID">video ID</label>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons text-accent-1 prefix">mode_edit</i>
+                    <textarea class="black-text materialize-textarea" name="additionalComments" id="id_additionalComments" ></textarea>
+                    <label class="black-text" for="id_additionalComments">Additional Comments</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m6">
+                        <div class="file-field input-field">
+                            <div class="btn accent-1">
+                            <span>Upload Video File</span>
+                            <input name="videoFile" type="file" accept=".mp4" class="validate">
+                            </div>
+                            <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <select>
+                        <option value="" disabled selected>Choose your option</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                        </select>
+                        <label>Materialize Select</label>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
 </div>
@@ -60,6 +111,7 @@
 
 $(document).ready(function(){
     $('.tabs').tabs({ swipeable: true, duration: 300 });
+    $('select').formSelect();
   });
 
 </script>
