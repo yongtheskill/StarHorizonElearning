@@ -94,14 +94,20 @@
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <select>
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
+                        <option selected>None</option>
+                        <option>Quiz</option>
+                        <option>Next Video</option>
                         </select>
-                        <label>Materialize Select</label>
+                        <label>Action to do after video</label>
                     </div>
                 </div>
+
+                <input id="afterActionInput" name="afterAction" value="none" hidden disabled/>
+
+                <button class="btn accent-1" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+
             </form>
         </div>
     </div>
@@ -118,6 +124,18 @@ $(document).ready(function(){
     $('.tabs').tabs({ swipeable: true, duration: 300 });
     $('select').formSelect();
   });
+
+$(function() {
+    $("span:contains('None')").on("click", function() {
+        $("#afterActionInput").attr("value", "none");
+    });
+    $("span:contains('Quiz')").on("click", function() {
+        $("#afterActionInput").attr("value", "quiz");
+    });
+    $("span:contains('Next Video')").on("click", function() {
+        $("#afterActionInput").attr("value", "nextVideo");
+    });
+});
 
 </script>
 
