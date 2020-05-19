@@ -21,7 +21,22 @@
 
     /* pagination box size */
     .tabs-content {
-        height: 600px !important;
+        height: 665px !important;
+    }
+
+    /* dropdown scrolling */
+    .select-dropdown{
+        max-height: 250px !important;
+    }
+
+    /* list styling */
+    ul.collection {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+    th, td {
+        text-align: center;
     }
   </style>
 {% endblock %}
@@ -32,23 +47,66 @@
 <h2 class="center-align">Manage Video Lessons</h2>
 
 <div class="row paginationRow">
-    <div class="col s12 m10 l7">
+    <div class="col s12">
         <ul class="tabs">
             <li class="tab"><a href="#all">All Videos</a></li>
             <li class="tab"><a href="#assign">Assign Videos</a></li>
             <li class="tab"><a href="#add">Add Videos</a></li>
+            <li class="tab"><a href="#edit">Edit Video Details</a></li>
         </ul>
     </div>
 
-    <div id="all" class="col s12">
-        ALL VUDEOSSSSAZZZ
 
+
+
+
+
+
+    <!-- LIST VIDEOS -->
+
+    <div id="all" class="col s12">
+        <table style="margin-top: 10px;">
+            <thead>
+              <tr>
+                  <th>Video Name</th>
+                  <th>View Video</th>
+                  <th>Edit Details</th>
+              </tr>
+            </thead>
+    
+            <tbody>
+                {% for i in videoLessonObjects %}
+                <tr>
+                    <td>{{ i.videoName }}</td>
+                    <td><a href="{{ i.videoFile.url }}">View</a></td>
+                    <td><a onclick="goToEditPage('{{ i.videoID }}')" href="#!"><i class="material-icons text-accent-1">edit</i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+
+
+
+
+
+
+
 
     <div id="assign" class="col s12">
         ASSIGNNN
     
     </div>
+
+
+
+
+
+
+
+
+
+    <!-- ADD VIDEO -->
 
     <div id="add" class="col s12">
         <div>
@@ -64,7 +122,7 @@
                     </div>
                     <div class="input-field col s12 m4">
                         <i class="material-icons text-accent-1 prefix">code</i>
-                        <input disabled class="grey-text text-darken-1" type="text" name="videoID" id="id_videoID" value="{{videoIDtoUse}}" required>
+                        <input readonly class="grey-text text-darken-1" type="text" name="videoID" id="id_videoID" value="{{videoIDtoUse}}" required>
                         <label class="black-text text-darken-4" for="id_videoID">video ID</label>
                     </div>
                 </div>
@@ -85,7 +143,7 @@
                             <input name="videoFile" type="file" accept=".mp4" class="validate">
                             </div>
                             <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
+                            <input class="file-path validate" name="fileName" type="text">
                             </div>
                         </div>
                     </div>
@@ -99,6 +157,38 @@
                         <option>Next Video</option>
                         </select>
                         <label>Action to do after video</label>
+                    </div>  
+                    <div id="quizSelect" class="input-field col s12 m6" hidden>
+                        <select>
+                          <option value="" disabled selected>Select Quiz</option>
+                          <option value="1">Quiz 1</option>
+                          <option value="1">Quiz 2</option>
+                          <option value="1">Quiz 3</option>
+                          <option value="1">Quiz 4</option>
+                          <option value="1">Quiz 5</option>
+                          <option value="1">Quiz 6</option>
+                          <option value="1">Quiz 7</option>
+                          <option value="1">Quiz 8</option>
+                          <option value="1">Quiz 9</option>
+                          <option value="1">Quiz 10</option>
+                        </select>
+                        <label>Select Quiz</label>
+                    </div>
+                    <div id="videoSelect" class="input-field col s12 m6" hidden>
+                        <select>
+                          <option value="" disabled selected>Select Video</option>
+                          <option value="1">Video 1</option>
+                          <option value="1">Video 2</option>
+                          <option value="1">Video 3</option>
+                          <option value="1">Video 4</option>
+                          <option value="1">Video 5</option>
+                          <option value="1">Video 6</option>
+                          <option value="1">Video 7</option>
+                          <option value="1">Video 8</option>
+                          <option value="1">Video 9</option>
+                          <option value="1">Video 10</option>
+                        </select>
+                        <label>Select Video</label>
                     </div>
                 </div>
 
@@ -112,6 +202,99 @@
         </div>
     </div>
 
+
+
+
+
+
+    <!-- edit -->
+
+    <div id="edit" class="col s12">
+        <div>
+            <h4>Edit Video Details</h4>
+            <form method="POST" enctype="multipart/form-data" id="editForm">{% csrf_token %}
+                <input type="hidden" name="managementAction" value="edit" />
+
+                <div class="row">
+                    <div class="input-field col s12 m8 videoToEditSelector">
+                        <select name="videoIDToEdit">
+                            <option value="" disabled selected>Select Video Name</option>
+                            {% for i in videoLessonObjects %}
+                                <option value="{{ i.videoID }}">{{ i.videoName }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Select Video</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <i class="material-icons text-accent-1 prefix">code</i>
+                        <input readonly class="grey-text text-darken-1" type="text" name="videoID" id="id_videoID" value="" required>
+                        <label class="black-text text-darken-4" for="id_videoID">video ID</label>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons text-accent-1 prefix">mode_edit</i>
+                    <textarea class="black-text materialize-textarea" name="additionalComments" id="id_additionalComments" ></textarea>
+                    <label class="black-text" for="id_additionalComments">Additional Comments</label>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <select>
+                        <option selected>None</option>
+                        <option>Quiz</option>
+                        <option>Next Video</option>
+                        </select>
+                        <label>Action to do after video</label>
+                    </div>  
+                    <div id="quizSelect" class="input-field col s12 m6" hidden>
+                        <select>
+                          <option value="" disabled selected>Select Quiz</option>
+                          <option value="1">Quiz 1</option>
+                          <option value="1">Quiz 2</option>
+                          <option value="1">Quiz 3</option>
+                          <option value="1">Quiz 4</option>
+                          <option value="1">Quiz 5</option>
+                          <option value="1">Quiz 6</option>
+                          <option value="1">Quiz 7</option>
+                          <option value="1">Quiz 8</option>
+                          <option value="1">Quiz 9</option>
+                          <option value="1">Quiz 10</option>
+                        </select>
+                        <label>Select Quiz</label>
+                    </div>
+                    <div id="videoSelect" class="input-field col s12 m6" hidden>
+                        <select>
+                          <option value="" disabled selected>Select Video</option>
+                          <option value="1">Video 1</option>
+                          <option value="1">Video 2</option>
+                          <option value="1">Video 3</option>
+                          <option value="1">Video 4</option>
+                          <option value="1">Video 5</option>
+                          <option value="1">Video 6</option>
+                          <option value="1">Video 7</option>
+                          <option value="1">Video 8</option>
+                          <option value="1">Video 9</option>
+                          <option value="1">Video 10</option>
+                        </select>
+                        <label>Select Video</label>
+                    </div>
+                </div>
+
+                <input id="afterActionInput" name="afterAction" value="none" hidden disabled/>
+
+                <button class="btn accent-1" type="submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+
+            </form>
+        </div>
+    
+    </div>
+
+
 </div>
 
 {% endblock %}
@@ -123,19 +306,55 @@
 $(document).ready(function(){
     $('.tabs').tabs({ swipeable: true, duration: 300 });
     $('select').formSelect();
-  });
-
-$(function() {
-    $("span:contains('None')").on("click", function() {
-        $("#afterActionInput").attr("value", "none");
-    });
-    $("span:contains('Quiz')").on("click", function() {
-        $("#afterActionInput").attr("value", "quiz");
-    });
-    $("span:contains('Next Video')").on("click", function() {
-        $("#afterActionInput").attr("value", "nextVideo");
-    });
 });
+
+
+$("span:contains('None')").on("click", function() {
+    $("#afterActionInput").attr("value", "none");
+    $("#quizSelect, #videoSelect").hide(400, "swing");
+});
+$("span:contains('Quiz')").on("click", function() {
+    $("#afterActionInput").attr("value", "quiz");
+    $("#quizSelect").show(400, "swing");
+    $("#videoSelect").hide(400, "swing");
+});
+$("span:contains('Next Video')").on("click", function() {
+    $("#afterActionInput").attr("value", "nextVideo");
+    $("#videoSelect").show(400, "swing");
+    $("#quizSelect").hide(400, "swing");
+});
+
+$("[name='videoIDToEdit']").change(function (){
+    setToEdit($("[name='videoIDToEdit']").val())
+});
+
+    
+
+function goToEditPage(videoIDtoEdit) {
+    M.Tabs.getInstance($('.tabs')).select('edit');
+    setToEdit(videoIDtoEdit);
+}
+
+function setToEdit(selectedVideoID){
+        $("#editForm input#id_videoID").val(selectedVideoID);
+        $("#editForm input#id_videoID").addClass("active");
+
+        if (false){}
+        {% for i in videoLessonObjects %}
+
+        else if (selectedVideoID === "{{ i.videoID }}"){
+            $("[name='videoIDToEdit']").val("{{ i.videoName }}");
+            $("[name='videoIDToEdit']").formSelect();
+            $("#editForm textarea#id_additionalComments").val("{{ i.additionalComments }}");
+            $("#editForm textarea#id_additionalComments").addClass("active");
+            //other options
+        }
+
+        {% endfor %}
+
+        M.updateTextFields();
+    }
+
 
 </script>
 

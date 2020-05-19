@@ -6,6 +6,7 @@ from django.conf import settings
 
 def handle_uploaded_file(f, videoID):
     fileName = "%s.mp4" % (videoID) 
+    """
     if not default_storage.exists(fileName):
         with default_storage.open(fileName, 'w') as destinationFile:
             for chunk in f.chunks():
@@ -13,4 +14,6 @@ def handle_uploaded_file(f, videoID):
         return "https://%s/%s/%s" % (settings.AWS_S3_CUSTOM_DOMAIN, default_storage.location, fileName)
     else:
         return "error"
+    """
         
+    return "https://%s/%s/%s" % (settings.AWS_S3_CUSTOM_DOMAIN, default_storage.location, fileName)
