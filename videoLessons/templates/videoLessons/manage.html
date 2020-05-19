@@ -78,8 +78,8 @@
                 {% for i in videoLessonObjects %}
                 <tr>
                     <td>{{ i.videoName }}</td>
-                    <td><a href="{{ i.videoFile.url }}">View</a></td>
-                    <td><a onclick="goToEditPage('{{ i.videoID }}')" href="#!"><i class="material-icons text-accent-1">edit</i></a></td>
+                    <td><a href="{{ i.videoFile.url }}"><i class="material-icons text-accent-1">visibility</i></a></td>
+                    <td><a onclick="goToEditPage('{{ i.videoID }}')" href="#"><i class="material-icons text-accent-1">edit</i></a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -111,7 +111,7 @@
     <div id="add" class="col s12">
         <div>
             <h4>Add New Video</h4>
-            <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <form method="POST" enctype="multipart/form-data" id="addForm">{% csrf_token %}
                 <input type="hidden" name="managementAction" value="create" />
 
                 <div class="row">
@@ -140,10 +140,10 @@
                         <div class="file-field input-field">
                             <div class="btn accent-1">
                             <span>Upload Video File</span>
-                            <input name="videoFile" type="file" accept=".mp4" class="validate">
+                            <input name="videoFile" type="file" accept=".mp4" class="validate" required>
                             </div>
                             <div class="file-path-wrapper">
-                            <input class="file-path validate" name="fileName" type="text">
+                            <input class="file-path validate" name="fileName" type="text" required>
                             </div>
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                 
                 <div class="row">
                     <div class="input-field col s12 m6">
-                        <select>
+                        <select required>
                         <option selected>None</option>
                         <option>Quiz</option>
                         <option>Next Video</option>
@@ -160,7 +160,6 @@
                     </div>  
                     <div id="quizSelect" class="input-field col s12 m6" hidden>
                         <select>
-                          <option value="" disabled selected>Select Quiz</option>
                           <option value="1">Quiz 1</option>
                           <option value="1">Quiz 2</option>
                           <option value="1">Quiz 3</option>
@@ -176,7 +175,6 @@
                     </div>
                     <div id="videoSelect" class="input-field col s12 m6" hidden>
                         <select>
-                          <option value="" disabled selected>Select Video</option>
                           <option value="1">Video 1</option>
                           <option value="1">Video 2</option>
                           <option value="1">Video 3</option>
@@ -192,7 +190,7 @@
                     </div>
                 </div>
 
-                <input id="afterActionInput" name="afterAction" value="none" hidden disabled/>
+                <input id="afterActionInput" name="afterAction" value="none" hidden/>
 
                 <button class="btn accent-1" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
@@ -216,8 +214,8 @@
                 <input type="hidden" name="managementAction" value="edit" />
 
                 <div class="row">
-                    <div class="input-field col s12 m8 videoToEditSelector">
-                        <select name="videoIDToEdit">
+                    <div class="input-field col s12 m8">
+                        <select name="videoIDToEdit" id="videoToEditSelector">
                             <option value="" disabled selected>Select Video Name</option>
                             {% for i in videoLessonObjects %}
                                 <option value="{{ i.videoID }}">{{ i.videoName }}</option>
@@ -235,14 +233,14 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons text-accent-1 prefix">mode_edit</i>
-                    <textarea class="black-text materialize-textarea" name="additionalComments" id="id_additionalComments" ></textarea>
+                    <textarea class="black-text materialize-textarea" name="additionalComments" id="id_additionalComments" required></textarea>
                     <label class="black-text" for="id_additionalComments">Additional Comments</label>
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="input-field col s12 m6">
-                        <select>
+                        <select required>
                         <option selected>None</option>
                         <option>Quiz</option>
                         <option>Next Video</option>
@@ -251,7 +249,6 @@
                     </div>  
                     <div id="quizSelect" class="input-field col s12 m6" hidden>
                         <select>
-                          <option value="" disabled selected>Select Quiz</option>
                           <option value="1">Quiz 1</option>
                           <option value="1">Quiz 2</option>
                           <option value="1">Quiz 3</option>
@@ -267,7 +264,6 @@
                     </div>
                     <div id="videoSelect" class="input-field col s12 m6" hidden>
                         <select>
-                          <option value="" disabled selected>Select Video</option>
                           <option value="1">Video 1</option>
                           <option value="1">Video 2</option>
                           <option value="1">Video 3</option>
@@ -283,7 +279,7 @@
                     </div>
                 </div>
 
-                <input id="afterActionInput" name="afterAction" value="none" hidden disabled/>
+                <input id="afterActionInput" name="afterAction" value="none" hidden/>
 
                 <button class="btn accent-1" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
@@ -308,26 +304,43 @@ $(document).ready(function(){
     $('select').formSelect();
 });
 
+$(function(){
+    //add form
+    $("#addForm span:contains('None')").on("click", function() {
+        $("#addForm #afterActionInput").attr("value", "none");
+        $("#addForm #quizSelect, #addForm #videoSelect").hide(400, "swing");
+    });
+    $("#addForm span:contains('Quiz')").on("click", function() {
+        $("#addForm #afterActionInput").attr("value", "quiz");
+        $("#addForm #quizSelect").show(400, "swing");
+        $("#addForm #videoSelect").hide(400, "swing");
+    });
+    $("#addForm span:contains('Next Video')").on("click", function() {
+        $("#addForm #afterActionInput").attr("value", "nextVideo");
+        $("#addForm #videoSelect").show(400, "swing");
+        $("#addForm #quizSelect").hide(400, "swing");
+    });
 
-$("span:contains('None')").on("click", function() {
-    $("#afterActionInput").attr("value", "none");
-    $("#quizSelect, #videoSelect").hide(400, "swing");
-});
-$("span:contains('Quiz')").on("click", function() {
-    $("#afterActionInput").attr("value", "quiz");
-    $("#quizSelect").show(400, "swing");
-    $("#videoSelect").hide(400, "swing");
-});
-$("span:contains('Next Video')").on("click", function() {
-    $("#afterActionInput").attr("value", "nextVideo");
-    $("#videoSelect").show(400, "swing");
-    $("#quizSelect").hide(400, "swing");
-});
+    //edit form
+    $("#editForm span:contains('None')").on("click", function() {
+        $("#editForm #afterActionInput").attr("value", "none");
+        $("#editForm #quizSelect, #addForm #videoSelect").hide(400, "swing");
+    });
+    $("#editForm span:contains('Quiz')").on("click", function() {
+        $("#editForm #afterActionInput").attr("value", "quiz");
+        $("#editForm #quizSelect").show(400, "swing");
+        $("#editForm #videoSelect").hide(400, "swing");
+    });
+    $("#editForm span:contains('Next Video')").on("click", function() {
+        $("#editForm #afterActionInput").attr("value", "nextVideo");
+        $("#editForm #videoSelect").show(400, "swing");
+        $("#editForm #quizSelect").hide(400, "swing");
+    });
 
-$("[name='videoIDToEdit']").change(function (){
-    setToEdit($("[name='videoIDToEdit']").val())
+    $("[name='videoIDToEdit']").change(function (){
+        setToEdit($("[name='videoIDToEdit']").val())
+    });
 });
-
     
 
 function goToEditPage(videoIDtoEdit) {
@@ -340,11 +353,11 @@ function setToEdit(selectedVideoID){
         $("#editForm input#id_videoID").addClass("active");
 
         if (false){}
-        {% for i in videoLessonObjects %}
 
+        {% for i in videoLessonObjects %}
         else if (selectedVideoID === "{{ i.videoID }}"){
-            $("[name='videoIDToEdit']").val("{{ i.videoName }}");
-            $("[name='videoIDToEdit']").formSelect();
+            $("#videoToEditSelector").val("{{ i.videoID }}").closest('.select-wrapper').find('li').removeClass("active").closest('.select-wrapper').find('.select-dropdown').val("{{ i.videoID }}").find('span:contains(' + "{{ i.videoID }}" + ')').parent().addClass('selected active');
+            $("#videoToEditSelector").formSelect();
             $("#editForm textarea#id_additionalComments").val("{{ i.additionalComments }}");
             $("#editForm textarea#id_additionalComments").addClass("active");
             //other options
