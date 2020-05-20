@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Video: {{ videoObject.videoName }} {% endblock %}
+
+
+{% block css %}
+<style>
+    .video {
+        display: block;
+    }
+
+    .navbarPadding {
+        height: 70px;
+    }
+    .customContainer {
+        margin: 0 auto;
+        width: 95%;
+    }
+    @media only screen and (min-width: 601px) {
+        .customContainer {
+            width: 85%;
+        }
+    }
+    .videoTitle {
+    }
+</style>
+{% endblock %}
+
+{{ videoObject.videoFile.url }}
+
+{% block fullWidthContent %}
+
+
+<div class="row" style="margin: 0;">
+    <div class="col s12">
+        <div class="valign-wrapper">
+            <div class="customContainer">
+                    <video class="responsive-video" controls controlsList="nodownload">
+                        <source src="{{ videoObject.videoFile.url }}" type="video/mp4"/>
+                        Video expired, please reload page
+                    </video>
+                    <h3 class="videoTitle">{{ videoObject.videoName }}</h3>
+                    <hr/>
+                    <div class="flow-text">{{ videoObject.additionalComments }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+
+
+{% endblock %}

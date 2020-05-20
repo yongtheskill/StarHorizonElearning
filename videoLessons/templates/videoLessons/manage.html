@@ -43,7 +43,6 @@
 
 {% block content %}
 
-<br><br>
 <h2 class="center-align">Manage Video Lessons</h2>
 
 <div class="row paginationRow">
@@ -69,6 +68,7 @@
             <thead>
               <tr>
                   <th>Video Name</th>
+                  <th>Video ID</th>
                   <th>View Video</th>
                   <th>Edit Details</th>
               </tr>
@@ -78,7 +78,8 @@
                 {% for i in videoLessonObjects %}
                 <tr>
                     <td>{{ i.videoName }}</td>
-                    <td><a href="{{ i.videoFile.url }}"><i class="material-icons text-accent-1">visibility</i></a></td>
+                    <td>{{ i.videoID }}</td>
+                    <td><a href="../view/{{ i.videoID }}"><i class="material-icons text-accent-1">visibility</i></a></td>
                     <td><a onclick="goToEditPage('{{ i.videoID }}')" href="#"><i class="material-icons text-accent-1">edit</i></a></td>
                 </tr>
                 {% endfor %}
@@ -94,7 +95,25 @@
 
 
     <div id="assign" class="col s12">
-        ASSIGNNN
+        {% for i in videoLessonObjects %}
+        <div class="grey lighten-3">
+            <div class="row">
+                <div class="col s4">
+                    <h5>{{ i.videoName }}</h5>
+                </div>    
+                <div class="col s4">
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="chips"></div>
+                            </div>
+                          </form>
+                    </div>
+                </div>    
+            </div>
+
+        </div>
+        {% endfor %}
     
     </div>
 
@@ -298,7 +317,12 @@
 {% block javascript %}
 
 <script>
+//assignment
+$('.chips').chips();
 
+
+
+//create/edit form
 $(document).ready(function(){
     $('.tabs').tabs({ swipeable: true, duration: 300 });
     $('select').formSelect();

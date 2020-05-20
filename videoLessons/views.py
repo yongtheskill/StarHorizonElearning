@@ -19,7 +19,7 @@ def manageVideoLessons(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 
-    baseContext = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": timestamp}
+    baseContext = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp)}
 
     if request.user.accountType != 'Teacher':
         context = {"notAuthorised": True}
@@ -86,3 +86,41 @@ def manageVideoLessons(request):
         context = {**baseContext,}
         return render(request, 'videoLessons/manage.html', context)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#video view page
+@login_required
+def viewVideo(request, videoID):
+    videoFilename = "vid%s.mp4" % (videoID)
+    videoObject = Video.objects.filter(videoFile=videoFilename)
+
+    print(videoObject[0])
+    if (videoObject.exists()):
+        context = {"videoObject": videoObject[0]}
+        return render(request, 'videoLessons/view.html', context)
+    else:
+        context = {"error": "Sorry, this video does not exist", "onModalCloseRedirect": "/"}
+        return render(request, 'videoLessons/view.html', context)

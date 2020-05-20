@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Quizzes{% endblock %}
+
+
+{% block css %}
+<style>
+
+.questionWrapper {
+    background-color: rgb(220, 220, 220);
+    border-radius: 20px;
+}
+
+.questionWrapper>.questionContainer {
+    padding-top: 0px;
+    padding-bottom: 15px;
+    margin: 0 auto;
+    width: 95%;
+}
+
+.fixed-action-btn {
+  position: relative;
+  float: right;
+  right: 0px;
+  bottom: 0px;
+  padding-top: 15px;
+}
+.btn-floating {
+    border-radius: 1000px;
+}
+.btn-override {
+    width: auto !important;
+    height: auto !important;
+    border-radius: 10px !important;
+    padding-right: 16px !important;
+    padding-left: 16px !important;
+    text-transform: uppercase !important;
+    vertical-align: middle !important;
+}
+div.input-field>label{
+    color: #5f5f5f;
+}
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<h2 class="center-align">Create Quiz</h2>
+
+
+<div class="row">
+    <form class="col s12">
+        <div class="row">
+            <div class="input-field col s12 m8">
+                <i class="material-icons text-accent-1 prefix">mode_edit</i>
+                <input class="black-text" type="text" name="quizName" id="id_quizName" autofocus required>
+                <label class="black-text" for="id_quizName">Quiz Name</label>
+            </div>
+            <div class="input-field col s12 m4">
+                <i class="material-icons text-accent-1 prefix">code</i>
+                <input readonly class="grey-text text-darken-1" type="text" name="quizID" id="id_quizID" value="{{ quizIDtoUse }}" required>
+                <label class="black-text text-darken-4" for="id_quizID">Quiz ID</label>
+            </div>
+        </div>
+
+        <input style="display: none;" readonly type="text" name="numberOfQuestions" value="0" required>
+
+        <!-- Questions -->
+        <div id="allQuesitonsContainer">
+
+        </div>
+
+
+
+        <!-- FAB -->
+        <div class="row">
+            <div class="fixed-action-btn">
+                <a class="btn-floating btn-large accent-2-btn">
+                    <i class="large material-icons">add</i>
+                </a>
+                <ul>
+                    <li><a onclick="createQuestion('sa')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">short_text</i>Short Answer</a></li>
+                    <li><a onclick="createQuestion('la')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">subject</i>Long Answer</a></li>
+                    <li><a onclick="createQuestion('mc')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">radio_button_checked</i>Multiple Choice</a></li>
+                    <li><a onclick="createQuestion('cb')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">check_box</i>Checkboxes</a></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+  </div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<script>
+$('.fixed-action-btn').floatingActionButton({
+    direction: 'left',
+    hoverEnabled: true
+});
+
+class Question {
+    constructor(qType, qID){
+        //short ans, long ans, multiple choice, checkbox
+        //sa, la, mc, cb 
+        this._questionType = qType;
+
+        this._questionID = qID;
+    }
+
+    get questionType(){
+        return this._questionType;
+    }
+    set questionType(x){
+        this._questionType = x;
+    }
+
+    get questionTitle(){
+        return this._questionTitle;
+    }
+    set questionTitle(x){
+        this._questionTitle = x;
+    }
+
+    get isAutoGraded(){
+        return this._isAutoGraded;
+    }
+    set isAutoGraded(x){
+        this._isAutoGraded = x;
+    }
+
+    get questionOptions(){
+        return this._questionOptions;
+    }
+    set questionOptions(x){
+        this._questionOptions = x;
+    }
+
+    get correctAnswer(){
+        return this._correctAnswer;
+    }
+    set correctAnswer(x){
+        this._correctAnswer = x;
+    }
+
+    get marksAwarded(){
+        return this._marksAwarded;
+    }
+    set marksAwarded(x){
+        this._marksAwarded = x;
+    }
+
+    get questionID(){
+        return this._questionID;
+    }
+    set questionID(x){
+        this._questionID = x;
+    }
+
+}
+
+var availableQuestionID = 0;
+
+var questions = [];
+
+function createQuestion (qType) {
+    availableQuestionID += 1;
+    newQuestion = new Question(qType, availableQuestionID);
+    questions.push(newQuestion);
+    $("#allQuesitonsContainer").append(generateQuesionHTML(newQuestion));
+    console.log(questions);
+}
+
+function generateQuesionHTML (question) {
+    var generatedHTML = `
+    <div class="row questionWrapper z-depth-1 question-div-identifier-id-${question.questionID}">
+        <div class="questionContainer">
+            <div class="row">
+                <div class="input-field col s12">
+                    <h1 style="margin: 0px;" class="prefix">${question.questionID}.</h1>
+                    <textarea id="QuestionTitle" class="materialize-textarea"></textarea>
+                    <label for="QuestionTitle">Question</label>
+                </div>
+            </div>`;
+
+    if (question.questionType === "sa"){
+        generatedHTML += `
+        <div class="row">
+            <div class="input-field col s12 m6">
+                <input disabled id="Answer" value="Short answer" type="text" class="validate">
+                <label class="active" for="Answer">Answer</label>
+            </div>
+        </div>`;
+    } else if (question.questionType === "la"){
+        generatedHTML += `
+        <div class="row">
+            <div class="input-field col s12 m6">
+                <input disabled id="Answer" value="Long answer" type="text" class="validate">
+                <label class="active" for="Answer">Answer</label>
+            </div>
+        </div>`;
+    } else if (question.questionType === "mc"){
+        generatedHTML += `
+        <div class="row">
+            <div class="input-field col s12 m6">
+                <input id="questionTitle" value="Long answer" type="text" class="validate">
+                <label for="questionTitle">Question Title</label>
+            </div>
+        </div>`;
+    }
+
+    if (question.questionType != "la"){
+        generatedHTML += `
+        <div class="row" style="padding-left: 10px;">
+            <div class="switch">
+                Auto-grade answer
+                <label >
+                    <input onchange="autoGradeAdd(${question.questionID})" type="checkbox">
+                    <span class="lever"></span>
+                </label>
+            </div>
+        </div>`;
+    }
+
+
+    generatedHTML += `
+        </div>
+    </div>`;
+    return generatedHTML;
+}
+
+function autoGradeAdd(qID) {
+    let question = questions.find((o, i) => {
+        if (o.questionID === qID) {
+            questions[i].isAutoGraded = !questions[i].isAutoGraded;
+            return true; // stop searching
+        }
+    });
+    
+    if (question.isAutoGraded) {
+        $(`div.question-div-identifier-id-${question.questionID.toString()} > div.questionContainer`).append(generateAutoGrade(question));
+    } else {
+        $(`div.question-div-identifier-id-${question.questionID.toString()} > div.questionContainer>.autoGradeContainer`).remove();
+    }
+}
+
+
+function generateAutoGrade(question){
+    var generatedHTML = "";
+    if (question.questionType === "sa"){
+        generatedHTML += `
+        <div class="row autoGradeContainer">
+            <div class="input-field col s12 m6">
+                <input id="validationAnswer" type="text" class="validate">
+                <label class="active" for="validationAnswer">Answer to check against</label>
+            </div>
+        </div>`;
+    } else if (question.questionType === "mc"){
+        generatedHTML += `
+        <div class="row autoGradeContainer">
+            <div class="input-field col s12 m6">
+                <select>
+                    <option value="" disabled selected>Select correct option</option>`
+
+        question.questionOptions.forEach(function (option, index) {
+            generatedHTML += '<option value="' + index.toString() + '">' + option + '</option>\n'
+        });
+        generatedHTML += `</select>
+                <label>Correct Option</label>
+            </div>
+        </div>`;
+    } else if (question.questionType === "cb"){
+        generatedHTML += `
+        <div class="row autoGradeContainer">
+            <div class="input-field col s12 m6">`;
+        question.questionOptions.forEach(function (option, index) {
+            console.log(item, index);
+            generatedHTML += `
+            <p>
+                <label>
+                    <input type="checkbox" id="checkbox-id-${option}" />
+                    <span>${option}</span>
+                </label>
+            </p>`;
+        });
+    }
+        
+    return generatedHTML;
+
+}
+
+/*
+let obj = arr.find((o, i) => {
+    if (o.name === 'string 1') {
+        arr[i] = { name: 'new string', value: 'this', other: 'that' };
+        return true; // stop searching
+    }
+});
+*/
+
+</script>
+
+{% endblock %}

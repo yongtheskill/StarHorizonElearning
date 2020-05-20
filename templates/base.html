@@ -17,12 +17,50 @@
   </head>
 
   <body>
+    {% if isHome != True and user.is_authenticated%}
+    <ul id="slide-out" class="sidenav sidenav-fixed">
+      <li><div class="user-view">
+        <div class="background">
+          <img class="responsive-img" src="{% static "img/sky.jpg" %}">
+        </div>
+        <a href="/account/manage/"><img class="circle" style="object-fit: cover;" src="{% if user.profilePic %}{{ user.profilePic.url }}{% else %}{% static "img/blankProfile.svg" %}{% endif %}"></a>
+        <a href="/account/manage/"><span class="name white-text">{{ user.username }}</span></a>
+        <a href="/account/manage/"><span class="email white-text">{{ user.institution }}</span></a>
+      </div></li>
+      <!-- if teacher -->
+      {% if user.accountType == "Teacher" %}
+      <li><a href="/#notYet">Live Streaming</a></li>
+      <li><a href="/videoLessons/manage">Video Lessons</a></li>
+      <li><a href="/quizzes/manage">Quizzes</a></li>
+      {% endif %}
+
+      <!-- if logged in -->
+      {% if user.is_authenticated %}
+      <li><a href='/account/manage'>Manage Account</a></li>
+      <li><a href='/logout'>Log Out</a></li>
+      {% else %}
+      <li><a href='/login'>Login</a></li>
+      {% endif %}
+    
+      <a href="/" style="position: absolute; bottom: 50px;" class="logo-container"><img class="brand-logo" src="{% static "img/StarHorizonLogoDark.png" %}" alt="Star Horizon Logo"></a>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+    {% else %}
+
+
+
+    <style>
+      header, main, footer {
+          padding-left: 0px;
+      }
+    </style>
     <!-- navbar -->
     <div class="navbar-fixed">
       <nav class="transparent z-depth-0">
         <div class="container">
           <div class="nav-wrapper black-text">
-            <a href="/"><img class="brand-logo" src="{% static "img/StarHorizonLogoDark.png" %}"
+            <a href="/"><img style="height: 50px; margin-top: 10px; color: #f7ca23;" src="{% if isHome %}{% static "img/StarHorizonLogo.png" %}{% else %}{% static "img/StarHorizonLogoDark.png" %}{% endif %}"
               alt="Star Horizon Logo"></a>
             <ul class="navlinks right hide-on-med-and-down">
               <!-- if teacher -->
@@ -43,6 +81,11 @@
         </div>
       </nav>
     </div>
+    {% endif %}
+
+
+
+    <main>
     {% if notAuthorised != True %}
       <div class="container">
         {% block content %}
@@ -59,6 +102,9 @@
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
       <script type="text/javascript" src="{% static "js/materialize.min.js" %}"></script>
+      <script>
+        $('.sidenav').sidenav('methodName');
+      </script>
       {% block javascript %}
       {% endblock %}
       
@@ -85,10 +131,16 @@
       <script>
         document.addEventListener('DOMContentLoaded', function() {
           var elems = document.querySelectorAll('#baseModal');
-          var instances = M.Modal.init(elems);
+          var instances = M.Modal.init(elems, {onCloseEnd: modalClosed});
           var instance = M.Modal.getInstance($("#baseModal"));
           instance.open();
         });
+        
+        function modalClosed(){
+          {% if onModalCloseRedirect %}
+          window.location.replace("{{ onModalCloseRedirect }}")
+          {% endif %}
+        }
       </script>
       {% endif %}
     {% else %}
@@ -114,9 +166,11 @@
           var instance = M.Modal.getInstance($("#baseModal"));
           instance.open();
         });
+
+
       </script>
     {% endif %}
-
+    </main>
 
   </body>
 

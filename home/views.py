@@ -9,5 +9,5 @@ from django.utils import timezone
 
 #home page
 def home(request):
-    context = {}
+    context = {"isHome": True}
     return render(request, 'home/home.html', context)

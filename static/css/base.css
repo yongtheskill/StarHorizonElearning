@@ -3,18 +3,35 @@ nav ul a {
     color: inherit;
   }
 
-nav .brand-logo {
-    color: #f7ca23;
-  }
-
-nav img.brand-logo {
-    height: 50px;
-    margin-top: 10px;
-  }
-
 .navbar-fixed {
     height: 0px;
 }
+
+/* sidenav */
+
+.brand-logo {
+    color: #f7ca23;
+    height: 70px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.logo-container {
+    border-bottom: 1px solid lightgray;
+    position: absolute; 
+    bottom: 50px;
+}
+
+header, main, footer {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+}
+
 
 /* full browser window */
 .full-height {
@@ -68,4 +85,28 @@ nav img.brand-logo {
 
 .text-accent-2 {
     color: #f7ca23;
+}
+
+.accent-1-btn {
+    background-color: #0e143f;
+}
+
+.accent-2-btn {
+    background-color: #f7ca23;
+}
+
+.accent-1-btn:hover {
+    background-color: #1a2050;
+}
+  
+.accent-2-btn:hover {
+    background-color: #ffd747;
+}
+
+.accent-1-btn:focus {
+  background-color: #141d5c;
+}
+
+.accent-2-btn:focus {
+    background-color: #fcd64d;
 }

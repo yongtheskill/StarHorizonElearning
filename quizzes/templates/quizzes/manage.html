@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Quizzes{% endblock %}
+
+
+{% block css %}    
+<style>
+/* list styling */
+ul.collection {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+th, td {
+    text-align: center;
+}
+
+/* Add Button */
+.addQuizBtn {
+  float: right;
+  padding-top: 20px;
+}
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<h2 class="center-align">Manage Quizzes</h2>
+
+
+<div id="all" class="col s12">
+    <table style="margin-top: 10px;">
+        <thead>
+          <tr>
+              <th>Quiz Name</th>
+              <th>Quiz ID</th>
+              <th>Preview Quiz</th>
+              <th>Edit Quiz</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            {% for i in quizObjects %}
+            <tr>
+                <td>{{ i.quizName }}</td>
+                <td>{{ i.quizID }}</td>
+                <td><a href="../view/{{ i.quizID }}"><i class="material-icons text-accent-1">visibility</i></a></td>
+                <td><a href="../edit/{{ i.quizID }}"><i class="material-icons text-accent-1">edit</i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- add button -->
+<div class="addQuizBtn">
+    <a class="btn-floating btn-large accent-1" href="../create">
+        <i class="large material-icons">note_add</i>
+    </a>
+</div>
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+
+
+{% endblock %}
