@@ -4,7 +4,9 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Course
+from .models import User, Course, StudentClass
+from videoLessons.models import Video
+from quizzes.models import Quiz
 
 # Create your views here.
 
@@ -87,11 +89,27 @@ def changePassword(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'accountManagement/changePassword.html', {'form': form})
 
-# Allows teachers to view details of all their students
+# View list of students in class
 @login_required
-def studentView(request):
+def classView(request, classId):
 
-    allStudents = list(User.objects.filter(group_id = classId))
-    course = Course.objects.get(id = classId)
+    teachers = list(User.objects.filter(classes = classId, accountType = "Teacher"))
+    students = list(User.objects.filter(classes = classId, accountType = "Student"))
+    studentClass = StudentClass.objects.get(id = classId)
 
-    context = {"course": course, "Students": allStudents, }
+    context = {"class": studentClass, "teachers": teachers, "students": students, }
+
+    return render(request, 'accountManagement/classView.html', context)
+
+# View list of classes participating in a course
+@login_required
+def courseView(request, courseId):
+
+    course = Course.objects.get(id = courseId)
+    classes = list(User.objects.filter(courses = courseId))
+    quizzes = list(Quiz.objects.filter(course = courseId))
+    videoLessons = list(Video.objects.filter(course = courseId))
+
+    context = {"course": course, "classes": classes, "quizzes": quizzes, "videoLessons": videoLessons, }
+
+    return render(request, 'accountManagement/courseView.html', context)

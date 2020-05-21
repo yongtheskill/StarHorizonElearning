@@ -1,5 +1,6 @@
 from django.db import models
 from StarHorizonElearning.storage_backends import MediaStorage
+from accountManagement.models import Course
 
 # Create your models here.
 class Video(models.Model):
@@ -11,6 +12,8 @@ class Video(models.Model):
     #the url to be linked for students to go to after watching the video
     afterAction = models.CharField(max_length=200, verbose_name="action to take after video")
     completeionURL = models.CharField(max_length=1000, verbose_name="url to go to after completion", null=True) 
+
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
          return self.videoName

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Class Student View{% endblock %}
+
+{% block content %}
+
+<br><br>
+<h3 class="center-align">{{ course }}</h3>
+
+
+<table class="striped responsive-table">
+    <caption class="left-align"><h5>Classes</h5></caption>
+    <thead>
+        <th>Name</th>
+        <th>Email</th>
+    </thead>
+
+    <tbody>
+        {% for i in classes %}
+        <tr>
+            <td>
+                <a href="/account/{{ i.id }}">{{ i.first_name }} {{ i.last_name }}</a>
+            </td>
+            <td>{{ i.email }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br><br>
+<h4>Materials</h4>
+<hr>
+
+<table class="striped responsive-table">
+    <caption class="left-align"><h5>Quizzes</h5></caption>
+    <thead>
+        <th>Quiz Name</th>
+        <th>Due Date</th>
+    </thead>
+
+    <tbody>
+        {% for i in quizzes %}
+        <tr>
+            <td>
+                <a href="/quizzes/manage/{{ i.id }}"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}

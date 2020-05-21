@@ -28,7 +28,7 @@ class User(AbstractUser):
 
     institution = models.CharField(max_length=200, blank=True, null=True)
     phoneNumber = models.CharField(verbose_name="phone number", max_length=20, blank=True, null=True, default=None)
-    profilePic = models.ImageField(storage=MediaStorage(), verbose_name="Profile picture") 
+    profilePic = models.ImageField(storage=MediaStorage(), verbose_name="Profile picture", blank=True) 
     
     ACC_TYPES = [
         ('Teacher', 'Teacher'),
