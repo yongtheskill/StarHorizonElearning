@@ -24,7 +24,7 @@ class StudentClassAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {'fields': ('className',)}),
-        ('Details', {'fields':('classInstitution', 'id')}),
+        ('Details', {'fields':('classInstitution', 'courses', 'id')}),
     )
 
 

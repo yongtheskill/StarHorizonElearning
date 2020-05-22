@@ -6,7 +6,7 @@ from accountManagement.models import Course
 class Quiz(models.Model):
     
     quizName = models.CharField(max_length=200, verbose_name="quiz name")
-    quizID = models.CharField(max_length=200, verbose_name="quiz ID")
+    quizDueDate = models.DateTimeField(blank=True, null=True)
 
     quizData = models.CharField(max_length=100000, verbose_name="quiz data")
 

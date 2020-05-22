@@ -7,10 +7,33 @@
 
 <br><br>
 <h3 class="center-align">{{ class }}</h3>
+<br>
 
-
+<h4>Courses</h4>
+<hr>
 <table class="striped responsive-table">
-    <caption class="left-align"><h5>Teachers</h5></caption>
+    <thead>
+        <th>Course Name</th>
+        <th>Institution</th>
+        <th></th>
+    </thead>
+
+    <tbody>
+        {% for i in courses %}
+        </tr>
+            <td>
+                <a href="/course/{{ i.id }}/accounts">{{ i.courseName }}</a>
+            </td>
+            <td>{{ i.courseInstitution }}</td>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br><br>
+<h4>People</h4>
+<hr>
+<table class="striped responsive-table">
+    <caption class="left-align"><h5>Teachers</h5></caption>    
     <thead>
         <th>Name</th>
         <th>Email</th>
@@ -31,7 +54,7 @@
 <br><br>
 
 <table class="striped responsive-table">
-    <caption class="left-align"><h5>Students</h5></caption>
+    <caption class="left-align"><h5>Students</h5></caption>    
     <thead>
         <tr>
             <th>Name</th>
@@ -46,7 +69,11 @@
         {% for i in students %}
         <tr>
             <td>
+                {% if user.accountType == 'Teacher' %}
                 <a href="/account/{{ i.id }}">{{ i.first_name }} {{ i.last_name }}</a>
+                {% else %}
+                {{ i.first_name }} {{ i.last_name }}
+                {% endif %}
             </td>
             <td>{{ i.email }}</td>
             {% if user.accountType == 'Teacher' %}

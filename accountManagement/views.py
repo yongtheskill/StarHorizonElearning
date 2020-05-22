@@ -89,24 +89,25 @@ def changePassword(request):
         form = PasswordChangeForm(request.user)
     return render(request, 'accountManagement/changePassword.html', {'form': form})
 
-# View list of students in class
+# View list of students and teachers in class
 @login_required
 def classView(request, classId):
 
+    studentClass = StudentClass.objects.get(id = classId)
     teachers = list(User.objects.filter(classes = classId, accountType = "Teacher"))
     students = list(User.objects.filter(classes = classId, accountType = "Student"))
-    studentClass = StudentClass.objects.get(id = classId)
+    courses = list(studentClass.courses.all())
 
-    context = {"class": studentClass, "teachers": teachers, "students": students, }
+    context = {"class": studentClass, "teachers": teachers, "students": students, "courses": courses, }
 
     return render(request, 'accountManagement/classView.html', context)
 
-# View list of classes participating in a course
+# View list of classes participating in a course, as well as course materials
 @login_required
 def courseView(request, courseId):
 
     course = Course.objects.get(id = courseId)
-    classes = list(User.objects.filter(courses = courseId))
+    classes = list(StudentClass.objects.filter(courses = courseId))
     quizzes = list(Quiz.objects.filter(course = courseId))
     videoLessons = list(Video.objects.filter(course = courseId))
 
