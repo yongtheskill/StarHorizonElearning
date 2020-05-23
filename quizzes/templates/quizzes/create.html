@@ -41,6 +41,25 @@
 div.input-field>label{
     color: #5f5f5f;
 }
+
+.quesionInput {
+    margin-bottom: 0px;
+}
+
+.noPadding {
+    padding: 0px;
+    border: 0px;
+    margin:0px;
+}
+
+.questionTypeLabel{
+    font-size: 1rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+}
 </style>
 {% endblock %}
 
@@ -180,54 +199,44 @@ function createQuestion (qType) {
 }
 
 function generateQuesionHTML (question) {
+    
+    if (question.questionType === "sa"){
+        var questionTypeLabel = "Short Answer"
+    } else if (question.questionType === "la"){
+        var questionTypeLabel = "Long Answer"
+    } else if (question.questionType === "mc"){
+        var questionTypeLabel = "Multiple Choice"
+    } else if (question.questionType === "cb"){
+        var questionTypeLabel = "Checkboxes"
+    }
+
+
     var generatedHTML = `
     <div class="row questionWrapper z-depth-1 question-div-identifier-id-${question.questionID}">
         <div class="questionContainer">
-            <div class="row">
-                <div class="input-field col s12">
+            <div class="row  noPadding valign-wrapper">
+                <div class="input-field col s12 m10 quesionInput">
                     <h1 style="margin: 0px;" class="prefix">${question.questionID}.</h1>
                     <textarea id="QuestionTitle" class="materialize-textarea"></textarea>
                     <label for="QuestionTitle">Question</label>
                 </div>
+                <div class="col s12 m2">
+                    <div class="accent-1 questionTypeLabel white-text center-align">${questionTypeLabel}</div>
+                </div>
             </div>`;
 
-    if (question.questionType === "sa"){
-        generatedHTML += `
-        <div class="row">
-            <div class="input-field col s12 m6">
-                <input disabled id="Answer" value="Short answer" type="text" class="validate">
-                <label class="active" for="Answer">Answer</label>
-            </div>
-        </div>`;
-    } else if (question.questionType === "la"){
-        generatedHTML += `
-        <div class="row">
-            <div class="input-field col s12 m6">
-                <input disabled id="Answer" value="Long answer" type="text" class="validate">
-                <label class="active" for="Answer">Answer</label>
-            </div>
-        </div>`;
-    } else if (question.questionType === "mc"){
-        generatedHTML += `
-        <div class="row">
-            <div class="input-field col s12 m6">
-                <input id="questionTitle" value="Long answer" type="text" class="validate">
-                <label for="questionTitle">Question Title</label>
-            </div>
-        </div>`;
-    }
 
     if (question.questionType != "la"){
         generatedHTML += `
-        <div class="row" style="padding-left: 10px;">
-            <div class="switch">
-                Auto-grade answer
-                <label >
-                    <input onchange="autoGradeAdd(${question.questionID})" type="checkbox">
-                    <span class="lever"></span>
-                </label>
-            </div>
-        </div>`;
+            <div class="row" style="padding-left: 20px;">
+                <div class="switch">
+                    Auto-grade answer
+                    <label >
+                        <input onchange="autoGradeAdd(${question.questionID})" type="checkbox">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>`;
     }
 
 
