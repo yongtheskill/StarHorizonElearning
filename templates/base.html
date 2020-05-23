@@ -17,39 +17,7 @@
   </head>
 
   <body>
-    {% if isHome != True and user.is_authenticated%}
-    <ul id="slide-out" class="sidenav sidenav-fixed">
-      <li><div class="user-view">
-        <div class="background">
-          <img class="responsive-img" src="{% static "img/sky.jpg" %}">
-        </div>
-        <a href="/account/manage/"><img class="circle" style="object-fit: cover;" src="{% if user.profilePic %}{{ user.profilePic.url }}{% else %}{% static "img/blankProfile.svg" %}{% endif %}"></a>
-        <a href="/account/manage/"><span class="name white-text">{{ user.username }}</span></a>
-        <a href="/account/manage/"><span class="email white-text">{{ user.institution }}</span></a>
-      </div></li>
-      <!-- if teacher -->
-      {% if user.accountType == "Teacher" %}
-      <li><a href="/#notYet">Live Streaming</a></li>
-      <li><a href="/videoLessons/manage">Video Lessons</a></li>
-      <li><a href="/quizzes/manage">Quizzes</a></li>
-      {% endif %}
-
-      <!-- if logged in -->
-      {% if user.is_authenticated %}
-      <li><a href='/account/manage'>Manage Account</a></li>
-      <li><a href='/logout'>Log Out</a></li>
-      {% else %}
-      <li><a href='/login'>Login</a></li>
-      {% endif %}
     
-      <a href="/" style="position: absolute; bottom: 50px;" class="logo-container"><img class="brand-logo" src="{% static "img/StarHorizonLogoDark.png" %}" alt="Star Horizon Logo"></a>
-    </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-
-    {% else %}
-
-
-
     <style>
       header, main, footer {
           padding-left: 0px;
@@ -70,6 +38,7 @@
 
               <!-- if logged in -->
               {% if user.is_authenticated %}
+              <li><a href='/classes/'>Classes</li>
               <li><a href='/account/manage'>Manage Account</a></li>
               <li><a href='/logout'>Log Out</a></li>
               {% else %}
@@ -81,7 +50,7 @@
         </div>
       </nav>
     </div>
-    {% endif %}
+    
 
 
 

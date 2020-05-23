@@ -9,5 +9,6 @@ urlpatterns = [
     path('account/manage/password', views.changePassword, name='Change Password'),
     path('class/<str:classId>/accounts', views.classView, name='Class List View'),
     path('course/<str:courseId>/accounts', views.courseView, name='Course List View'),
+    path('account/<str:userId>', views.individualView, name='Individual Account View'),
 
 ]

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Individual View{% endblock %}
+
+{% block content %}
+
+<br><br>
+<h3 class="center-align">{{ tempUser }}</h3>
+<hr><br><br>
+
+<h4 class="left-align">Details</h4>
+<hr>
+<table class="striped responsive-table">
+
+    <tbody>
+        <tr>
+            <td>Username:</td>
+            <td>{{ tempUser.first_name }} {{ tempUser.last_name }}</td>
+        </tr>
+        <tr>
+            <td>Contact:</td>
+            <td>{{ tempUser.email }}</td>
+        </tr>
+        <tr>
+            <td>Institution:</td>
+            <td>{{ tempUser.institution }}</td>
+        </tr>
+        <tr>
+            <td>Account Type:</td>
+            <td>{{ tempUser.accountType }}</td>
+        </tr>
+    </tbody>
+
+</table>
+
+<br><br>
+<h4 class="left-align">Classes</h4>
+<hr> 
+
+<table>
+    
+    <thead>
+        <th>Class Name</th>
+        <th>Institution</th>
+    </thead>
+
+    <tbody>
+        {% for i in classes %}
+        <tr>
+            <td>
+                <a href="/class/{{ i.id }}/accounts">{{ i.className }}</a>
+            </td>
+            <td>{{ i.classInstitution }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+{% endblock %}
