@@ -38,11 +38,19 @@ def createQuiz(request):
         questionsJSON = request.POST['allQuestionsJSON']
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
 
+        #find matching course
+        assignedCourseID = request.POST["assignedCourse"]
+        assignedCourse = Course.objects.get(pk=assignedCourseID)
+
         newQuiz = Quiz()
         newQuiz.quizName = request.POST['quizName']
         newQuiz.quizID = request.POST['quizID']
+        newQuiz.course = assignedCourse
         newQuiz.quizData = questionsJSON
-                
+        newQuiz.save()
+        
+        context = {"quizObjects": Quiz.objects.all, "notification": "Successfully created quiz"}
+        return render(request, 'quizzes/manage.html', context)
 
 
     else:
