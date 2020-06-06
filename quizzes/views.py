@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from .models import Quiz
+from accountManagement.models import Course
 
+import json
+import re
 
 import pytz
 sgp = pytz.timezone('Asia/Singapore')
@@ -28,6 +31,19 @@ def createQuiz(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 
-    context = {"quizIDtoUse": "quiz%s" % (timestamp), }
+    context = {"quizIDtoUse": "quiz%s" % (timestamp), "courseObjects": Course.objects.all, }
+    
+    #if submitting form
+    if request.method == 'POST':
+        questionsJSON = request.POST['allQuestionsJSON']
+        questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
 
-    return render(request, 'quizzes/create.html', context)
+        newQuiz = Quiz()
+        newQuiz.quizName = request.POST['quizName']
+        newQuiz.quizID = request.POST['quizID']
+        newQuiz.quizData = questionsJSON
+                
+
+
+    else:
+        return render(request, 'quizzes/create.html', context)

@@ -21,7 +21,7 @@
 
 .fixed-action-btn {
   position: relative;
-  float: right;
+  float: left;
   right: 0px;
   bottom: 0px;
   padding-top: 15px;
@@ -60,6 +60,25 @@ div.input-field>label{
     padding-right: 5px;
     border-radius: 5px;
 }
+
+::placeholder {
+  color: darkgray;
+  opacity: 1;
+}
+
+.autoGradeContainer {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+label {
+    color: black;
+}
+
+.submitButton{
+position:relative;
+float: right;
+}
 </style>
 {% endblock %}
 
@@ -68,26 +87,41 @@ div.input-field>label{
 {% block content %}
 
 
+
 <h2 class="center-align">Create Quiz</h2>
 
 
 <div class="row">
-    <form class="col s12">
-        <div class="row">
-            <div class="input-field col s12 m8">
-                <i class="material-icons text-accent-1 prefix">mode_edit</i>
-                <input class="black-text" type="text" name="quizName" id="id_quizName" autofocus required>
-                <label class="black-text" for="id_quizName">Quiz Name</label>
+    <div class="col s12">
+        <form id="quizDataForm" method="post">{% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12 m8">
+                    <i class="material-icons text-accent-1 prefix">mode_edit</i>
+                    <input class="black-text" type="text" name="quizName" id="id_quizName" autofocus required>
+                    <label class="black-text" for="id_quizName">Quiz Name</label>
+                </div>
+                <div class="input-field col s12 m4">
+                    <i class="material-icons text-accent-1 prefix">code</i>
+                    <input readonly class="grey-text text-darken-1" type="text" name="quizID" id="id_quizID" value="{{ quizIDtoUse }}" required>
+                    <label class="black-text text-darken-4" for="id_quizID">Quiz ID</label>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <i class="material-icons text-accent-1 prefix">add</i>
+                    <select name="assignedCourse" required>
+                        <option value="" disabled selected>Select course for quiz</option>
+                        {% for i in courseObjects %}
+                        <option value="{{i.pk}}">{{i.courseName}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Assign quiz to course</label>
+                </div>  
             </div>
-            <div class="input-field col s12 m4">
-                <i class="material-icons text-accent-1 prefix">code</i>
-                <input readonly class="grey-text text-darken-1" type="text" name="quizID" id="id_quizID" value="{{ quizIDtoUse }}" required>
-                <label class="black-text text-darken-4" for="id_quizID">Quiz ID</label>
-            </div>
-        </div>
+            <input hidden name="allQuestionsJSON" id="allQuestionsJSON"></input>
+        </form>
 
-        <input style="display: none;" readonly type="text" name="numberOfQuestions" value="0" required>
-
+        
         <!-- Questions -->
         <div id="allQuesitonsContainer">
 
@@ -108,8 +142,9 @@ div.input-field>label{
                     <li><a onclick="createQuestion('cb')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">check_box</i>Checkboxes</a></li>
                 </ul>
             </div>
+            <a class="submitButton accent-1-btn waves-effect waves-light btn" style="margin-top: 5px;" onclick="submitForm()"><i class="material-icons right">done</i>create quiz</a>
         </div>
-    </form>
+    </div>
   </div>
 
 
@@ -121,72 +156,84 @@ div.input-field>label{
 
 {% block javascript %}
 <script>
-$('.fixed-action-btn').floatingActionButton({
-    direction: 'left',
-    hoverEnabled: true
+
+$( document ).ready(function() {
+    $('.fixed-action-btn').floatingActionButton({
+        direction: 'right',
+        hoverEnabled: false
+    });
+    $('select').formSelect();
 });
 
 class Question {
     constructor(qType, qID){
         //short ans, long ans, multiple choice, checkbox
         //sa, la, mc, cb 
-        this._questionType = qType;
+        this._____var__questionType = qType;
 
-        this._questionID = qID;
+        this._____var__questionID = qID;
     }
 
     get questionType(){
-        return this._questionType;
+        return this._____var__questionType;
     }
     set questionType(x){
-        this._questionType = x;
+        this._____var__questionType = x;
     }
 
     get questionTitle(){
-        return this._questionTitle;
+        return this._____var__questionTitle;
     }
     set questionTitle(x){
-        this._questionTitle = x;
+        this._____var__questionTitle = x;
     }
 
     get isAutoGraded(){
-        return this._isAutoGraded;
+        return this._____var__isAutoGraded;
     }
     set isAutoGraded(x){
-        this._isAutoGraded = x;
+        this._____var__isAutoGraded = x;
     }
 
     get questionOptions(){
-        return this._questionOptions;
+        return this._____var__questionOptions;
     }
     set questionOptions(x){
-        this._questionOptions = x;
+        this._____var__questionOptions = x;
     }
 
     get correctAnswer(){
-        return this._correctAnswer;
+        return this._____var__correctAnswer;
     }
     set correctAnswer(x){
-        this._correctAnswer = x;
+        this._____var__correctAnswer = x;
+    }
+
+    get checkboxValues(){
+        return this._____var__checkboxValues;
+    }
+    set checkboxValues(x){
+        this._____var__checkboxValues = x;
     }
 
     get marksAwarded(){
-        return this._marksAwarded;
+        return this._____var__marksAwarded;
     }
     set marksAwarded(x){
-        this._marksAwarded = x;
+        this._____var__marksAwarded = x;
     }
 
     get questionID(){
-        return this._questionID;
+        return this._____var__questionID;
     }
     set questionID(x){
-        this._questionID = x;
+        this._____var__questionID = x;
     }
 
 }
 
 var availableQuestionID = 0;
+
 
 var questions = [];
 
@@ -195,7 +242,84 @@ function createQuestion (qType) {
     newQuestion = new Question(qType, availableQuestionID);
     questions.push(newQuestion);
     $("#allQuesitonsContainer").append(generateQuesionHTML(newQuestion));
-    console.log(questions);
+    updateNumberedList();
+    initialiseChips(qType, availableQuestionID);
+}
+
+function initialiseChips (qType, qID){
+    if (qType === "mc" || qType === "cb"){
+        $(`.chips-placeholder.chips-identifier-${qID}`).chips({
+            placeholder: 'Add options',
+            secondaryPlaceholder: '+Option',
+            onChipAdd: function(){chipsEdited(qID);},
+            onChipDelete: function(){chipsEdited(qID);},
+        });
+    }
+}
+
+function updateNumberedList (){
+    for (i = 0; i < questions.length; i++){
+        $(`#questionNumberLabel${questions[i].questionID}`).text(`${i + 1}.`);
+    }
+}
+
+function chipsEdited(qID){
+    var instance = M.Chips.getInstance($(`.chips-placeholder.chips-identifier-${qID}`));
+    var chipsData = instance.chipsData;
+
+    var parsedChipsData = [];
+    for (i = 0; i < chipsData.length; i++){
+        parsedChipsData.push(chipsData[i].tag);
+    }
+
+    let question = questions.find((o, i) => {
+        if (o.questionID === qID) {
+            return true; // stop searching
+        }
+    });
+
+    if (question.questionType === "cb"){
+        var checkboxData = question.checkboxValues;
+        if (checkboxData === undefined){
+            checkboxData = {};
+        }
+        var newCheckboxData = {};
+        for (i = 0; i < parsedChipsData.length; i++){
+            if (parsedChipsData[i] in checkboxData){
+                newCheckboxData[parsedChipsData[i]] = checkboxData[parsedChipsData[i]];
+            }
+            else {
+                newCheckboxData[parsedChipsData[i]] = false;
+            }
+        }
+        
+        question.checkboxValues = newCheckboxData;
+    }
+
+    question.questionOptions = parsedChipsData;
+
+    autoGradeAdd(qID);
+    autoGradeAdd(qID);
+}
+
+function questionChanged (qID) {
+    let question = questions.find((o, i) => {
+        if (o.questionID === qID) {
+            questions[i].questionTitle = $(`#QuestionTitle${qID}`).val();
+            return true; // stop searching
+        }
+    });
+}
+
+function deleteQuestion (qID) {
+    questions.find((o, i) => {
+        if (o.questionID === qID) {
+            questions.splice(i, 1);
+            return true; // stop searching
+        }
+    });
+    $(`.questionWrapper.question-div-identifier-id-${qID}`).remove();
+    updateNumberedList();
 }
 
 function generateQuesionHTML (question) {
@@ -211,21 +335,33 @@ function generateQuesionHTML (question) {
     }
 
 
+    //actual question
     var generatedHTML = `
-    <div class="row questionWrapper z-depth-1 question-div-identifier-id-${question.questionID}">
+    <div class="row questionWrapper z-depth-2 question-div-identifier-id-${question.questionID}">
         <div class="questionContainer">
             <div class="row  noPadding valign-wrapper">
                 <div class="input-field col s12 m10 quesionInput">
-                    <h1 style="margin: 0px;" class="prefix">${question.questionID}.</h1>
-                    <textarea id="QuestionTitle" class="materialize-textarea"></textarea>
-                    <label for="QuestionTitle">Question</label>
+                    <h1 style="margin: 0px;" id="questionNumberLabel${question.questionID}" class="prefix"></h1>
+                    <textarea onfocusout="questionChanged(${question.questionID})" id="QuestionTitle${question.questionID}" class="materialize-textarea"></textarea>
+                    <label for="QuestionTitle${question.questionID}">Question</label>
                 </div>
-                <div class="col s12 m2">
-                    <div class="accent-1 questionTypeLabel white-text center-align">${questionTypeLabel}</div>
+                <div class="col s5 m2">
+                    <div class="grey darken-2 z-depth-1 questionTypeLabel white-text center-align">${questionTypeLabel}</div>
                 </div>
+            </div>
+            <div class="row right-align noPadding" style="padding-right: 10px;">
+                <a class="btn-flat"><i style="font-size: 2rem;" class="material-icons large red-text" onclick="deleteQuestion(${question.questionID})">delete</i></a>
             </div>`;
 
+    if (question.questionType === "mc" || question.questionType === "cb") {
+        generatedHTML += `
+        <div class="row black-text" style="padding-left: 20px; padding-right: 20px;">
+            <p style="margin-bottom: 0px; margin-top: 0px;">Options to choose from</p>
+            <div style="margin-top: 0px;" class="chips chips-placeholder chips-identifier-${question.questionID}" ></div>
+        </div>`
+    }
 
+    //autograde selector
     if (question.questionType != "la"){
         generatedHTML += `
             <div class="row" style="padding-left: 20px;">
@@ -259,8 +395,43 @@ function autoGradeAdd(qID) {
     } else {
         $(`div.question-div-identifier-id-${question.questionID.toString()} > div.questionContainer>.autoGradeContainer`).remove();
     }
+    $('select').formSelect();
 }
 
+function saValidationChanged(qID) {
+    let question = questions.find((o, i) => {
+        if (o.questionID === qID) {
+            questions[i].correctAnswer = $(`#validationAnswer${qID}`).val();
+            return true; // stop searching
+        }
+    });
+}
+function mcValidationChanged(qID) {
+    let question = questions.find((o, i) => {
+        if (o.questionID === qID) {
+            questions[i].correctAnswer = $(`#validationAnswer${qID}`).val();
+            return true; // stop searching
+        }
+    });
+}
+function cbValidationChanged(qID, checkboxIndex) {
+    let question = questions.find((o, i) => {
+        if (o.questionID === qID) {
+            var currentCheckboxValues = questions[i].checkboxValues;
+            var optionChanged = questions[i].questionOptions[checkboxIndex];
+            currentCheckboxValues[optionChanged] = !currentCheckboxValues[optionChanged];
+            questions[i].checkboxValues = currentCheckboxValues;
+            var correctAnswers = [];
+            for (j = 0; j < currentCheckboxValues.length; j++) {
+                if (currentCheckboxValues[j] === true) {
+                    correctAnswers.push(Object.keys(currentCheckboxValues)[j]);
+                }
+            }
+            questions[i].correctAnswer = correctAnswers;
+            return true; // stop searching
+        }
+    });
+}
 
 function generateAutoGrade(question){
     var generatedHTML = "";
@@ -268,34 +439,44 @@ function generateAutoGrade(question){
         generatedHTML += `
         <div class="row autoGradeContainer">
             <div class="input-field col s12 m6">
-                <input id="validationAnswer" type="text" class="validate">
-                <label class="active" for="validationAnswer">Answer to check against</label>
+                <input id="validationAnswer${question.questionID}"  type="text" class="validate" onfocusout="saValidationChanged(${question.questionID})">
+                <label class="active" for="validationAnswer${question.questionID}">Answer to check against</label>
             </div>
         </div>`;
-    } else if (question.questionType === "mc"){
+    } 
+    else if (question.questionType === "mc"){
         generatedHTML += `
         <div class="row autoGradeContainer">
             <div class="input-field col s12 m6">
-                <select>
-                    <option value="" disabled selected>Select correct option</option>`
-
+                <select id="validationAnswer${question.questionID}" onChange="mcValidationChanged(${question.questionID})">
+                    <option value="" disabled selected>Select correct option</option>
+                    `
         question.questionOptions.forEach(function (option, index) {
-            generatedHTML += '<option value="' + index.toString() + '">' + option + '</option>\n'
+            generatedHTML += `
+                    <option value="${index.toString()}">${option}</option>\n`
         });
-        generatedHTML += `</select>
+        generatedHTML += `
+                </select>
                 <label>Correct Option</label>
             </div>
         </div>`;
-    } else if (question.questionType === "cb"){
+    } 
+    else if (question.questionType === "cb"){
         generatedHTML += `
         <div class="row autoGradeContainer">
-            <div class="input-field col s12 m6">`;
+            <div style="margin-top: 10px;" class="input-field col s12 m6">
+            <p style="margin-top: 0px;">Select Correct Options</p>`;
         question.questionOptions.forEach(function (option, index) {
-            console.log(item, index);
+            if (question.checkboxValues[option] === true){
+                var isCheckedHTML = 'checked="checked"';
+            }
+            else {
+                var isCheckedHTML = '';
+            }
             generatedHTML += `
             <p>
                 <label>
-                    <input type="checkbox" id="checkbox-id-${option}" />
+                    <input type="checkbox" ${isCheckedHTML} id="checkbox-question${question.questionID}-index${index}" oninput="cbValidationChanged(${question.questionID}, ${index})"/>
                     <span>${option}</span>
                 </label>
             </p>`;
@@ -306,14 +487,20 @@ function generateAutoGrade(question){
 
 }
 
-/*
-let obj = arr.find((o, i) => {
-    if (o.name === 'string 1') {
-        arr[i] = { name: 'new string', value: 'this', other: 'that' };
-        return true; // stop searching
-    }
-});
-*/
+
+
+
+
+
+function convertToJSON() {
+    jsonQuestions = JSON.stringify(questions);
+    $("#allQuestionsJSON").val(jsonQuestions);
+}
+
+function submitForm() {
+    convertToJSON();
+    $("#quizDataForm").submit();
+}
 
 </script>
 
