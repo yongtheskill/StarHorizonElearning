@@ -7,6 +7,7 @@ import re
 from .fileHandler import handle_uploaded_file
 
 from .models import Video
+from accountManagement.models import Course
 
 import pytz
 sgp = pytz.timezone('Asia/Singapore')
@@ -19,7 +20,7 @@ def manageVideoLessons(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 
-    baseContext = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp)}
+    baseContext = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp), "courseObjects": Course.objects.all, }
 
     if request.user.accountType != 'Teacher':
         context = {"notAuthorised": True}
@@ -35,7 +36,7 @@ def manageVideoLessons(request):
             videoName = request.POST["videoName"]
             additionalComments = request.POST["additionalComments"]
             videoID = request.POST["videoID"]
-
+            afterAction = request.POST["afterAction"]
 
             #validate that video name is unique
             if (Video.objects.filter(videoName=videoName).exists()):
@@ -64,13 +65,19 @@ def manageVideoLessons(request):
                     return render(request, 'videoLessons/manage.html', context)
 
 
+                #find matching course
+                assignedCourseID = request.POST["assignedCourse"]
+                assignedCourse = Course.objects.get(pk=assignedCourseID)
+
                 #create project with entered values
                 newVideo = Video()
                 newVideo.videoName = videoName
                 newVideo.additionalComments = additionalComments
                 newVideo.videoID = videoID
                 newVideo.videoFile = request.FILES['videoFile']
+                newVideo.afterAction = afterAction
                 newVideo.completeionURL = "nothing for now"
+                newVideo.course = assignedCourse
                 newVideo.save()
                 #return success
                 context = {**baseContext, "notification": "Video: %s successfully created!" % (videoName), }
@@ -114,13 +121,10 @@ def manageVideoLessons(request):
 #video view page
 @login_required
 def viewVideo(request, videoID):
-    videoFilename = "vid%s.mp4" % (videoID)
-    videoObject = Video.objects.filter(videoFile=videoFilename)
-
-    print(videoObject[0])
-    if (videoObject.exists()):
-        context = {"videoObject": videoObject[0]}
+    try:
+        videoObject = Video.objects.get(videoID=videoID)
+        context = {"videoObject": videoObject}
         return render(request, 'videoLessons/view.html', context)
-    else:
+    except: 
         context = {"error": "Sorry, this video does not exist", "onModalCloseRedirect": "/"}
         return render(request, 'videoLessons/view.html', context)

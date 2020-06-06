@@ -49,7 +49,6 @@
     <div class="col s12">
         <ul class="tabs">
             <li class="tab"><a href="#all">All Videos</a></li>
-            <li class="tab"><a href="#assign">Assign Videos</a></li>
             <li class="tab"><a href="#add">Add Videos</a></li>
             <li class="tab"><a href="#edit">Edit Video Details</a></li>
         </ul>
@@ -85,36 +84,6 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
-
-
-
-
-
-
-
-
-    <div id="assign" class="col s12">
-        {% for i in videoLessonObjects %}
-        <div class="grey lighten-3">
-            <div class="row">
-                <div class="col s4">
-                    <h5>{{ i.videoName }}</h5>
-                </div>    
-                <div class="col s4">
-                    <div class="row">
-                        <form class="col s12">
-                            <div class="row">
-                                <div class="chips"></div>
-                            </div>
-                          </form>
-                    </div>
-                </div>    
-            </div>
-
-        </div>
-        {% endfor %}
-    
     </div>
 
 
@@ -166,14 +135,24 @@
                             </div>
                         </div>
                     </div>
+                        <div class="input-field col s12 m6">
+                            <select name="assignedCourse" required>
+                                <option value="" disabled selected>Select course for video</option>
+                                {% for i in courseObjects %}
+                                <option value="{{i.pk}}">{{i.courseName}}</option>
+                                {% endfor %}
+                            </select>
+                            <label>Assign video to course</label>
+                        </div>  
+                    </div>
                 </div>
                 
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <select required>
-                        <option selected>None</option>
-                        <option>Quiz</option>
-                        <option>Next Video</option>
+                            <option selected>None</option>
+                            <option>Quiz</option>
+                            <option>Next Video</option>
                         </select>
                         <label>Action to do after video</label>
                     </div>  
