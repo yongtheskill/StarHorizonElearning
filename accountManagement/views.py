@@ -116,11 +116,20 @@ def courseView(request, courseId):
     return render(request, 'accountManagement/courseView.html', context)
 
 @login_required
-def individualView(request, userId):
+def individualAccountView(request, userId):
 
     user = User.objects.get(id = userId)
     classes = list(user.classes.all())
 
     context = {"tempUser": user, "classes": classes, }
 
-    return render(request, 'accountManagement/individualView.html', context)
+    return render(request, 'accountManagement/individualAccountView.html', context)
+
+@login_required
+def classListView(request):
+
+    classes = list(request.user.classes.all())
+
+    context = {"classes": classes, }
+
+    return render(request, 'accountManagement/classListView.html', context)

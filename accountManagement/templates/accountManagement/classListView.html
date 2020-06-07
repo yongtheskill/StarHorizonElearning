@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Class List View{% endblock %}
+
+{% block content %}
+
+<h3 class="center-align">Your classes</h3>
+<br>
+
+<table class="striped responsive-table">
+    <thead>
+        <th>Class</th>
+        <th>Institution</th>
+    </thead>
+
+    <tbody>
+        {% for i in classes %}
+        <tr>
+            <td>
+                <a href="/class/{{i.id}}/accounts">{{ i.className }}</a>
+            </td>
+            <td>{{ i.classInstitution }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

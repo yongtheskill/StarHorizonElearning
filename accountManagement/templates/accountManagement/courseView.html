@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Class Student View{% endblock %}
+{% block title %}Course View{% endblock %}
 
 {% block content %}
 
-<br><br>
 <h3 class="center-align">{{ course }}</h3>
 <br>
 
@@ -44,7 +43,7 @@
         {% for i in quizzes %}
         <tr>
             <td>
-                <a href="/quizzes/manage/{{ i.id }}">{{ i.quizName }}</a>
+                <a href="/quizzes/edit/{{ i.id }}">{{ i.quizName }}</a>
             </td>
             <td>{{ i.quizDueDate }}</td>
         </tr>
