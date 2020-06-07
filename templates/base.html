@@ -53,8 +53,7 @@
       }
     </style>
     <!-- navbar -->
-    <div class="navbar-fixed">
-      <nav class="transparent z-depth-0">
+      <nav class="transparent overlay-nav">
         <div class="container">
           <div class="nav-wrapper black-text">
             <a href="/"><img style="height: 50px; margin-top: 10px; color: #f7ca23;" src="{% if isHome %}{% static "img/StarHorizonLogo.png" %}{% else %}{% static "img/StarHorizonLogoDark.png" %}{% endif %}"
@@ -67,7 +66,7 @@
 
               <!-- if logged in -->
               {% if user.is_authenticated %}
-              <li><a href='/classes/'>Classes</li>
+              <li><a href='/classes/'>Classes</a></li>
               <li><a href='/account/manage'>Manage Account</a></li>
               <li><a href='/logout'>Log Out</a></li>
               {% else %}
@@ -78,7 +77,6 @@
           </div>
         </div>
       </nav>
-    </div>
     {% endif %}
 
 
