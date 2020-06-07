@@ -48,8 +48,8 @@ th, td {
             <tr>
                 <td>{{ i.quizName }}</td>
                 <td>{{ i.quizID }}</td>
-                <td><a href="../view/{{ i.quizID }}"><i class="material-icons text-accent-1">visibility</i></a></td>
-                <td><a href="../edit/{{ i.quizID }}"><i class="material-icons text-accent-1">edit</i></a></td>
+                <td><a href="/quizzes/view/{{ i.quizID }}"><i class="material-icons text-accent-1">visibility</i></a></td>
+                <td><a href="/quizzes/edit/{{ i.quizID }}"><i class="material-icons text-accent-1">edit</i></a></td>
             </tr>
             {% endfor %}
         </tbody>
