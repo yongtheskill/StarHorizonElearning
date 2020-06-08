@@ -65,6 +65,16 @@ def viewQuiz(request, quizID):
     context = {"quizObject": Quiz.objects.get(quizID=quizID), }
 
     return render(request, 'quizzes/view.html', context)
+
+
+
+#quiz view page
+@login_required
+def doQuiz(request, quizID):
+
+    context = {"quizObject": Quiz.objects.get(quizID=quizID), }
+
+    return render(request, 'quizzes/do.html', context)
     
 
 

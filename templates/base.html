@@ -36,6 +36,7 @@
 
       <!-- if logged in -->
       {% if user.is_authenticated %}
+      <li><a href='/classes/'>Classes</a></li>
       <li><a href='/account/manage/'>Manage Account</a></li>
       <li><a href='/logout/'>Log Out</a></li>
       {% else %}
@@ -64,14 +65,11 @@
               <li><a href="#notYet">Live Streaming</a></li>
               <li><a href="/videoLessons/manage/">Video Lessons</a></li>
               <li><a href="/quizzes/manage/">Quizzes</a></li>
-              <li><a href='/classes/'>Classes</a></li>
               {% endif %}
-              {% if user.accountType == "Student" %}
-              <li><a href='/class/{{ user.classes.0 }}/accounts'>My Class</a></li>
-              {% endif %}
-
+        
               <!-- if logged in -->
               {% if user.is_authenticated %}
+              <li><a href='/classes/'>Classes</a></li>
               <li><a href='/account/manage/'>Manage Account</a></li>
               <li><a href='/logout/'>Log Out</a></li>
               {% else %}

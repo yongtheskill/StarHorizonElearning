@@ -12,7 +12,7 @@ from quizzes.models import Quiz
 
 # Login Page
 def loginHome(request):
-
+    
     if request.user.is_authenticated:
         return redirect('/')
 
