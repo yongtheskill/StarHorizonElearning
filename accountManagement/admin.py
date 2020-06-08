@@ -64,12 +64,12 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'phoneNumber', 'first_name', 'last_name', 'accountType', 'institution', )}
+            'fields': ('username', 'password1', 'password2', 'email', 'phoneNumber', 'first_name', 'last_name', 'accountType', 'institution', 'classes',)}
         ),
     )
     
     def __str__(self):
-        return self.username
+        return self.username    
 
 
 admin.site.register(User, UserAdmin)
