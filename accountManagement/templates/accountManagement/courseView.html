@@ -8,6 +8,7 @@
 <h3 class="center-align">{{ course }}</h3>
 <br>
 
+{% if user.accountType != "Student" %}
 <h4>Classes</h4>
 <hr>
 <table class="striped responsive-table">
@@ -27,7 +28,7 @@
         {% endfor %}
     </tbody>
 </table>
-
+{% endif %}
 <br><br>
 <h4>Materials</h4>
 <hr>
@@ -58,6 +59,16 @@
     <thead>
         <th>Video Name</th>
     </thead>
+
+    <tbody>
+        {% for i in videoLessons %}
+        <tr>
+            <td>
+                <a href="/videoLessons/view/{{ i.videoID }}/">{{ i.videoName }}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 {% endblock %}
