@@ -122,6 +122,6 @@ def editQuiz(request, quizID):
 
 
     else:
-        context = {"courseObjects": Course.objects.all, "quizObject": Quiz.objects.get(id=quizID), }
+        context = {"courseObjects": Course.objects.all, "quizObject": Quiz.objects.get(quizID=quizID), }
         return render(request, 'quizzes/edit.html', context)
     
