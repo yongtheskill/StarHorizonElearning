@@ -58,6 +58,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'phoneNumber', 'accountType', 'institution', 'profilePic', )}),
         ('Course info', {'fields': ('classes', )}),
+        ('Quiz Responses', {'fields': ('quizResponses', )}),
         ('Permissions', {'fields': ('is_superuser',)}),
         #('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', )}),
     )

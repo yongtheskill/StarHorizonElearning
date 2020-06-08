@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from .models import Quiz
-from accountManagement.models import Course
+from accountManagement.models import Course, User
 
 import json
 import re
@@ -71,6 +71,24 @@ def viewQuiz(request, quizID):
 #quiz view page
 @login_required
 def doQuiz(request, quizID):
+    #if submitting form
+    if request.method == 'POST':
+        responsesJSON = request.POST['submissionData']
+        responsesJSON = re.sub("_____var__", "", responsesJSON) #remove js stuff
+
+        userId = request.user.id
+        user = User.objects.get(id = userId)
+        if currentQuizResponses != None:
+            currentQuizResponses = str(user.quizResponses)
+        else:
+            currentQuizResponses = ""
+        user.quizResponses = currentQuizResponses + "__________RESPONSESPLITTER__________" + responsesJSON
+        user.save()
+        
+
+        classes = list(request.user.classes.all())
+        context = {"classes": classes, "notification": "Quiz Submitted", }
+        return render(request, 'accountManagement/classListView.html', context)
 
     context = {"quizObject": Quiz.objects.get(quizID=quizID), }
 
