@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('accountManagement.urls')),
     path('videoLessons/', include('videoLessons.urls')),
     path('quizzes/', include('quizzes.urls')),
+    path('fileUploadds/', include('fileUploads.urls')),
 ]
