@@ -1,0 +1,77 @@
+.questionWrapper {
+    background-color: rgb(220, 220, 220);
+    border-radius: 20px;
+}
+
+.questionWrapper>.questionContainer {
+    padding-top: 0px;
+    padding-bottom: 15px;
+    margin: 0 auto;
+    width: 95%;
+}
+
+.fixed-action-btn {
+  position: relative;
+  float: left;
+  right: 0px;
+  bottom: 0px;
+  padding-top: 15px;
+}
+.btn-floating {
+    border-radius: 1000px;
+}
+.btn-override {
+    width: auto !important;
+    height: auto !important;
+    border-radius: 10px !important;
+    padding-right: 16px !important;
+    padding-left: 16px !important;
+    text-transform: uppercase !important;
+    vertical-align: middle !important;
+}
+div.input-field>label{
+    color: #5f5f5f;
+}
+
+.quesionInput {
+    margin-bottom: 0px;
+}
+
+.noPadding {
+    padding: 0px;
+    border: 0px;
+    margin:0px;
+}
+
+.questionTypeLabel{
+    font-size: 1rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+}
+
+::placeholder {
+  color: darkgray;
+  opacity: 1;
+}
+
+.autoGradeContainer {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+label {
+    color: black;
+}
+
+.submitButton{
+position:relative;
+float: right;
+}
+
+.answerInputContainer {
+    padding-top: 12px;
+    margin-bottom: 0px;
+}
