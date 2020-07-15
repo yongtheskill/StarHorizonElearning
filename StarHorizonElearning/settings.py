@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accountManagement.apps.AccountmanagementConfig',
     'videoLessons.apps.VideolessonsConfig',
     'quizzes.apps.QuizzesConfig',
+    'fileUploads.apps.FileuploadsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
