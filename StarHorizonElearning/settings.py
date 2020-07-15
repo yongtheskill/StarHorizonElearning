@@ -25,10 +25,10 @@ SECRET_KEY = config('SECRET_KEY')
 
 AWS_ACCESS_KEY_ID = config('S3_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('S3_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'starhorizon-elearning-test'
+AWS_STORAGE_BUCKET_NAME = 'elearning-storage'
 AWS_DEFAULT_ACL = None
 AWS_S3_SECURE_URLS = True
-AWS_QUERYSTRING_EXPIRE = '3600'
+AWS_QUERYSTRING_EXPIRE = '18000'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
