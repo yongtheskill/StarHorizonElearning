@@ -27,7 +27,7 @@ def manageUploads(request):
 
 #file creation page
 @login_required
-def createFile(request):
+def uploadFile(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 

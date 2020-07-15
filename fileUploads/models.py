@@ -10,4 +10,4 @@ class FileUpload(models.Model):
 
 
     def __str__(self):
-         return self.videoName
+         return self.fileName
