@@ -4,8 +4,6 @@ from django.urls import reverse_lazy
 
 import re
 
-from .fileHandler import handle_uploaded_file
-
 from .models import Video
 from accountManagement.models import Course
 
