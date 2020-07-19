@@ -1,0 +1,39 @@
+WSGIApplicationGroup %{GLOBAL}
+WSGIDaemonProcess StarHorizonElearning python-path=/home/ubuntu/django/StarHorizonElearning python-home=/home/ubuntu/django/elearningenv
+WSGIProcessGroup StarHorizonElearning
+
+<VirtualHost *:80>
+ServerName shel.ml
+ServerAdmin bennet@star-horizon.com
+DocumentRoot /home/ubuntu/django/StarHorizonElearning
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+Alias /static /home/ubuntu/django/StarHorizonElearning/staticRoot
+<Directory /home/ubuntu/django/StarHorizonElearning/staticRoot>
+Require all granted
+</Directory>
+<Directory /home/ubuntu/django/StarHorizonElearning/StarHorizonElearning>
+<Files wsgi.py>
+Require all granted
+</Files>
+</Directory>
+WSGIScriptAlias / /home/ubuntu/django/StarHorizonElearning/StarHorizonElearning/wsgi.py
+</VirtualHost>
+
+<VirtualHost *:443>
+ServerName shel.ml
+ServerAdmin bennet@star-horizon.com
+DocumentRoot /home/ubuntu/django/StarHorizonElearning
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+Alias /static /home/ubuntu/django/StarHorizonElearning/staticRoot
+<Directory /home/ubuntu/django/StarHorizonElearning/staticRoot>
+Require all granted
+</Directory>
+<Directory /home/ubuntu/django/StarHorizonElearning/StarHorizonElearning>
+<Files wsgi.py>
+Require all granted
+</Files>
+</Directory>
+WSGIScriptAlias / /home/ubuntu/django/StarHorizonElearning/StarHorizonElearning/wsgi.py
+</VirtualHost>
