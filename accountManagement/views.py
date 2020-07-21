@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Course, StudentClass
+from .models import User, Course, StudentClass, Module
 from videoLessons.models import Video
 from quizzes.models import Quiz
 
@@ -108,10 +108,18 @@ def courseView(request, courseId):
 
     course = Course.objects.get(id = courseId)
     classes = list(StudentClass.objects.filter(courses = courseId))
-    quizzes = list(Quiz.objects.filter(course = courseId))
-    videoLessons = list(Video.objects.filter(course = courseId))
+    #quizzes = list(Quiz.objects.filter(course = courseId))
+    #videoLessons = list(Video.objects.filter(course = courseId))
+    modules = list(Module.objects.filter(courses = courseId))
 
-    context = {"course": course, "classes": classes, "quizzes": quizzes, "videoLessons": videoLessons, }
+    quizzes = {}
+    videoLessons = {}
+
+    for module in modules:
+        module.quizzes = list(Quiz.objects.filter(module = module))
+        module.videoLessons = list(Video.objects.filter(module = module))
+
+    context = {"course": course, "classes": classes, "modules": modules, }
 
     return render(request, 'accountManagement/courseView.html', context)
 

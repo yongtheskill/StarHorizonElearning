@@ -30,45 +30,43 @@
 </table>
 {% endif %}
 <br><br>
-<h4>Materials</h4>
+<h4>Modules</h4>
 <hr>
 
+{% for i in modules %}
+<br>
 <table class="striped responsive-table">
-    <caption class="left-align"><h5>Quizzes</h5></caption>
+    <caption class="left-align"><h5>{{ i.moduleName }}</h5></caption>
     <thead>
         <th>Quiz Name</th>
         <th>Due Date</th>
     </thead>
 
     <tbody>
-        {% for i in quizzes %}
+        {% for j in i.quizzes %}
         <tr>
             <td>
-                <a href="/quizzes/do/{{ i.quizID }}">{{ i.quizName }}</a>
+                <a href="/quizzes/do/{{ j.quizID }}">{{ j.quizName }}</a>
             </td>
-            <td>{{ i.quizDueDate }}</td>
+            <td>{{ j.quizDueDate }}</td>
         </tr>
         {% endfor %}
     </tbody>
-</table>
-
-<br><br>
-
-<table class="striped responsive-table">
-    <caption class="left-align"><h5>Video Lessons</h5></caption>
+    
     <thead>
         <th>Video Name</th>
     </thead>
 
+    {% for j in i.videoLessons %}
     <tbody>
-        {% for i in videoLessons %}
         <tr>
             <td>
-                <a href="/videoLessons/view/{{ i.videoID }}/">{{ i.videoName }}</a>
+                <a href="/videoLessons/view/{{ i.videoID }}/">{{ j.videoName }}</a>
             </td>
         </tr>
-        {% endfor %}
     </tbody>
+    {% endfor %}
 </table>
+{% endfor %}
 
 {% endblock %}

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django import forms
 
-from .models import User, Course, StudentClass
+from .models import User, Course, StudentClass, Module
 
 # Register your models here.
 
@@ -27,6 +27,20 @@ class StudentClassAdmin(admin.ModelAdmin):
         ('Details', {'fields':('classInstitution', 'courses', 'id')}),
     )
 
+    def __str__(self):
+        return self.className
+
+class ModuleAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('id', )
+
+    fieldsets = (
+        (None, {'fields': ('moduleName',)}),
+        ('Details', {'fields':('courses', 'id', )}),
+    )
+
+    def __str__(self):
+        return self.moduleName
 
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -76,3 +90,4 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(StudentClass, StudentClassAdmin)
+admin.site.register(Module, ModuleAdmin)

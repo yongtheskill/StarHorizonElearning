@@ -1,6 +1,6 @@
 from django.db import models
 
-from accountManagement.models import Course
+from accountManagement.models import Module
 
 # Create your models here.
 class Quiz(models.Model):
@@ -11,7 +11,7 @@ class Quiz(models.Model):
 
     quizData = models.CharField(max_length=10000000, verbose_name="quiz data")
 
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
 
     def __str__(self):
          return self.quizName
