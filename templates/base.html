@@ -29,7 +29,7 @@
       </div></li>
       <!-- if teacher -->
       {% if user.accountType == "Teacher" %}
-      <li><a href="#notYet">Live Streaming</a></li>
+      <li><a href="/live/">Live Streaming</a></li>
       <li><a href="/videoLessons/manage/">Video Lessons</a></li>
       <li><a href="/quizzes/manage/">Quizzes</a></li>
       {% endif %}
@@ -62,7 +62,7 @@
             <ul class="navlinks right hide-on-med-and-down">
               <!-- if teacher -->
               {% if user.accountType == "Teacher" %}
-              <li><a href="#notYet">Live Streaming</a></li>
+              <li><a href="/live/">Live Streaming</a></li>
               <li><a href="/videoLessons/manage/">Video Lessons</a></li>
               <li><a href="/quizzes/manage/">Quizzes</a></li>
               {% endif %}

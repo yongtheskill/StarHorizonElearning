@@ -37,10 +37,13 @@
 <br>
 <table class="striped responsive-table">
     <caption class="left-align"><h5>{{ i.moduleName }}</h5></caption>
+    
+    {% if i.quizzes %}
     <thead>
         <th>Quiz Name</th>
         <th>Due Date</th>
     </thead>
+    {% endif %}
 
     <tbody>
         {% for j in i.quizzes %}
@@ -52,11 +55,12 @@
         </tr>
         {% endfor %}
     </tbody>
-    
+
+    {% if i.videoLessons %}
     <thead>
         <th>Video Name</th>
     </thead>
-
+    {% endif %}
     {% for j in i.videoLessons %}
     <tbody>
         <tr>
@@ -66,6 +70,25 @@
         </tr>
     </tbody>
     {% endfor %}
+    
+    {% if i.liveLessons %}
+    <thead>
+        <th>Live Lesson Name</th>
+        <th>Stream Date</th>
+    </thead>
+    {% endif %}
+
+    <tbody>
+        {% for j in i.liveLessons %}
+        <tr>
+            <td>
+                <a href="/live/join/{{ j.streamID }}">{{ j.lessonName }}</a>
+            </td>
+            <td>{{ j.streamTime }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
 </table>
 {% endfor %}
 

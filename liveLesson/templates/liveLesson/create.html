@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Live Lesson{% endblock %}
+
+
+{% block css %}
+{% endblock %}
+
+
+
+{% block content %}
+<a class="waves-effect waves-black btn-flat" onclick="window.history.back();"><i class="material-icons left" style="margin-right: 0px;">arrow_back_ios</i>Back</a>
+
+
+<h2 class="center-align">Create Live Lesson</h2>
+
+<form method="POST" id="createLessonForm">{% csrf_token %}
+    <div class="row">
+        <div class="input-field col s12 m12">
+            <i class="material-icons text-accent-1 prefix">mode_edit</i>
+            <input class="black-text" type="text" name="lessonName" id="id_lessonName" autofocus required>
+            <label class="black-text" for="id_lessonName">Lesson Name</label>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="material-icons text-accent-1 prefix">mode_edit</i>
+        <textarea class="black-text materialize-textarea" name="lessonDesc" id="id_lessonDesc" required></textarea>
+        <label class="black-text" for="id_lessonDesc">Lesson Description</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12 m6">
+            <i class="material-icons text-accent-1 prefix">today</i>
+            <input type="text" name="streamDate" class="datepicker" id="id_streamDate" required>
+            <label class="black-text" for="id_streamDate">Stream Start Date</label>
+        </div>  
+        <div class="input-field col s12 m6">
+            <i class="material-icons text-accent-1 prefix">schedule</i>
+            <input type="text" name="streamTime" class="timepicker" id="id_streamTime" required>
+            <label class="black-text" for="id_streamTime">Stream Start Time</label>
+        </div>  
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12 m6">
+            <i class="material-icons text-accent-1 prefix">schedule</i>
+            <input class="black-text" name="streamDuration" id="id_streamDuration" type="number" min="0.5" step="0.5" required></input>
+            <label class="black-text" for="id_streamDuration">Stream Duration (hours)</label>
+        </div>  
+        <div class="input-field col s12 m6">
+            <select name="moduleID" required>
+                <option value="" disabled selected>Select module for lesson</option>
+                {% for i in moduleObjects %}
+                <option value="{{i.pk}}">{{i.moduleName}}</option>
+                {% endfor %}
+            </select>
+            <label>Assign lesson to module</label>
+        </div>  
+    </div>
+
+    <div class="row">
+        <button class="btn accent-1" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </div>
+
+</form>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<script>
+    $(document).ready(function(){
+        $('select').formSelect();
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+    });
+</script>
+{% endblock %}

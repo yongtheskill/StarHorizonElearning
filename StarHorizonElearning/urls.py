@@ -23,4 +23,5 @@ urlpatterns = [
     path('videoLessons/', include('videoLessons.urls')),
     path('quizzes/', include('quizzes.urls')),
     path('fileUploadds/', include('fileUploads.urls')),
+    path('live/', include('liveLesson.urls')),
 ]

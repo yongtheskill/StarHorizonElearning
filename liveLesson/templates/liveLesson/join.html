@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Join Live Lesson{% endblock %}
+
+
+{% block css %}
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<h2 class="center-align willJoinTitle">You will join {{ StreamID }} in: </h2>
+<h1 class="center-align text-accent-1 timer"></h1>
+
+<div class="loadingPage" style="display: none;">
+    <h1 class="center-align" style="padding-bottom: 50px;">{% if isTeacher %} Starting livestreaming server for {{ StreamID }}... {% else %}Waiting for {{ StreamID }} to begin...{% endif %}</h1>
+    <div class="progress accent-1">
+        <div class="indeterminate white"></div>
+    </div>
+</div>
+<a class="popupBlocked" onclick="clearInterval(waitToJoinInterval); window.location.replace('/'); " style="display: none;" href="https://lv.shel.ml/#/{{ StreamID }}?usr={{ usr }}">Click here to join if you are unable to enable popus</a>
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<script>
+//countdownTimer
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    intervalTimer = setInterval(function () {
+        hours = parseInt(timer / 3600, 10);
+        minutes = parseInt(timer / 60 % 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.text(hours + ":" + minutes + ":" + seconds);
+
+        if (--timer < 0) {     
+            clearInterval(intervalTimer);
+            display.remove();
+            $('.willJoinTitle').remove();  
+            waitToJoin();
+        }
+    }, 1000);
+}
+
+jQuery(function ($) {
+    var display = $('.timer');
+    startTimer({{ ttl }}, display);
+});
+
+
+//waitForAws + Join
+function waitToJoin() {
+    $('.loadingPage').css({'display': 'block'});
+    checkServerStatus();
+    var waitToJoinInterval = setInterval(checkServerStatus, 5000)
+    function checkServerStatus(){
+        jQuery.get("../serverStatus/", function(data) {
+            console.log(data);
+            if(data === "Up"){
+                console.log("yes");
+                var win = window.open("https://lv.shel.ml/#/{{ StreamID }}?usr={{ usr }}", "_blank");
+                if (win) {
+                    //Browser has allowed it to be opened
+                    win.focus();
+                    clearInterval(waitToJoinInterval);
+                    window.location.replace("/");
+                } else {
+                    //Browser has blocked it
+                    alert('Please allow popups for this website');
+                    $('.popupBlocked').css({'display': 'block'});
+                }
+            }
+        });
+    }
+}
+
+
+
+</script>
+
+{% endblock %}

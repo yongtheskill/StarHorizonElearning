@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Live Lessons{% endblock %}
+
+
+{% block css %}    
+<style>
+/* list styling */
+ul.collection {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+th, td {
+    text-align: center;
+}
+
+/* Add Button */
+.addQuizBtn {
+  float: right;
+  padding-top: 20px;
+}
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<h2 class="center-align">Manage live lessons</h2>
+
+
+<div id="all" class="col s12">
+    <table style="margin-top: 10px;">
+        <thead>
+          <tr>
+              <th>Lesson Name</th>
+              <th>Stream ID</th>
+              <th>Stream Time</th>
+              <th>Stream Duration</th>
+              <th>Edit</th>
+              <th>Start Stream</th>
+          </tr>
+        </thead>
+
+        <tbody>
+            {% for i in lessonObjects %}
+            <tr>
+                <td>{{ i.lessonName }}</td>
+                <td>{{ i.streamID }}</td>
+                <td>{{ i.streamTime }}</td>
+                <td>{{ i.streamDuration }}</td>
+                <td><a href="/live/edit/{{ i.streamID }}"><i class="material-icons text-accent-1">edit</i></a></td>
+                <td><a href="/live/join/{{ i.streamID }}"><i class="material-icons text-accent-1">play_arrow</i></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- add button -->
+<div class="addQuizBtn">
+    <a class="btn-floating btn-large accent-1" href="create">
+        <i class="large material-icons">note_add</i>
+    </a>
+</div>
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+
+
+{% endblock %}

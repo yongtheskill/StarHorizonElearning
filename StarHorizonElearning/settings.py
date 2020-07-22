@@ -30,6 +30,8 @@ AWS_DEFAULT_ACL = None
 AWS_S3_SECURE_URLS = True
 AWS_QUERYSTRING_EXPIRE = '18000'
 
+LIVE_EC2_ID = 'i-09a504a17050a2979'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     'videoLessons.apps.VideolessonsConfig',
     'quizzes.apps.QuizzesConfig',
     'fileUploads.apps.FileuploadsConfig',
+    'liveLesson.apps.LivelessonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

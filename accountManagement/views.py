@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import User, Course, StudentClass, Module
 from videoLessons.models import Video
 from quizzes.models import Quiz
+from liveLesson.models import LiveLesson
 
 # Create your views here.
 
@@ -112,12 +113,10 @@ def courseView(request, courseId):
     #videoLessons = list(Video.objects.filter(course = courseId))
     modules = list(Module.objects.filter(courses = courseId))
 
-    quizzes = {}
-    videoLessons = {}
-
     for module in modules:
         module.quizzes = list(Quiz.objects.filter(module = module))
         module.videoLessons = list(Video.objects.filter(module = module))
+        module.liveLessons = list(LiveLesson.objects.filter(module = module))
 
     context = {"course": course, "classes": classes, "modules": modules, }
 
