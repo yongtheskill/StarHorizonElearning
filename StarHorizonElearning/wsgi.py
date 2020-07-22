@@ -12,7 +12,7 @@ import sys
 sys.path.append('/opt/bitnami/apps/django/django_projects/StarHorizonElearning')
 os.environ.setdefault("PYTHON_EGG_CACHE", "/opt/bitnami/apps/django/django_projects/StarHorizonElearning/egg_cache")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "StarHorizonElearning.settings")
-#from django.core.wsgi import get_wsgi_application
+from django.core.wsgi import get_wsgi_application
 #application = get_wsgi_application()
 
 
