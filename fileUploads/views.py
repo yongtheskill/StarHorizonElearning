@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from .models import FileUpload
-from accountManagement.models import Course, User
+from accountManagement.models import Module, Course, User
 
 import json
 import re
@@ -31,7 +31,7 @@ def uploadFile(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 
-    context = {"quizIDtoUse": "quiz%s" % (timestamp), "courseObjects": Course.objects.all, }
+    baseContext = {"fileIDtoUse": "file%s" % (timestamp), "moduleObjects": Module.objects.all, }
     
     #if uploadig file
     if request.method == 'POST':
@@ -40,60 +40,69 @@ def uploadFile(request):
             fileName = request.POST["fileName"]
             fileID = request.POST["fileID"]
 
-            #validate that video name is unique
+            #validate that file name is unique
             if (FileUpload.objects.filter(fileName=fileName).exists()):
                 context = {**baseContext, "error":"Sorry, a file with this name already exists, please choose a different name for your file.", }
                 return render(request, 'fileUploads/manage.html', context)
             else:
 
                 if 'uploadedFile' in request.FILES:
-                    #check if mp4 file
+                    #get extension
                     fileExtension = re.findall(r"\..*", request.POST["fileName"])[-1]
 
                     #handle files
-                    request.FILES['videoFile'].name = "%s%s" % (videoID, fileExtension) 
-                    if (Video.objects.filter(videoFile=request.FILES['videoFile']).exists()):
+                    request.FILES['uploadedFile'].name = "%s%s" % (fileID, fileExtension) 
+                    if (FileUpload.objects.filter(uploadedFile=request.FILES['uploadedFile']).exists()):
                         #return error
-                        context = {**baseContext, "error": "Error, the video ID already exists, please try again", }
-                        return render(request, 'videoLessons/manage.html', context)
+                        context = {**baseContext, "error": "Error, the file ID already exists, please try again", }
+                        return render(request, 'fileUploads/manage.html', context)
 
                 
                 else:
                     #return error
-                    context = {**baseContext, "error": "No video file uploaded, please select a video file to upload", }
+                    context = {**baseContext, "error": "No file uploaded, please select a file to upload", }
                     return render(request, 'videoLessons/manage.html', context)
 
 
                 #find matching course
-                assignedCourseID = request.POST["assignedCourse"]
-                assignedCourse = Course.objects.get(pk=assignedCourseID)
+                moduleID = request.POST["moduleID"]
+                module = Module.objects.get(pk=moduleID)
 
                 #create project with entered values
-                newVideo = Video()
-                newVideo.videoName = videoName
-                newVideo.additionalComments = additionalComments
-                newVideo.videoID = videoID
-                newVideo.videoFile = request.FILES['videoFile']
-                newVideo.afterAction = afterAction
-                newVideo.completeionURL = "nothing for now"
-                newVideo.course = assignedCourse
-                newVideo.save()
+                newFile = FileUpload()
+                newFile.fileName = fileName
+                newFile.fileID = fileID
+                newFile.uploadedFile = request.FILES['uploadedFile']
+                newFile.module = module
+                newFile.save()
                 #return success
-                context = {**baseContext, "notification": "Video: %s successfully created!" % (videoName), }
-                return render(request, 'videoLessons/manage.html', context)   
+                context = {"fileObjects": FileUpload.objects.all, "notification": "File: %s successfully uploaded!" % (fileName), }
+                return render(request, 'fileUploads/manage.html', context)   
 
 
     else:
-        return render(request, 'quizzes/create.html', context)
+        return render(request, 'fileUploads/create.html', baseContext)
 
 
 
-#quiz view page
+#file edit page
 @login_required
-def downloadFile(request, fileID):
+def deleteFile(request, fileID):
+    
+    #if editing file
+    if request.method == 'POST':
+        fileToDelete = FileUpload.objects.get(fileID=fileID)
+        fileToDelete.uploadedFile.delete()
+        fileToDelete.delete()
 
-    context = {"fileObject": FileUpload.objects.get(fileID=fileID), }
+        context = {"fileObjects": FileUpload.objects.all, "notification": "File successfully deleted!", }
+        return render(request, 'fileUploads/manage.html', context)
 
-    return render(request, 'fileUploads/view.html', context)
+
+
+    else:
+        fileToDelete = FileUpload.objects.get(fileID=fileID)
+        context = {"fileToDelete": fileToDelete }
+        return render(request, 'fileUploads/delete.html', context)
 
 

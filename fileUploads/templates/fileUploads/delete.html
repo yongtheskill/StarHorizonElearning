@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Delete File{% endblock %}
+
+
+{% block css %}
+{% endblock %}
+
+
+
+{% block content %}
+<a class="waves-effect waves-black btn-flat" onclick="window.history.back();"><i class="material-icons left" style="margin-right: 0px;">arrow_back_ios</i>Back</a>
+
+
+<div class="row">
+    <div class="col s12">
+        <form id="fileUploadForm" method="post">{% csrf_token %}
+            <h1 class="red-text text-darken-2">Are you sure you want to delete {{ fileToDelete.fileName }}? This cannot be undone.</h1>
+            <div class="row">
+                <button class="btn red" type="submit" name="action">Delete
+                    <i class="material-icons right">delete</i>
+                </button>
+            </div>
+        </form>
+
+    </div>
+  </div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+{% endblock %}

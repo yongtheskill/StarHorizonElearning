@@ -14,62 +14,55 @@
 <a class="waves-effect waves-black btn-flat" onclick="window.history.back();"><i class="material-icons left" style="margin-right: 0px;">arrow_back_ios</i>Back</a>
 
 
-<h2 class="center-align">Create Quiz</h2>
+<h2 class="center-align">Upload File</h2>
 
 
 <div class="row">
     <div class="col s12">
-        <form id="quizDataForm" method="post">{% csrf_token %}
+        <form id="fileUploadForm" method="post" enctype="multipart/form-data" >{% csrf_token %}
             <div class="row">
                 <div class="input-field col s12 m8">
                     <i class="material-icons text-accent-1 prefix">mode_edit</i>
-                    <input class="black-text" type="text" name="quizName" id="id_quizName" autofocus required>
-                    <label class="black-text" for="id_quizName">Quiz Name</label>
+                    <input class="black-text" type="text" name="fileName" id="id_fileName" autofocus required>
+                    <label class="black-text" for="id_fileName">File Name</label>
                 </div>
                 <div class="input-field col s12 m4">
                     <i class="material-icons text-accent-1 prefix">code</i>
-                    <input readonly class="grey-text text-darken-1" type="text" name="quizID" id="id_quizID" value="{{ quizIDtoUse }}" required>
-                    <label class="black-text text-darken-4" for="id_quizID">Quiz ID</label>
+                    <input readonly class="grey-text text-darken-1" type="text" name="fileID" id="id_fileID" value="{{ fileIDtoUse }}" required>
+                    <label class="black-text text-darken-4" for="id_fileID">File ID</label>
                 </div>
             </div>    
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons text-accent-1 prefix">add</i>
-                    <select name="assignedCourse" required>
-                        <option value="" disabled selected>Select course for quiz</option>
-                        {% for i in courseObjects %}
-                        <option value="{{i.pk}}">{{i.courseName}}</option>
+                    <select name="moduleID" required>
+                        <option value="" disabled selected>Select module for the file</option>
+                        {% for i in moduleObjects %}
+                        <option value="{{i.pk}}">{{i.moduleName}}</option>
                         {% endfor %}
                     </select>
-                    <label>Assign quiz to course</label>
+                    <label>Assign file to module</label>
                 </div>  
+                <div class="col s12 m6">
+                    <div class="file-field input-field">
+                        <div class="btn accent-1">
+                        <span>Upload File</span>
+                        <input name="uploadedFile" type="file" class="validate" required>
+                        </div>
+                        <div class="file-path-wrapper">
+                        <input class="file-path validate" name="fileName" type="text" required>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <input hidden name="allQuestionsJSON" id="allQuestionsJSON"></input>
+
+            <div class="row">
+                <button class="btn accent-1" type="submit" name="action">Upload
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
         </form>
 
-        
-        <!-- Questions -->
-        <div id="allQuesitonsContainer">
-
-        </div>
-
-
-
-        <!-- FAB -->
-        <div class="row">
-            <div class="fixed-action-btn">
-                <a class="btn-floating btn-large accent-2-btn">
-                    <i class="large material-icons">add</i>
-                </a>
-                <ul>
-                    <li><a onclick="createQuestion('sa')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">short_text</i>Short Answer</a></li>
-                    <li><a onclick="createQuestion('la')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">subject</i>Long Answer</a></li>
-                    <li><a onclick="createQuestion('mc')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">radio_button_checked</i>Multiple Choice</a></li>
-                    <li><a onclick="createQuestion('cb')" class="btn-floating accent-1-btn btn-override"><i class="material-icons left">check_box</i>Checkboxes</a></li>
-                </ul>
-            </div>
-            <a class="submitButton accent-1-btn waves-effect waves-light btn" style="margin-top: 5px;" onclick="submitForm()"><i class="material-icons right">done</i>create quiz</a>
-        </div>
     </div>
   </div>
 
@@ -81,15 +74,9 @@
 
 
 {% block javascript %}
-<script type="text/javascript" src="{% static "js/quizzes_create.js" %}"></script>
-
 <script>
 
 $( document ).ready(function() {
-    $('.fixed-action-btn').floatingActionButton({
-        direction: 'right',
-        hoverEnabled: false
-    });
     $('select').formSelect();
 });
 
