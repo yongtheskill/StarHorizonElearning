@@ -1,6 +1,6 @@
 import os
 import requests
-url = "http://localhost:8000/live/cleanupLivestreamServer"
+url = "http://localhost/live/cleanupLivestreamServer"
 
 try:
     os.environ['NO_PROXY'] = '127.0.0.1'
