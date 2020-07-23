@@ -35,13 +35,13 @@
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons text-accent-1 prefix">add</i>
-                    <select name="assignedCourse" required>
-                        <option value="" disabled selected>Select course for quiz</option>
-                        {% for i in courseObjects %}
-                        <option value="{{i.pk}}">{{i.courseName}}</option>
+                    <select id="assignedModule" name="assignedModule" onchange="moduleChanged()" required>
+                        <option value="" disabled selected>Select module for quiz</option>
+                        {% for i in moduleObjects %}
+                        <option value="{{i.pk}}">{{i.moduleName}}</option>
                         {% endfor %}
                     </select>
-                    <label>Assign quiz to course</label>
+                    <label>Assign quiz to module</label>
                 </div>  
             </div>
             <input hidden name="allQuestionsJSON" id="allQuestionsJSON"></input>
@@ -91,6 +91,13 @@ $( document ).ready(function() {
         hoverEnabled: false
     });
     $('select').formSelect();
+    setTags(
+        { 
+            {% for i in moduleObjects %}
+            "{{ i.pk|safe }}": {{ i.tags|safe }},
+            {% endfor %}
+         }
+    );
 });
 
 </script>

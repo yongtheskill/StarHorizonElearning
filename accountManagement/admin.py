@@ -6,13 +6,14 @@ from .models import User, Course, StudentClass, Module
 
 # Register your models here.
 
+
 class CourseAdmin(admin.ModelAdmin):
 
     readonly_fields = ('id', )
 
     fieldsets = (
         (None, {'fields': ('courseName',)}),
-        ('Details', {'fields': ('courseInstitution', 'courseDescription', 'id')}),
+        ('Details', {'fields': ('courseInstitution', 'courseDescription', 'quizTags', 'id')}),
     )
 
     def __str__(self):

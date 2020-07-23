@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from .models import Quiz
-from accountManagement.models import Course, User
+from accountManagement.models import Course, Module, User
 
 import json
 import re
@@ -31,7 +31,12 @@ def createQuiz(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 
-    context = {"quizIDtoUse": "quiz%s" % (timestamp), "courseObjects": Course.objects.all, }
+
+    modules = Module.objects.all()
+    for module in modules:
+        module.tags = module.courses.quizTags
+
+    context = {"quizIDtoUse": "quiz%s" % (timestamp), "moduleObjects": modules, }
     
     #if submitting form
     if request.method == 'POST':
@@ -39,13 +44,13 @@ def createQuiz(request):
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
 
         #find matching course
-        assignedCourseID = request.POST["assignedCourse"]
-        assignedCourse = Course.objects.get(pk=assignedCourseID)
+        assignedModuleID = request.POST["assignedModule"]
+        assignedModule = Module.objects.get(pk=assignedModuleID)
 
         newQuiz = Quiz()
         newQuiz.quizName = request.POST['quizName']
         newQuiz.quizID = request.POST['quizID']
-        newQuiz.course = assignedCourse
+        newQuiz.module = assignedModule
         newQuiz.quizData = questionsJSON
         newQuiz.save()
         

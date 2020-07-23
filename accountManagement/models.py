@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from StarHorizonElearning.storage_backends import MediaStorage
 
+import json
+
+
 # Create your models here.
 
 class Course(models.Model):
@@ -9,6 +12,15 @@ class Course(models.Model):
     courseName = models.CharField(max_length=200, verbose_name="course name")
     courseInstitution = models.CharField(max_length=200, verbose_name="institution", null=True)
     courseDescription = models.CharField(max_length=5000, verbose_name="course description", null=True, default=None)
+
+    quizTags = models.CharField(max_length=5000)
+
+    def setTags(self, x):
+        self.quizTags = json.dumps(x)
+
+    def getTags(self):
+        return json.loads(self.quizTags)
+
 
     def __str__(self):
          return self.courseName

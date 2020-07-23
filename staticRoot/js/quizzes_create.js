@@ -78,6 +78,8 @@ function createQuestion (qType) {
     $("#allQuesitonsContainer").append(generateQuesionHTML(newQuestion));
     updateNumberedList();
     initialiseChips(qType, availableQuestionID);
+    moduleChanged();
+    $('select').formSelect();
 }
 
 function initialiseChips (qType, qID){
@@ -184,6 +186,11 @@ function generateQuesionHTML (question) {
                 </div>
             </div>
             <div class="row right-align noPadding" style="padding-right: 10px;">
+                <div class="input-field col s12 m6">
+                    <select id="questionTag" class="questionTag">
+                    </select>
+                    <label>Question Tag</label>
+                </div>
                 <a class="btn-flat"><i style="font-size: 2rem;" class="material-icons large red-text" onclick="deleteQuestion(${question.questionID})">delete</i></a>
             </div>`;
 
@@ -334,4 +341,33 @@ function convertToJSON() {
 function submitForm() {
     convertToJSON();
     $("#quizDataForm").submit();
+}
+
+
+
+var tags = {};
+
+function setTags(retrievedTags) {
+    tags = retrievedTags;
+
+}
+
+
+function moduleChanged() {
+    assignedModule = $(`#assignedModule`).val();
+    console.log(tags[assignedModule]);
+    selectOptions = `
+    <option value="" disabled selected>Choose question tag</option>
+    `;
+    if (tags[assignedModule] === undefined){
+        selectOptions += `<option value="" selected>this module has no tags</option>`
+    }
+    else {
+        tags[assignedModule].forEach(function (option, index) {
+            selectOptions += `
+                    <option value="${index.toString()}">${option}</option>\n`
+        });
+    }
+    $('.questionTag').html(selectOptions);
+    $('select').formSelect();
 }
