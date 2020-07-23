@@ -40,7 +40,7 @@
     
     {% if i.quizzes %}
     <thead>
-        <th>Quiz Name</th>
+        <th>Quizzes</th>
         <th>Due Date</th>
     </thead>
     {% endif %}
@@ -58,22 +58,39 @@
 
     {% if i.videoLessons %}
     <thead>
-        <th>Video Name</th>
+        <th>Videos</th>
     </thead>
     {% endif %}
+    
     {% for j in i.videoLessons %}
     <tbody>
         <tr>
             <td>
-                <a href="/videoLessons/view/{{ i.videoID }}/">{{ j.videoName }}</a>
+                <a href="/videoLessons/view/{{ j.videoID }}/">{{ j.videoName }}</a>
             </td>
         </tr>
     </tbody>
     {% endfor %}
     
+    {% if i.fileUploads %}
+    <thead>
+        <th>Files</th>
+    </thead>
+    {% endif %}
+
+    {% for j in i.fileUploads %}
+    <tbody>
+        <tr>
+            <td>
+                <a href="{{ j.uploadedFile.url }}">{{ j.fileName }}</a>
+            </td>
+        </tr>
+    </tbody>
+    {% endfor %}
+
     {% if i.liveLessons %}
     <thead>
-        <th>Live Lesson Name</th>
+        <th>Live Lessons</th>
         <th>Stream Date</th>
     </thead>
     {% endif %}
