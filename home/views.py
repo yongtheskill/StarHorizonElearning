@@ -11,3 +11,8 @@ from django.utils import timezone
 def home(request):
     context = {"isHome": True}
     return render(request, 'home/home.html', context)
+
+
+#data demo
+def dataDemo(request):
+    return render(request, 'home/dataDemo.html', {})
