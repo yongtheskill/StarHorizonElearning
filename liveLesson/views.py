@@ -49,7 +49,7 @@ def createLiveLesson(request):
         streamDate += streamTime
         streamDateTime = datetime.strptime(streamDate, "%b %d, %Y%I:%M %p")
 
-        streamDuration = timedelta(hours = float(streamDuration))
+        streamDuration = timedelta(minutes = float(streamDuration))
 
         streamEndTime = streamDateTime + streamDuration
         print(type(streamDateTime))
@@ -185,9 +185,9 @@ def cleanupLivestreamServer(request):
         liveLessonObjects = LiveLesson.objects.all()
         shouldStop = True
         for lessonObject in liveLessonObjects:
-            diffendTime = lessonObject.streamEndTime - nowTime
             diffstTime = lessonObject.streamTime - nowTime
-            if diffendTime.total_seconds() > -1800 and diffstTime.total_seconds() < -1800:
+            diffendTime = lessonObject.streamEndTime - nowTime
+            if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < -1800:
                 shouldStop = False
             if diffendTime.total_seconds() < -604800:
                 lessonObject.delete()
