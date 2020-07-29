@@ -5,6 +5,7 @@
     {% load static %}
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Raleway:wght@400;600;800;900&display=swap" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="{% static "css/materialize.min.css" %}"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="{% static "css/base.css" %}"/>
@@ -55,12 +56,11 @@
       }
     </style>
     <!-- navbar -->
-      <nav class="transparent overlay-nav">
-        <div class="container">
+      <nav class="white black-text">
           <div class="nav-wrapper black-text">
-            <a href="/"><img style="height: 50px; margin-top: 10px; color: #f7ca23;" src="{% if isHome %}{% static "img/StarHorizonLogo.png" %}{% else %}{% static "img/StarHorizonLogoDark.png" %}{% endif %}"
+            <a href="/"><img class="left" style="height: 50px; margin-top: 17px; margin-left: 25px; color: #f7ca23;" src="{% if isHome %}{% static "img/StarHorizonLogoDark.png" %}{% else %}{% static "img/StarHorizonLogoDark.png" %}{% endif %}"
               alt="Star Horizon Logo"></a>
-            <ul class="navlinks right hide-on-med-and-down">
+            <ul class="navlinks right hide-on-med-and-down black-text">
               <!-- if teacher -->
               {% if user.accountType == "Teacher" %}
               <li><a href="/live/">Live Streaming</a></li>
@@ -80,7 +80,6 @@
 
             </ul>
           </div>
-        </div>
       </nav>
     {% endif %}
 

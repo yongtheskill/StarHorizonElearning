@@ -116,3 +116,23 @@ header, main, footer {
 .accent-2-btn:focus {
     background-color: #fcd64d;
 }
+
+
+nav > * ul > li{
+    color: black;
+}
+
+nav {
+    height: 80px;
+}
+
+.navlinks > li > a {
+    height: 72px;
+
+}
+
+.navlinks{
+    margin-top: 8px;
+    margin-left: 50px;
+}
+

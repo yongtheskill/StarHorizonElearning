@@ -8,20 +8,27 @@
 {% endblock %}
 
 {% block fullWidthContent %}
-<div class="accent-1 full-height valign-wrapper">
-    <div class="margin-centre">
-        <div class="image-overlay-container">
-            <img class="home-laptop" src="{% static "img/laptop.png" %}" alt="Laptop">
-                {% if user.is_authenticated %}
-                <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/logout">Log Out</a>
-                {% else %}
-                <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/login">Log In</a>
-                {% endif %}        
-            </img>
-        </div>
-        
+
+<div class="center-align">
+    <div class="full-height full-width valign-wrapper" style="filter: brightness(40%); background-image: url('{% static "img/homeBg.jpg" %}'); background-repeat: no-repeat; background-size: cover;  background-attachment: fixed; z-index: -10000;"></div>
+    
+    <div class="home-options center-align" style="position: absolute; top: 50%; left: 50%;  transform: translate(-50%, -50%);">
+            <h2 class="white-text" style="font-family: Raleway; font-weight: 800; padding-bottom: 30px;">GOTUTOR</h2>
+            {% if user.is_authenticated %}
+            <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/logout">Log Out</a>
+            {% else %}
+            <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/login">Log In</a>
+            {% endif %}
     </div>
+    <img style="transform: translate(0%, -150%); width: 60px;" src="{% static "img/downArrow.png" %}">
 </div>
+
+
+
+
+
+
+
 <div>
     <div class="container" style="padding-top: 75px;">
         <div class="row">
