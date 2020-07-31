@@ -11,10 +11,6 @@
     font-size: 1.1rem;
 }
 
-.home-laptop {
-    height: 60vh;
-}
-
 .laptop-img {
     position: absolute;
 }
@@ -22,12 +18,13 @@
 .login-button {
     font-weight: 700;
     position: absolute;
-    top: 66%;
-    left: 50%;
+    white-space: nowrap;
+    border-radius: 100px;
     transform: translate(-50%, -50%);
+    box-shadow: 2px 2px 10px black;
 }
 
 
-.image-overlay-container {
+.home-options {
     position: relative;
 }
