@@ -180,28 +180,29 @@ def cleanupLivestreamServer(request):
 
     actionTaken = ""
 
-    if isRunning == True:
-        nowTime = sgt.localize(datetime.now())
-        liveLessonObjects = LiveLesson.objects.all()
-        shouldStop = True
-        shouldStart = False
-        for lessonObject in liveLessonObjects:
-            diffstTime = lessonObject.streamTime - nowTime
-            diffendTime = lessonObject.streamEndTime - nowTime
-            if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < -600:
+    nowTime = sgt.localize(datetime.now())
+    liveLessonObjects = LiveLesson.objects.all()
+    shouldStop = True
+    shouldStart = False
+    for lessonObject in liveLessonObjects:
+        diffstTime = lessonObject.streamTime - nowTime
+        diffendTime = lessonObject.streamEndTime - nowTime
+        if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < -600:
+            if isRunning:
+                shouldStop = False
+            else:
                 if diffstTime.total_seconds() < -480:
                     shouldStart = True
-                shouldStop = False
-            if diffendTime.total_seconds() < -604800:
-                lessonObject.delete()
-        if shouldStop:
-            liveInstance.stop()
-            actionTaken = " and is being stopped"
-        elif shouldStart:
-            liveInstance.start()
-            actionTaken = " and is being started"
-        else:
-            actionTaken = " and is not being stopped"
+        if diffendTime.total_seconds() < -604800:
+            lessonObject.delete()
+    if shouldStop:
+        liveInstance.stop()
+        actionTaken = " and is being stopped"
+    elif shouldStart:
+        liveInstance.start()
+        actionTaken = " and is being started"
+    else:
+        actionTaken = " and is not being stopped"
 
 
     url = "https://live.gotutor.sg//#/"
