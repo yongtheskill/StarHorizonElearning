@@ -95,7 +95,7 @@ def editLiveLesson(request, StreamID):
         streamDate += streamTime
         streamDateTime = datetime.strptime(streamDate, "%b %d, %Y%I:%M %p")
 
-        streamDuration = timedelta(hours = float(streamDuration))
+        streamDuration = timedelta(minutes = float(streamDuration))
 
         streamEndTime = streamDateTime + streamDuration
         print(type(streamDateTime))
@@ -122,7 +122,7 @@ def editLiveLesson(request, StreamID):
         startDate = lessonObj.streamTime.strftime("%b %d, %Y")
         startTime = lessonObj.streamTime.strftime("%I:%M %p")
 
-        duration = lessonObj.streamDuration.total_seconds() / 3600
+        duration = lessonObj.streamDuration.total_seconds() / 60
         if duration % 1 == 0:
             duration = str(duration)[:-2]
         else:
@@ -178,41 +178,38 @@ def cleanupLivestreamServer(request):
     else:
         isRunning = False
 
-    actionTaken = ""
 
     nowTime = sgt.localize(datetime.now())
     liveLessonObjects = LiveLesson.objects.all()
     shouldStop = True
     shouldStart = False
+
     for lessonObject in liveLessonObjects:
+        #how many seconds in the future
         diffstTime = lessonObject.streamTime - nowTime
         diffendTime = lessonObject.streamEndTime - nowTime
-        if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < -600:
-            if isRunning:
-                shouldStop = False
-            else:
-                if diffstTime.total_seconds() < -480:
-                    shouldStart = True
+        print(diffstTime.total_seconds())
+        if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < 600:
+            shouldStop = False
+            if diffstTime.total_seconds() < 480:
+                shouldStart = True
         if diffendTime.total_seconds() < -604800:
             lessonObject.delete()
+
+
+    actionTaken = ""
+
     if shouldStop and isRunning:
         liveInstance.stop()
         actionTaken = " and is being stopped"
-    elif shouldStart and not isRunning:
+
+    if shouldStart and not isRunning:
         liveInstance.start()
         actionTaken = " and is being started"
-    else:
-        actionTaken = " and is not being stopped"
 
 
-    url = "https://live.gotutor.sg/#/"
-    try:
-        x = requests.get(url, timeout=4)
-    except:
-        return HttpResponse("Server is Down" + actionTaken)
 
-    print(x.status_code)
-    if x.status_code == 200:
+    if isRunning:
         return HttpResponse("Server is Up" + actionTaken)
     else:
         return HttpResponse("Server is Down" + actionTaken)
