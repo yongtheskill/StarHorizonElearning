@@ -3,7 +3,8 @@ WSGIDaemonProcess StarHorizonElearning python-path=/home/ubuntu/django/StarHoriz
 WSGIProcessGroup StarHorizonElearning
 
 <VirtualHost *:80>
-ServerName shel.ml
+ServerName gotutor.sg
+ServerAlias www.gotutor.sg
 ServerAdmin bennet@star-horizon.com
 DocumentRoot /home/ubuntu/django/StarHorizonElearning
 ErrorLog ${APACHE_LOG_DIR}/error.log
@@ -21,7 +22,8 @@ WSGIScriptAlias / /home/ubuntu/django/StarHorizonElearning/StarHorizonElearning/
 </VirtualHost>
 
 <VirtualHost *:443>
-ServerName shel.ml
+ServerName gotutor.sg
+ServerAlias www.gotutor.sg
 ServerAdmin bennet@star-horizon.com
 DocumentRoot /home/ubuntu/django/StarHorizonElearning
 ErrorLog ${APACHE_LOG_DIR}/error.log

@@ -21,7 +21,7 @@
         <div class="indeterminate white"></div>
     </div>
 </div>
-<a class="popupBlocked" onclick="clearInterval(waitToJoinInterval); window.location.replace('/'); " style="display: none;" href="https://lv.shel.ml/#/{{ StreamID }}?usr={{ usr }}" target="_blank">Click here to join if you are unable to enable popus</a>
+<a class="popupBlocked" onclick="clearInterval(waitToJoinInterval); window.location.replace('/'); " style="display: none;" href="https://live.gotutor.sg/#/{{ StreamID }}?usr={{ usr }}" target="_blank">Click here to join if you are unable to enable popus</a>
 
 
 
@@ -72,7 +72,7 @@ function waitToJoin() {
             console.log(data);
             if(data === "Up"){
                 console.log("yes");
-                var win = window.open("https://lv.shel.ml/#/{{ StreamID }}?usr={{ usr }}", "_blank");
+                var win = window.open("https://live.gotutor.sg/#/{{ StreamID }}?usr={{ usr }}", "_blank");
                 if (win) {
                     //Browser has allowed it to be opened
                     win.focus();
