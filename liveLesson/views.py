@@ -205,7 +205,7 @@ def cleanupLivestreamServer(request):
         actionTaken = " and is not being stopped"
 
 
-    url = "https://live.gotutor.sg//#/"
+    url = "https://live.gotutor.sg/#/"
     try:
         x = requests.get(url, timeout=4)
     except:
