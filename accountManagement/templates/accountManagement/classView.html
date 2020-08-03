@@ -57,8 +57,8 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Email</th>
             {% if user.accountType == 'Teacher' %}
+            <th>Email</th>
             <th>Uncompleted Tasks</th>
             {% endif %}
         </tr>
@@ -74,8 +74,8 @@
                 {{ i.first_name }} {{ i.last_name }}
                 {% endif %}
             </td>
-            <td>{{ i.email }}</td>
             {% if user.accountType == 'Teacher' %}
+            <td>{{ i.email }}</td>
             <td>{{ i.uncompletedTasks }}</td>
             {% endif %}
         </tr>
