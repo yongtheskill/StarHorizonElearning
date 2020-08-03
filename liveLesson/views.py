@@ -136,8 +136,10 @@ def editLiveLesson(request, StreamID):
 @login_required
 def joinLiveLesson(request, StreamID):
     
+    username = urllib.parse.quote(request.user.username)
+
     if request.user.accountType == 'Teacher':
-        
+        """
         ec2 = boto3.resource('ec2', region_name="ap-southeast-1", aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
 
         liveInstance = ec2.Instance(settings.LIVE_EC2_ID)
@@ -149,10 +151,11 @@ def joinLiveLesson(request, StreamID):
         if not isRunning:
             liveInstance.start()
             print("starting instance...")
+        """
+        startTime = LiveLesson.objects.get(lessonName = StreamID).streamTime
+        ttl = startTime - sgt.localize(datetime.now())
+        ttl = ttl.total_seconds() - 180
 
-        username = urllib.parse.quote(request.user.username)
-
-        context = {"ttl": 0, "StreamID": StreamID, "usr": username, "isTeacher": True, }
     
     else:
         startTime = LiveLesson.objects.get(lessonName = StreamID).streamTime
@@ -160,10 +163,7 @@ def joinLiveLesson(request, StreamID):
         ttl = ttl.total_seconds()
 
         
-        username = urllib.parse.quote(request.user.username)
-
-
-        context = {"ttl": ttl, "StreamID": StreamID, "usr": username, }
+    context = {"ttl": ttl, "StreamID": StreamID, "usr": username, }
 
     return render(request, 'liveLesson/join.html', context)
 
@@ -184,36 +184,42 @@ def cleanupLivestreamServer(request):
         nowTime = sgt.localize(datetime.now())
         liveLessonObjects = LiveLesson.objects.all()
         shouldStop = True
+        shouldStart = False
         for lessonObject in liveLessonObjects:
             diffstTime = lessonObject.streamTime - nowTime
             diffendTime = lessonObject.streamEndTime - nowTime
-            if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < -1800:
+            if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < -600:
+                if diffstTime.total_seconds() < -480:
+                    shouldStart = True
                 shouldStop = False
             if diffendTime.total_seconds() < -604800:
                 lessonObject.delete()
         if shouldStop:
             liveInstance.stop()
             actionTaken = " and is being stopped"
+        elif shouldStart:
+            liveInstance.start()
+            actionTaken = " and is being started"
         else:
             actionTaken = " and is not being stopped"
 
 
-    url = "https://lv.shel.ml/#/"
+    url = "https://live.gotutor.sg//#/"
     try:
         x = requests.get(url, timeout=4)
     except:
-        return HttpResponse("Server is Down")
+        return HttpResponse("Server is Down" + actionTaken)
 
     print(x.status_code)
     if x.status_code == 200:
         return HttpResponse("Server is Up" + actionTaken)
     else:
-        return HttpResponse("Server is Down")
+        return HttpResponse("Server is Down" + actionTaken)
     
 
 #server status check api
 def serverStatus(request):
-    url = "https://lv.shel.ml/#/"
+    url = "https://live.gotutor.sg/#/"
     try:
         x = requests.get(url, timeout=4)
     except:
