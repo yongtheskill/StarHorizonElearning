@@ -195,10 +195,10 @@ def cleanupLivestreamServer(request):
                     shouldStart = True
         if diffendTime.total_seconds() < -604800:
             lessonObject.delete()
-    if shouldStop:
+    if shouldStop and isRunning:
         liveInstance.stop()
         actionTaken = " and is being stopped"
-    elif shouldStart:
+    elif shouldStart and not isRunning:
         liveInstance.start()
         actionTaken = " and is being started"
     else:
