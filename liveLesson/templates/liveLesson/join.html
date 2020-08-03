@@ -21,7 +21,7 @@
         <div class="indeterminate white"></div>
     </div>
 </div>
-<a class="popupBlocked" onclick="clearInterval(waitToJoinInterval); window.location.replace('/'); " style="display: none;" href="https://live.gotutor.sg/#/{{ StreamID }}?usr={{ usr }}" target="_blank">Click here to join if you are unable to enable popus</a>
+<a class="popupBlocked" onclick="setTimeout(function(){window.location.replace('{% if user.accountType == "Teacher" %}/live/ongoingstream/{{ StreamID }}/{% else %}/{% endif %}');}, 1000); " style="display: none;" href="https://live.gotutor.sg/#/{{ StreamID }}?usr={{ usr }}" target="_blank">Click here to join if you are unable to enable popus</a>
 
 
 
@@ -61,7 +61,7 @@ jQuery(function ($) {
     startTimer({{ ttl }}, display);
 });
 
-
+var alerted = false;
 //waitForAws + Join
 function waitToJoin() {
     $('.loadingPage').css({'display': 'block'});
@@ -77,11 +77,14 @@ function waitToJoin() {
                     //Browser has allowed it to be opened
                     win.focus();
                     clearInterval(waitToJoinInterval);
-                    window.location.replace("/");
+                    window.location.replace('{% if user.accountType == "Teacher" %}/live/ongoingstream/{{ StreamID }}/{% else %}/{% endif %}');
                 } else {
-                    //Browser has blocked it
-                    alert('Please allow popups for this website');
-                    $('.popupBlocked').css({'display': 'block'});
+                    if (!alerted){
+                        //Browser has blocked it
+                        alert('Please allow popups for this website');
+                        $('.popupBlocked').css({'display': 'block'});
+                        alerted = true;
+                    }
                 }
             }
         });
