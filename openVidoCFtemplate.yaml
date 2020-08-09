@@ -369,7 +369,7 @@ Resources:
             VolumeType: io1
             Iops: 200
             DeleteOnTermination: true
-            VolumeSize: 100
+            VolumeSize: 8
 
   MyEIP:
     Type: 'AWS::EC2::EIPAssociation'
