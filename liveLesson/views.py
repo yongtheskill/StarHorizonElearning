@@ -247,3 +247,19 @@ def joinLiveLesson(request, StreamID):
         return HttpResponse("Up")
     else:
         return HttpResponse("Down")
+
+
+
+#server status check api
+def ongoingstream(request):
+    url = "https://live.gotutor.sg/#/"
+    try:
+        x = requests.get(url, timeout=4)
+    except:
+        return HttpResponse("Down")
+
+    print(x.status_code)
+    if x.status_code == 200:
+        return HttpResponse("Up")
+    else:
+        return HttpResponse("Down")
