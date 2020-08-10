@@ -67,6 +67,7 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserAdmin(BaseUserAdmin):
+    list_filter = ("accountType", )
     add_form = UserCreationForm
     
     fieldsets = (
