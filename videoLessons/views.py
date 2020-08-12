@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 import re
 
 from .models import Video
-from accountManagement.models import Course
+from accountManagement.models import Module
 
 import pytz
 sgp = pytz.timezone('Asia/Singapore')
@@ -18,7 +18,7 @@ def manageVideoLessons(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 
-    baseContext = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp), "courseObjects": Course.objects.all, }
+    baseContext = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp), "moduleObjects": Module.objects.all, }
 
     if request.user.accountType != 'Teacher':
         context = {"notAuthorised": True}
@@ -63,9 +63,9 @@ def manageVideoLessons(request):
                     return render(request, 'videoLessons/manage.html', context)
 
 
-                #find matching course
-                assignedCourseID = request.POST["assignedCourse"]
-                assignedCourse = Course.objects.get(pk=assignedCourseID)
+                #find matching mod
+                assignedModID = request.POST["assignedMod"]
+                assignedMod = Module.objects.get(pk=assignedModID)
 
                 #create project with entered values
                 newVideo = Video()
@@ -75,7 +75,7 @@ def manageVideoLessons(request):
                 newVideo.videoFile = request.FILES['videoFile']
                 newVideo.afterAction = afterAction
                 newVideo.completeionURL = "nothing for now"
-                newVideo.course = assignedCourse
+                newVideo.module = assignedMod
                 newVideo.save()
                 #return success
                 context = {**baseContext, "notification": "Video: %s successfully created!" % (videoName), }

@@ -9,6 +9,8 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="{% static "css/materialize.min.css" %}"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="{% static "css/base.css" %}"/>
+    <!-- Import notifs css -->
+    <link type="text/css" rel="stylesheet" href="{% static "css/notifications.css" %}"/>
     {% block css %}
     {% endblock %}
 
@@ -52,7 +54,8 @@
     
       <a href="/" style="position: absolute; bottom: 50px;" class="logo-container"><img class="brand-logo" src="{% static "img/StarHorizonLogoDark.png" %}" alt="Star Horizon Logo"></a>
     </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons" style="font-size: xx-large; padding-left: 15px; padding-top: 10px;">menu</i></a>
 
     {% else %}
     <style>
@@ -84,7 +87,39 @@
               {% endif %}
 
             </ul>
+            <a href="#" data-target="slide-out" class="sidenav-trigger right"><i class="material-icons black-text" style="font-size: xx-large; padding-right: 15px; padding-top: 13px;">menu</i></a>
           </div>
+
+        <ul id="slide-out" class="sidenav sidenav-fixed hide-on-large-only">
+          {% if user.is_authenticated %}
+          <li><div class="user-view">
+            <div class="background">
+              <img class="responsive-img" src="{% static "img/sky.jpg" %}">
+            </div>
+            <a href="/account/manage/"><img class="circle" style="object-fit: cover;" src="{% if user.profilePic %}{{ user.profilePic.url }}{% else %}{% static "img/blankProfile.svg" %}{% endif %}"></a>
+            <a href="/account/manage/"><span class="name white-text">{{ user.username }}</span></a>
+            <a href="/account/manage/"><span class="email white-text">{{ user.institution }}</span></a>
+          </div></li>
+          {% endif %}
+          <!-- if teacher -->
+          {% if user.accountType == "Teacher" %}
+          <li><a href="/live/">Live Streaming</a></li>
+          <li><a href="/videoLessons/manage/">Video Lessons</a></li>
+          <li><a href="/fileUploads/manage/">File Uploads</a></li>
+          <li><a href="/quizzes/manage/">Quizzes</a></li>
+          {% endif %}
+
+          <!-- if logged in -->
+          {% if user.is_authenticated %}
+          <li><a href='/classes/'>Classes</a></li>
+          <li><a href='/account/manage/'>Manage Account</a></li>
+          <li><a href='/logout/'>Log Out</a></li>
+          {% else %}
+          <li><a href='/login/' style="padding-top: 50px;">Login</a></li>
+          {% endif %}
+        
+          <a href="/" style="position: absolute; bottom: 50px;" class="logo-container"><img class="brand-logo" src="{% static "img/StarHorizonLogoDark.png" %}" alt="Star Horizon Logo"></a>
+        </ul>
       </nav>
     {% endif %}
 
@@ -107,30 +142,13 @@
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
       <script type="text/javascript" src="{% static "js/materialize.min.js" %}"></script>
+      <script type="text/javascript" src="{% static "js/notifications.js" %}"></script>
       <script>
         $('.sidenav').sidenav();
       </script>
       {% block javascript %}
       {% endblock %}
-      
-      {% if error %}
-      <!-- Modals -->
-      <div id="baseModal" class="modal accent-1">
-        <div class="modal-content">
-          
-          <h4 class="text-primary center-align"> <i class="material-icons text-accent-2">error</i> {{error}}</h4>
-        </div>
-      </div>
-      {% endif %}
-      {% if notification %}
-      <!-- Modals -->
-      <div id="baseModal" class="modal accent-1">
-        <div class="modal-content">
-          
-          <h4 class="text-primary center-align"> <i class="material-icons text-accent-2">notifications</i> {{notification}}</h4>
-        </div>
-      </div>
-      {% endif %}
+
       {% if notification or error %}
       <!-- JS for modals -->
       <script>
@@ -146,21 +164,56 @@
           window.location.replace("{{ onModalCloseRedirect }}")
           {% endif %}
         }
+
+        
+      
+        {% if error %}        
+        const successNotification = window.createNotification({
+          theme: 'warning',
+          showDuration: 0,
+          {% if onModalCloseRedirect %}
+          onclick: function(window.location.replace("{{ onModalCloseRedirect }}"));
+          {% endif %}
+        });
+        // Invoke success notification
+        successNotification({ 
+            message: '{{error}}' 
+        });
+        {% endif %}
+        {% if notification %}
+        const successNotification = window.createNotification({
+          theme: 'success',
+          showDuration: 10000
+        });
+        // Invoke success notification
+        successNotification({ 
+            message: '{{notification}}' 
+        });
+        {% endif %}
+        
+
+
+
+
       </script>
       {% endif %}
+
+
     {% else %}
       <!--JavaScript at end of body for optimized loading-->
       <script src="https://code.jquery.com/jquery-3.4.1.min.js"
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
       <script type="text/javascript" src="{% static "js/materialize.min.js" %}"></script>
+
+
       <!-- Modals -->
-      <div id="baseModal" class="modal accent-1">
+      <div id="baseModal" class="modal">
         <div class="modal-content">
           
-          <h4 class="text-primary center-align"> <i class="material-icons text-accent-2">error</i> You are not authorised to view this page.</h4>
+          <h4 class="center-align">You are not authorised to view this page.</h4>
         </div>
-        <div style="background-color: #0e143f; border-top: 1px solid; border-color: white;" class="modal-footer">
-          <a href="/" class="modal-close waves-effect waves-green btn-flat text-primary ">Home</a>
+        <div style="border-top: 1px solid; border-color: white;" class="modal-footer">
+          <a href="/" class="modal-close waves-effect waves-green btn-flat">Home</a>
         </div>
       </div>
       <!-- JS for modals -->
@@ -171,9 +224,8 @@
           var instance = M.Modal.getInstance($("#baseModal"));
           instance.open();
         });
-
-
       </script>
+
     {% endif %}
     </main>
 

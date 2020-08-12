@@ -136,17 +136,17 @@
                         </div>
                     </div>
                         <div class="input-field col s12 m6">
-                            <select name="assignedCourse" required>
-                                <option value="" disabled selected>Select course for video</option>
-                                {% for i in courseObjects %}
-                                <option value="{{i.pk}}">{{i.courseName}}</option>
+                            <select name="assignedMod" required>
+                                <option value="" disabled selected>Select module for video</option>
+                                {% for i in moduleObjects %}
+                                <option value="{{i.pk}}">{{i.moduleName}}</option>
                                 {% endfor %}
                             </select>
-                            <label>Assign video to course</label>
+                            <label>Assign video to module</label>
                         </div>  
                     </div>
                 </div>
-                
+                <!--
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <select required>
@@ -189,6 +189,7 @@
                 </div>
 
                 <input id="afterActionInput" name="afterAction" value="none" hidden/>
+                -->
 
                 <button class="btn accent-1" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
@@ -235,7 +236,7 @@
                     <label class="black-text" for="id_additionalComments">Additional Comments</label>
                     </div>
                 </div>
-                
+                <!--
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <select required>
@@ -276,8 +277,8 @@
                         <label>Select Video</label>
                     </div>
                 </div>
-
                 <input id="afterActionInput" name="afterAction" value="none" hidden/>
+            -->
 
                 <button class="btn accent-1" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>

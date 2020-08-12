@@ -70,7 +70,8 @@ def manageAccount(request):
         user.phoneNumber = request.POST['phoneNumber']
         user.passwordChangeRequired = False
         user.save()
-        return redirect('/')
+        context = {'email': request.user.email, 'phoneNumber': request.user.phoneNumber, "notification": "Successfully updated details",}
+        return render(request, 'accountManagement/manageAccount.html', context)
     
     return render(request, 'accountManagement/manageAccount.html', context)
 

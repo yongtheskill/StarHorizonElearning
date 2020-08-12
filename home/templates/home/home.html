@@ -13,10 +13,11 @@
     <div class="full-height full-width valign-wrapper" style="filter: brightness(40%); background-image: url('{% static "img/homeBg.jpg" %}'); background-repeat: no-repeat; background-size: cover;  background-attachment: fixed; z-index: -10000;"></div>
     
     <div class="home-options center-align" style="position: absolute; top: 50%; left: 50%;  transform: translate(-50%, -50%);">
-            <h2 class="white-text" style="font-family: Raleway; font-weight: 800; padding-bottom: 30px;">GOTUTOR</h2>
             {% if user.is_authenticated %}
-            <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/logout">Log Out</a>
+            <h2 class="white-text" style="font-family: Raleway; font-weight: 800;">GOTUTOR</h2>
+            <h2 class="white-text" style="font-family: Raleway; font-weight: 800;">Welcome, {{ user.username }}</h2>
             {% else %}
+            <h2 class="white-text" style="font-family: Raleway; font-weight: 800; padding-bottom: 30px;">GOTUTOR</h2>
             <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/login">Log In</a>
             {% endif %}
     </div>
