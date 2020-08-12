@@ -30,7 +30,7 @@ AWS_DEFAULT_ACL = None
 AWS_S3_SECURE_URLS = True
 AWS_QUERYSTRING_EXPIRE = '18000'
 
-LIVE_EC2_ID = 'i-0505bd87c5c1fcd0f'
+LIVE_EC2_ID = 'i-0affe9ef2d03a04df'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
