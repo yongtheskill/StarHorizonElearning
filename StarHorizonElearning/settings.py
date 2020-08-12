@@ -153,3 +153,6 @@ AWS_S3_FILE_OVERWRITE = False
 
 DEFAULT_FILE_STORAGE = 'StarHorizonElearning.storage_backends.MediaStorage'
 MEDIA_URL = "https://%s.s3.amazonaws.com/media/" % (AWS_STORAGE_BUCKET_NAME)
+
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
