@@ -43,7 +43,7 @@ def createLiveLesson(request):
         moduleID = request.POST['moduleID']
 
         if not re.match(r"^[a-zA-Z1-9]+$", lessonName):
-            context = {"moduleObjects": Module.objects.all, "error": "No spaces or special characters are allowed in the lesson name"}
+            context = {"moduleObjects": Module.objects.all, "error": "No spaces or special characters or spaces are allowed in the lesson name"}
             return render(request, 'liveLesson/create.html', context)
 
         streamDate += streamTime
@@ -75,7 +75,7 @@ def createLiveLesson(request):
         return render(request, 'liveLesson/create.html', context)
 
 
-#livestream creation page
+#livestream edit page
 @login_required
 def editLiveLesson(request, StreamID):
     if request.user.accountType != 'Teacher':
