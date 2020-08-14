@@ -10,6 +10,8 @@ from quizzes.models import Quiz
 from fileUploads.models import FileUpload
 from liveLesson.models import LiveLesson
 
+import datetime
+
 # Create your views here.
 
 # Login Page
@@ -138,6 +140,11 @@ def classListView(request):
 
     classes = list(request.user.classes.all())
 
-    context = {"classes": classes, }
+    outstandingQuizzes = list(Quiz.objects.filter(quizDueDate__contains = datetime.date.today()))
+    outstandingLivelessons = list(LiveLesson.objects.filter(streamTime__contains = datetime.date.today()))
+    
+    #outstandingVideos = list(Videos.objects.filter())
+
+    context = {"classes": classes, "outstandingQuizzes": outstandingQuizzes, "outstandingLivelessons": outstandingLivelessons, }
 
     return render(request, 'accountManagement/classListView.html', context)
