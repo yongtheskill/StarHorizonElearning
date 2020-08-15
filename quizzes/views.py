@@ -112,6 +112,7 @@ def editQuiz(request, quizID):
         questionsJSON = request.POST['allQuestionsJSON']
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
 
+
         #find matching course
         assignedModID = request.POST["assignedModule"]
         assignedMod = Module.objects.get(pk=assignedModID)
@@ -122,7 +123,7 @@ def editQuiz(request, quizID):
         newQuiz.quizData = questionsJSON
         newQuiz.save()
         
-        context = {"modObjects": Module.objects.all, "notification": "Successfully edited quiz", }
+        context = {"quizObjects": Quiz.objects.all, "notification": "Successfully edited quiz", }
         return render(request, 'quizzes/manage.html', context)
 
 
