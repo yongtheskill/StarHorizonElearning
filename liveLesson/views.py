@@ -188,11 +188,11 @@ def cleanupLivestreamServer(request):
         #how many seconds in the future
         diffstTime = lessonObject.streamTime - nowTime
         diffendTime = lessonObject.streamEndTime - nowTime
-        if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < 600:
+        if diffendTime.total_seconds() > -300 and diffstTime.total_seconds() < 660:
             shouldStop = False
-            if diffstTime.total_seconds() < 480:
+            if diffstTime.total_seconds() < 600:
                 shouldStart = True
-        if diffendTime.total_seconds() < -604800:
+        if diffendTime.total_seconds() < -2880:
             lessonObject.delete()
 
 
