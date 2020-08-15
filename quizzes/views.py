@@ -118,7 +118,7 @@ def editQuiz(request, quizID):
 
         newQuiz = Quiz.objects.get(quizID=request.POST['quizID'])
         newQuiz.quizName = request.POST['quizName']
-        newQuiz.course = assignedMod
+        newQuiz.module = assignedMod
         newQuiz.quizData = questionsJSON
         newQuiz.save()
         
