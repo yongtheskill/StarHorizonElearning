@@ -26,4 +26,47 @@
     </tbody>
 </table>
 
+<br><br>
+
+<h3 class="center-align">Today's activities</h3>
+<br>
+
+<table>
+    <thead>
+        <th>Quizzes Due</th>
+        <th>Deadline</th>
+    </thead>
+
+    <tbody>
+        {% for i in outstandingQuizzes %}
+        <tr>
+            <td>
+                <a href="/quizzes/do/{{ i.quizID }}">{{ i.quizName }}</a>
+            </td>
+            <td>{{ i.quizDueDate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<br><br>
+
+<table>
+    <thead>
+        <th>Live Lessons</th>
+        <th>Time</th>
+    </thead>
+
+    <tbody>
+        {% for i in outstandingLivelessons %}
+        <tr>
+            <td>
+                <a href="/live/join/{{ i.streamID }}">{{ i.lessonName }}</a>
+            </td>
+            <td>{{ i.streamTime }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

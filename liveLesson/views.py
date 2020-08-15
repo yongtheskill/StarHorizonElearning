@@ -75,7 +75,7 @@ def createLiveLesson(request):
         return render(request, 'liveLesson/create.html', context)
 
 
-#livestream creation page
+#livestream edit page
 @login_required
 def editLiveLesson(request, StreamID):
     if request.user.accountType != 'Teacher':
