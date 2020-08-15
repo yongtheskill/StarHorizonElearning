@@ -122,11 +122,11 @@ def editQuiz(request, quizID):
         newQuiz.quizData = questionsJSON
         newQuiz.save()
         
-        context = {"quizObjects": Quiz.objects.all, "notification": "Successfully edited quiz", }
+        context = {"modObjects": Module.objects.all, "notification": "Successfully edited quiz", }
         return render(request, 'quizzes/manage.html', context)
 
 
     else:
-        context = {"courseObjects": Course.objects.all, "quizObject": Quiz.objects.get(quizID=quizID), }
+        context = {"modObjects": Module.objects.all, "quizObject": Quiz.objects.get(quizID=quizID), }
         return render(request, 'quizzes/edit.html', context)
     
