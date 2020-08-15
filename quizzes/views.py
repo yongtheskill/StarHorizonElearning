@@ -113,12 +113,12 @@ def editQuiz(request, quizID):
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
 
         #find matching course
-        assignedCourseID = request.POST["assignedCourse"]
-        assignedCourse = Course.objects.get(pk=assignedCourseID)
+        assignedModID = request.POST["assignedModule"]
+        assignedMod = Module.objects.get(pk=assignedModID)
 
         newQuiz = Quiz.objects.get(quizID=request.POST['quizID'])
         newQuiz.quizName = request.POST['quizName']
-        newQuiz.course = assignedCourse
+        newQuiz.course = assignedMod
         newQuiz.quizData = questionsJSON
         newQuiz.save()
         
