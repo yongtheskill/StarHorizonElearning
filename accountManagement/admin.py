@@ -4,6 +4,13 @@ from django import forms
 
 from .models import User, Course, StudentClass, Module
 
+
+from django.contrib.auth.models import Group
+
+admin.site.unregister(Group)
+
+
+
 # Register your models here.
 
 
