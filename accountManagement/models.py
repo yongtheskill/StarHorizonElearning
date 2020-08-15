@@ -32,6 +32,9 @@ class StudentClass(models.Model):
     classInstitution = models.CharField(max_length=200, verbose_name="institution", null=True)
     courses = models.ManyToManyField(Course, blank=True)
 
+    class Meta:
+        verbose_name_plural = "Classes"
+
     def __str__(self):
         return self.className
 

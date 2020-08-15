@@ -13,5 +13,8 @@ class Quiz(models.Model):
 
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name_plural = "Quizzes"
+
     def __str__(self):
          return self.quizName
