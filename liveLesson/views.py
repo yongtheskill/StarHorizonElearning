@@ -42,7 +42,7 @@ def createLiveLesson(request):
         streamDuration = request.POST['streamDuration']
         moduleID = request.POST['moduleID']
 
-        if not re.match(r"^[a-zA-Z1-9]+$", lessonName):
+        if not re.match(r"^[a-zA-Z0-9_]+$", lessonName):
             context = {"moduleObjects": Module.objects.all, "error": "No spaces or special characters are allowed in the lesson name"}
             return render(request, 'liveLesson/create.html', context)
 
@@ -232,15 +232,6 @@ def serverStatus(request):
 
 
 #server status check api
-def ongoingstream(request):
-    url = "https://live.gotutor.sg/#/"
-    try:
-        x = requests.get(url, timeout=4)
-    except:
-        return HttpResponse("Down")
-
-    print(x.status_code)
-    if x.status_code == 200:
-        return HttpResponse("Up")
-    else:
-        return HttpResponse("Down")
+def ongoingstream(request, StreamID):
+    context = {"isHome": True}
+    return render(request, 'home/home.html', context)

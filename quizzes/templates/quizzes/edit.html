@@ -35,13 +35,13 @@
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons text-accent-1 prefix">add</i>
-                    <select name="assignedCourse" required>
-                        <option value="" disabled>Select course for quiz</option>
-                        {% for i in courseObjects %}
-                        <option value="{{i.pk}}" {%if i == quizObject.course%}selected{%endif%}>{{i.courseName}}</option>
+                    <select name="assignedModule" required>
+                        <option value="" disabled>Select module for quiz</option>
+                        {% for i in modObjects %}
+                        <option value="{{i.pk}}" {%if i == quizObject.course%}selected{%endif%}>{{i.moduleName}}</option>
                         {% endfor %}
                     </select>
-                    <label>Assign quiz to course</label>
+                    <label>Assign quiz to module</label>
                 </div>  
             </div>
             <input hidden name="allQuestionsJSON" id="allQuestionsJSON"></input>
