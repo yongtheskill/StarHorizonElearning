@@ -9,6 +9,7 @@ urlpatterns = [
     path('join/<str:StreamID>', views.joinLiveLesson, name='joinLiveLesson'),
     path('serverStatus/', views.serverStatus, name='serverStatus'),
     path('cleanupLivestreamServer/', views.cleanupLivestreamServer, name='cleanupLivestreamServer'),
+    path('deleteStream/', views.deleteLiveLesson, name='deleteLiveLesson'),
     path('ongoingstream/<str:StreamID>/', views.ongoingstream, name='ongoingstream'),
     
 

@@ -8,4 +8,5 @@ urlpatterns = [
     path('view/<str:quizID>/', views.viewQuiz, name='viewQuiz'),
     path('edit/<str:quizID>/', views.editQuiz, name='editQuiz'),
     path('do/<str:quizID>/', views.doQuiz, name='doQuiz'),
+    path('deleteQuiz/', views.deleteQuiz, name='deleteQuiz'),
 ]

@@ -229,6 +229,21 @@ def serverStatus(request):
         return HttpResponse("Down")
     
 
+def deleteLiveLesson(request):
+    if request.method == 'POST':
+        
+        lessonName = request.POST['lessonName']
+        liveLesson = LiveLesson.objects.get(lessonName = lessonName)
+
+        liveLesson.delete()
+
+
+        context = {"lessonObjects": LiveLesson.objects.all, "notification": "Deleted live lesson"}
+        return render(request, 'liveLesson/manage.html', context)
+    else:
+        context = {"lessonObjects": LiveLesson.objects.all, "error": "unable to delete live lesson"}
+        return render(request, 'liveLesson/manage.html', context)
+
 
 
 #server status check api

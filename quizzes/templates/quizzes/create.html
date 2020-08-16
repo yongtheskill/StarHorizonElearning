@@ -32,6 +32,21 @@
                     <label class="black-text text-darken-4" for="id_quizID">Quiz ID</label>
                 </div>
             </div>    
+            
+            
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <i class="material-icons text-accent-1 prefix">today</i>
+                    <input type="text" name="dueDate" class="datepicker" id="id_dueDate" required>
+                    <label class="black-text" for="id_dueDate">Due Date</label>
+                </div>  
+                <div class="input-field col s12 m6">
+                    <i class="material-icons text-accent-1 prefix">schedule</i>
+                    <input type="text" name="dueTime" class="timepicker" id="id_dueTime" required>
+                    <label class="black-text" for="id_dueTime">Due Time</label>
+                </div>  
+            </div>
+
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons text-accent-1 prefix">add</i>
@@ -99,6 +114,13 @@ $( document ).ready(function() {
          }
     );
 });
+
+
+    $(document).ready(function(){
+        $('select').formSelect();
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+    });
 
 </script>
 {% endblock %}

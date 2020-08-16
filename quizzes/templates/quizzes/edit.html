@@ -32,6 +32,20 @@
                     <label class="black-text text-darken-4" for="id_quizID">Quiz ID</label>
                 </div>
             </div>    
+            
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <i class="material-icons text-accent-1 prefix">today</i>
+                    <input type="text" name="dueDate" class="datepicker" id="id_dueDate" value="{{ dueDate }}" required>
+                    <label class="black-text" for="id_dueDate">Due Date</label>
+                </div>  
+                <div class="input-field col s12 m6">
+                    <i class="material-icons text-accent-1 prefix">schedule</i>
+                    <input type="text" name="dueTime" class="timepicker" id="id_dueTime" value="{{ dueTime }}" required>
+                    <label class="black-text" for="id_dueTime">Due Time</label>
+                </div>  
+            </div>
+
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons text-accent-1 prefix">add</i>
@@ -73,6 +87,15 @@
     </div>
   </div>
 
+  <div class="row">
+        
+    <form method="post" action="/quizzes/deleteQuiz/" >{% csrf_token %}
+        <input name="quizID" value="{{ quizObject.quizID }}" hidden/>
+        <button class="btn red darken-2 right" type="submit" name="action">Delete
+            <i class="material-icons right">delete</i>
+        </button>
+    </form>
+</div>
 
 
 {% endblock %}
@@ -488,5 +511,10 @@ function submitForm() {
 }
 
 
+    $(document).ready(function(){
+        $('select').formSelect();
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+    });
 </script>
 {% endblock %}

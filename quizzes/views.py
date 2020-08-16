@@ -8,7 +8,7 @@ import json
 import re
 
 import pytz
-sgp = pytz.timezone('Asia/Singapore')
+sgt = pytz.timezone('Asia/Singapore')
 from datetime import datetime
 
 
@@ -42,6 +42,12 @@ def createQuiz(request):
     if request.method == 'POST':
         questionsJSON = request.POST['allQuestionsJSON']
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
+        
+        dueDate = request.POST['dueDate']
+        dueTime = request.POST['dueTime']
+
+        dueDate += dueTime
+        dueDateTime = datetime.strptime(dueDate, "%b %d, %Y%I:%M %p")
 
         #find matching course
         assignedModuleID = request.POST["assignedModule"]
@@ -50,6 +56,7 @@ def createQuiz(request):
         newQuiz = Quiz()
         newQuiz.quizName = request.POST['quizName']
         newQuiz.quizID = request.POST['quizID']
+        newQuiz.quizDueDate = sgt.localize(dueDateTime)
         newQuiz.module = assignedModule
         newQuiz.quizData = questionsJSON
         newQuiz.save()
@@ -111,6 +118,12 @@ def editQuiz(request, quizID):
     if request.method == 'POST':
         questionsJSON = request.POST['allQuestionsJSON']
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
+        
+        dueDate = request.POST['dueDate']
+        dueTime = request.POST['dueTime']
+
+        dueDate += dueTime
+        dueDateTime = datetime.strptime(dueDate, "%b %d, %Y%I:%M %p")
 
 
         #find matching course
@@ -119,6 +132,7 @@ def editQuiz(request, quizID):
 
         newQuiz = Quiz.objects.get(quizID=request.POST['quizID'])
         newQuiz.quizName = request.POST['quizName']
+        newQuiz.quizDueDate = sgt.localize(dueDateTime)
         newQuiz.module = assignedMod
         newQuiz.quizData = questionsJSON
         newQuiz.save()
@@ -128,6 +142,29 @@ def editQuiz(request, quizID):
 
 
     else:
-        context = {"modObjects": Module.objects.all, "quizObject": Quiz.objects.get(quizID=quizID), }
+        quizObj = Quiz.objects.get(quizID=quizID)
+
+        dueDate = sgt.normalize(quizObj.quizDueDate).strftime("%b %d, %Y")
+        dueTime = sgt.normalize(quizObj.quizDueDate).strftime("%I:%M %p")
+
+        context = {"modObjects": Module.objects.all, "quizObject": quizObj, "dueDate": dueDate, "dueTime": dueTime, }
         return render(request, 'quizzes/edit.html', context)
     
+
+def deleteQuiz(request):
+    if request.method == 'POST':
+        
+        quizID = request.POST['quizID']
+        quiz = Quiz.objects.get(quizID = quizID)
+
+        quiz.delete()
+
+
+        context = {"quizObjects": Quiz.objects.all, "notification": "Deleted quiz", }
+
+        return render(request, 'quizzes/manage.html', context)
+
+    else:
+        context = {"quizObjects": Quiz.objects.all, "error": "unable to delete quiz", }
+
+        return render(request, 'quizzes/manage.html', context)

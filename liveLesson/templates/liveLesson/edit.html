@@ -67,8 +67,18 @@
             <i class="material-icons right">send</i>
         </button>
     </div>
-
 </form>
+
+    <div class="row">
+        
+        <form method="post" action="/live/deleteStream/" >{% csrf_token %}
+            <input name="lessonName" value="{{ lesson.lessonName }}" hidden/>
+            <button class="btn red darken-2" type="submit" name="action">Delete
+                <i class="material-icons right">delete</i>
+            </button>
+        </form>
+    </div>
+
 
 
 

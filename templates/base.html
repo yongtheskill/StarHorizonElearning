@@ -174,11 +174,11 @@
           {% if onModalCloseRedirect %}
           onclick: function(window.location.replace("{{ onModalCloseRedirect }}"));
           {% endif %}
-        });
-        // Invoke success notification
-        successNotification({ 
-            message: '{{error}}' 
-        });
+          });
+          // Invoke success notification
+          successNotification({ 
+              message: '{{error}}' 
+          });
         {% endif %}
         {% if notification %}
         const successNotification = window.createNotification({

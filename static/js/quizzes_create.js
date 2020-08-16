@@ -339,8 +339,19 @@ function convertToJSON() {
 }
 
 function submitForm() {
-    convertToJSON();
-    $("#quizDataForm").submit();
+    if(questions.length > 0){
+        convertToJSON();
+        $("#quizDataForm").submit();
+    }
+    else{
+        const errorNotification = window.createNotification({
+            theme: 'warning',
+        });
+        // Invoke success notification
+        errorNotification({ 
+            message: 'Please add at least one question' 
+        });
+    }
 }
 
 
