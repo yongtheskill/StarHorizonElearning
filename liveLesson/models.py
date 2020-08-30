@@ -10,6 +10,7 @@ class LiveLesson(models.Model):
     streamTime = models.DateTimeField()
     streamDuration = models.DurationField()
     streamEndTime = models.DateTimeField()
+    creationDate = models.DateTimeField(auto_now_add=True)
 
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
 

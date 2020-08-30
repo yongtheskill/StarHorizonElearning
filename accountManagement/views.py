@@ -10,7 +10,9 @@ from quizzes.models import Quiz
 from fileUploads.models import FileUpload
 from liveLesson.models import LiveLesson
 
-import datetime
+import pytz
+sgt = pytz.timezone('Asia/Singapore')
+from datetime import date, datetime, timedelta
 
 # Create your views here.
 
@@ -116,10 +118,11 @@ def courseView(request, courseId):
     modules = list(Module.objects.filter(courses = courseId))
 
     for module in modules:
-        module.quizzes = list(Quiz.objects.filter(module = module))
-        module.videoLessons = list(Video.objects.filter(module = module))
-        module.fileUploads = list(FileUpload.objects.filter(module = module))
-        module.liveLessons = list(LiveLesson.objects.filter(module = module))
+        module.quizzesNew, module.quizzesOld = newnessChecker( list(Quiz.objects.filter(module = module)) )
+        module.videoLessonsNew, module.videoLessonsOld = newnessChecker( list(Video.objects.filter(module = module)) )
+        module.fileUploadsNew, module.fileUploadsOld = newnessChecker( list(FileUpload.objects.filter(module = module)) )
+        module.liveLessonsNew, module.liveLessonsOld = newnessChecker( list(LiveLesson.objects.filter(module = module)) )
+
 
     context = {"course": course, "classes": classes, "modules": modules, }
 
@@ -140,11 +143,32 @@ def classListView(request):
 
     classes = list(request.user.classes.all())
 
-    outstandingQuizzes = list(Quiz.objects.filter(quizDueDate__contains = datetime.date.today()))
-    outstandingLivelessons = list(LiveLesson.objects.filter(streamTime__contains = datetime.date.today()))
+    outstandingQuizzes = list(Quiz.objects.filter(quizDueDate__contains = date.today()))
+    outstandingLivelessons = list(LiveLesson.objects.filter(streamTime__contains = date.today()))
     
     #outstandingVideos = list(Videos.objects.filter())
 
     context = {"classes": classes, "outstandingQuizzes": outstandingQuizzes, "outstandingLivelessons": outstandingLivelessons, }
 
     return render(request, 'accountManagement/classListView.html', context)
+
+
+
+
+def newnessChecker(materialList):
+    # Used in courseview page
+    # Detects what course materials are new (within 2 days), places them on top of the list
+    today = sgt.localize(datetime.today())
+    
+    timeLimit = today-timedelta(hours=48)
+
+    oldMaterials = []
+    newMaterials = []
+
+    for material in materialList:
+        if material.creationDate > timeLimit:
+            newMaterials.append(material)
+        else:
+            oldMaterials.append(material)
+    
+    return newMaterials, oldMaterials
