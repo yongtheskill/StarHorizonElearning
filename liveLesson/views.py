@@ -250,3 +250,9 @@ def deleteLiveLesson(request):
 def ongoingstream(request, StreamID):
     context = {"isHome": True}
     return render(request, 'home/home.html', context)
+
+    
+    
+
+def exitStream(request):
+    return render(request, 'liveLesson/exit.html')
