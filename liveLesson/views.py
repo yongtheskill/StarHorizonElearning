@@ -238,9 +238,23 @@ def deleteLiveLesson(request):
 
 
 
-#server status check api
 def ongoingstream(request, StreamID):
-    context = {"isHome": True}
+    
+    username = urllib.parse.quote(request.user.username)
+
+    if request.user.accountType == 'Teacher':
+        startTime = LiveLesson.objects.get(lessonName = StreamID).streamTime
+        ttl = startTime - sgt.localize(datetime.now())
+        ttl = ttl.total_seconds() - 180
+
+        endTime = LiveLesson.objects.get(lessonName = StreamID).streamEndTime
+        endTime = endTime.timestamp() * 1000
+        endTime -= 300000
+
+
+
+
+    context = {"isHome": True, "ttl": ttl, "StreamID": StreamID, "usr": username, "timeToCheck": endTime, "isongoingstream": True}
     return render(request, 'home/home.html', context)
 
     
