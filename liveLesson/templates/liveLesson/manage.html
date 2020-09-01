@@ -99,7 +99,7 @@ th, td {
         // Let's check whether notification permissions have already been granted
         else if (Notification.permission === "granted") {
             // If it's okay let's create a notification
-            var notification = new Notification(title="Your lesson is about to end in 5 minutes!", body="Click on this notification to extend it.");
+            var notification = new Notification({title:"Your lesson is about to end in 5 minutes!", body:"Click on this notification to extend it."});
             notification.onclick = function(){window.open("https://gotutor.sg/live/extend/{{ liveLessonID }}");}
         }
 
