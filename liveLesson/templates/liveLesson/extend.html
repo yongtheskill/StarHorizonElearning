@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Live Lessons{% endblock %}
+
+
+{% block css %}    
+<style>
+/* list styling */
+ul.collection {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+th, td {
+    text-align: center;
+}
+
+/* Add Button */
+.addQuizBtn {
+  float: right;
+  padding-top: 20px;
+}
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<h2 class="center-align">Your live lesson has been extended</h2>
+<div class="center-align flow-text">Note: are only able to extend live lessons once. As you have just extended it by 15 minutes, you will not be able to extend it again.</div>
+
+<div class="row center-align" style="margin-top: 100px;">
+    <a class="btn accent-1" href="/live/">Back to live lessons
+        <i class="material-icons left">arrow_back_ios</i>
+    </a>
+</div>
+{% endblock %}
+
+
+
+
+{% block javascript %}
+
+{% endblock %}

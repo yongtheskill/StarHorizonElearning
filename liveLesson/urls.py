@@ -11,6 +11,7 @@ urlpatterns = [
     path('cleanupLivestreamServer/', views.cleanupLivestreamServer, name='cleanupLivestreamServer'),
     path('deleteStream/', views.deleteLiveLesson, name='deleteLiveLesson'),
     path('ongoingstream/<str:StreamID>/', views.ongoingstream, name='ongoingstream'),
+    path('extend/<str:StreamID>/', views.extendStream, name='extendStream'),
     path('exitStream/', views.exitStream, name='exitStream'),
     
 

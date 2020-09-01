@@ -74,45 +74,4 @@ th, td {
 
 {% block javascript %}
 
-<script>
-    // request permission on page load
-    document.addEventListener('DOMContentLoaded', function() {
-    if (!Notification) {
-        alert('Desktop notifications not available in your browser. Try Chromium.');
-        return;
-    }
-
-    if (Notification.permission !== 'granted')
-        Notification.requestPermission();
-    });
-
-    
-
-
-
-    function sendNotif() {
-        // Let's check if the browser supports notifications
-        if (!("Notification" in window)) {
-            alert("This browser does not support desktop notification");
-        }
-
-        // Let's check whether notification permissions have already been granted
-        else if (Notification.permission === "granted") {
-            // If it's okay let's create a notification
-            var notification = new Notification("Your lesson is about to end in 5 minutes!", {body: "Click on this notification to extend it."});
-            notification.onclick = function(){window.open("https://gotutor.sg/live/extend/{{ liveLessonID }}");}
-        }
-
-        // Otherwise, we need to ask the user for permission
-        else if (Notification.permission !== "denied") {
-            Notification.requestPermission().then(function (permission) {
-            // If the user accepts, let's create a notification
-            if (permission === "granted") {
-                var notification = new Notification("Hi there!");
-            }
-            });
-        }
-    }
-
-</script>
 {% endblock %}

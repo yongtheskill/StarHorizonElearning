@@ -139,22 +139,14 @@ def joinLiveLesson(request, StreamID):
     username = urllib.parse.quote(request.user.username)
 
     if request.user.accountType == 'Teacher':
-        """
-        ec2 = boto3.resource('ec2', region_name="ap-southeast-1", aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-
-        liveInstance = ec2.Instance(settings.LIVE_EC2_ID)
-        if liveInstance.state['Name'] == 'running':
-            isRunning = True
-        else:
-            isRunning = False
-
-        if not isRunning:
-            liveInstance.start()
-            print("starting instance...")
-        """
         startTime = LiveLesson.objects.get(lessonName = StreamID).streamTime
         ttl = startTime - sgt.localize(datetime.now())
         ttl = ttl.total_seconds() - 180
+
+        endTime = LiveLesson.objects.get(lessonName = StreamID).streamEndTime
+        endTime = endTime.timestamp() * 1000
+        endTime -= 300000
+
 
     
     else:
@@ -163,7 +155,7 @@ def joinLiveLesson(request, StreamID):
         ttl = ttl.total_seconds()
 
         
-    context = {"ttl": ttl, "StreamID": StreamID, "usr": username, }
+    context = {"ttl": ttl, "StreamID": StreamID, "usr": username, "timeToCheck": endTime}
 
     return render(request, 'liveLesson/join.html', context)
 
@@ -256,3 +248,14 @@ def ongoingstream(request, StreamID):
 
 def exitStream(request):
     return render(request, 'liveLesson/exit.html')
+
+
+def extendStream(request, StreamID):
+    liveLesson = LiveLesson.objects.get(lessonName = StreamID)
+
+    endTime = liveLesson.streamEndTime
+    newEndTime = endTime + timedelta(minutes=15)
+
+    liveLesson.streamEndTime = newEndTime
+    liveLesson.save()
+    return render(request, 'liveLesson/extend.html')
