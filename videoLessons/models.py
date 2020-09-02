@@ -10,7 +10,7 @@ class Video(models.Model):
     additionalComments = models.CharField(max_length=5000, verbose_name="additional comments", null=True) 
     videoFile = models.FileField(storage=MediaStorage()) 
     #the url to be linked for students to go to after watching the video
-    afterAction = models.CharField(max_length=200, verbose_name="action to take after video")
+    afterAction = models.CharField(max_length=200, verbose_name="action to take after video", null=True)
     completeionURL = models.CharField(max_length=1000, verbose_name="url to go to after completion", null=True) 
     creationDate = models.DateTimeField(auto_now_add=True)
 
