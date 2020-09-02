@@ -34,7 +34,6 @@ def manageVideoLessons(request):
             videoName = request.POST["videoName"]
             additionalComments = request.POST["additionalComments"]
             videoID = request.POST["videoID"]
-            afterAction = request.POST["afterAction"]
 
             #validate that video name is unique
             if (Video.objects.filter(videoName=videoName).exists()):
@@ -73,7 +72,6 @@ def manageVideoLessons(request):
                 newVideo.additionalComments = additionalComments
                 newVideo.videoID = videoID
                 newVideo.videoFile = request.FILES['videoFile']
-                newVideo.afterAction = afterAction
                 newVideo.completeionURL = "nothing for now"
                 newVideo.module = assignedMod
                 newVideo.save()
