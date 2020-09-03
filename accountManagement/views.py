@@ -141,12 +141,17 @@ def individualAccountView(request, userId):
 @login_required
 def classListView(request):
 
-    classes = list(request.user.classes.all())
+    user = User.objects.get(id = userId)
 
-    outstandingQuizzes = list(Quiz.objects.filter(quizDueDate__contains = date.today()))
-    outstandingLivelessons = list(LiveLesson.objects.filter(streamTime__contains = date.today()))
-    
-    #outstandingVideos = list(Videos.objects.filter())
+    classes = list(request.user.classes.all())
+    courses = list(request.user.courses.all())
+
+    for course in courses:
+        modules = list(Modules.objects.filter(course = course))
+
+        for module in modules:
+            outstandingQuizzes = list(Quiz.objects.filter(module = module, quizDueDate__contains = date.today()))
+            outstandingLivelessons = list(LiveLesson.objects.filter(module = module, streamTime__contains = date.today()))
 
     context = {"classes": classes, "outstandingQuizzes": outstandingQuizzes, "outstandingLivelessons": outstandingLivelessons, }
 
