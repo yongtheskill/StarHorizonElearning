@@ -118,7 +118,8 @@ $( document ).ready(function() {
 
     $(document).ready(function(){
         $('select').formSelect();
-        $('.datepicker').datepicker();
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, {defaultDate: new Date(), setDefaultDate: true} );
         $('.timepicker').timepicker();
     });
 

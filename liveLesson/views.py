@@ -98,7 +98,6 @@ def editLiveLesson(request, StreamID):
         streamDuration = timedelta(minutes = float(streamDuration))
 
         streamEndTime = streamDateTime + streamDuration
-        print(type(streamDateTime))
 
         module = Module.objects.get(pk = moduleID)
 
@@ -119,8 +118,8 @@ def editLiveLesson(request, StreamID):
     else:
         lessonObj = LiveLesson.objects.get(lessonName = StreamID)
 
-        startDate = lessonObj.streamTime.strftime("%b %d, %Y")
-        startTime = lessonObj.streamTime.strftime("%I:%M %p")
+        startDate = sgt.normalize(lessonObj.streamTime).strftime("%b %d, %Y")
+        startTime = sgt.normalize(lessonObj.streamTime).strftime("%I:%M %p")
 
         duration = lessonObj.streamDuration.total_seconds() / 60
         if duration % 1 == 0:
