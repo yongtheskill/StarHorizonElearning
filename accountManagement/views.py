@@ -104,8 +104,9 @@ def classView(request, classId):
     teachers = list(User.objects.filter(classes = classId, accountType = "Teacher"))
     students = list(User.objects.filter(classes = classId, accountType = "Student"))
     courses = list(studentClass.courses.all())
+    liveLessonsNew, liveLessonsOld = newnessChecker( list(LiveLesson.objects.filter(studentClass = classId)) )
 
-    context = {"class": studentClass, "teachers": teachers, "students": students, "courses": courses, }
+    context = {"class": studentClass, "teachers": teachers, "students": students, "courses": courses, "liveLessonsNew": liveLessonsNew, "liveLessonsOld": liveLessonsOld, }
 
     return render(request, 'accountManagement/classView.html', context)
 
@@ -115,13 +116,12 @@ def courseView(request, courseId):
 
     course = Course.objects.get(id = courseId)
     classes = list(StudentClass.objects.filter(courses = courseId))
-    modules = list(Module.objects.filter(courses = courseId))
+    modules = list(Module.objects.filter(course = courseId))
 
     for module in modules:
         module.quizzesNew, module.quizzesOld = newnessChecker( list(Quiz.objects.filter(module = module)) )
         module.videoLessonsNew, module.videoLessonsOld = newnessChecker( list(Video.objects.filter(module = module)) )
         module.fileUploadsNew, module.fileUploadsOld = newnessChecker( list(FileUpload.objects.filter(module = module)) )
-        module.liveLessonsNew, module.liveLessonsOld = newnessChecker( list(LiveLesson.objects.filter(module = module)) )
 
 
     context = {"course": course, "classes": classes, "modules": modules, }

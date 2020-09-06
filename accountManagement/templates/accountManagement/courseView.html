@@ -120,32 +120,6 @@
         {% endfor %}
     </tbody>
 
-    <thead>
-        <th>Live Lessons</th>
-        <th>Stream Date</th>
-        <th></th>
-    </thead>
-
-    <tbody>
-        {% for j in i.liveLessonsNew %}
-        <tr>
-            <td>
-                <a href="/live/join/{{ j.streamID }}">{{ j.lessonName }}</a>
-            </td>
-            <td>{{ j.streamTime }}</td>
-            <td style="color: red">New</td>
-        </tr>
-        {% endfor %}
-        {% for j in i.liveLessonsOld %}
-        <tr>
-            <td>
-                <a href="/live/join/{{ j.streamID }}">{{ j.lessonName }}</a>
-            </td>
-            <td>{{ j.streamTime }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-
 </table>
 {% endfor %}
 

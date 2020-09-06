@@ -82,4 +82,34 @@
     </tbody>
 </table>
 
+<br><br>
+<h4>Live Lessons</h4>
+<hr>
+<table class="striped responsive-table">
+    <thead>
+        <th>Live Lesson</th>
+        <th>Stream Time</th>
+    </thead>
+
+    <tbody>
+        {% for i in liveLessonsNew %}
+        <tr>
+            <td>
+                <a href="/live/join/{{ i.streamID }}">{{ i.lessonName }}</a>
+            </td>
+            <td>{{ i.streamTime }}</td>
+            <td style="color: red">New</td>
+        </tr>
+        {% endfor %}
+        {% for i in liveLessonsOld %}
+        <tr>
+            <td>
+                <a href="/live/join/{{ i.streamID }}">{{ i.lessonName }}</a>
+            </td>
+            <td>{{ i.streamTime }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}
