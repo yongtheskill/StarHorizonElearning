@@ -13,6 +13,8 @@ class Course(models.Model):
     courseInstitution = models.CharField(max_length=200, verbose_name="institution", null=True)
     courseDescription = models.CharField(max_length=5000, verbose_name="course description", null=True, default=None)
 
+    courseCode = models.CharField(max_length=200, verbose_name="course code", null=True)
+
     quizTags = models.CharField(max_length=5000)
 
     def setTags(self, x):
