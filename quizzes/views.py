@@ -36,7 +36,12 @@ def createQuiz(request):
     for module in modules:
         module.tags = module.courses.quizTags
 
-    context = {"quizIDtoUse": "quiz%s" % (timestamp), "moduleObjects": modules, }
+
+
+    courseObjects = list(Course.objects.all())
+    courseIDs = [i.id for i in courseObjects]
+
+    context = {"quizIDtoUse": "quiz%s" % (timestamp), "courseObjects": courseObjects, "courseIDs": courseIDs ,"moduleObjects": modules, }
     
     #if submitting form
     if request.method == 'POST':
@@ -147,7 +152,11 @@ def editQuiz(request, quizID):
         dueDate = sgt.normalize(quizObj.quizDueDate).strftime("%b %d, %Y")
         dueTime = sgt.normalize(quizObj.quizDueDate).strftime("%I:%M %p")
 
-        context = {"modObjects": Module.objects.all, "quizObject": quizObj, "dueDate": dueDate, "dueTime": dueTime, }
+        
+        courseObjects = list(Course.objects.all())
+        courseIDs = [i.id for i in courseObjects]
+
+        context = {"courseObjects": courseObjects, "courseIDs": courseIDs ,"modObjects": Module.objects.all, "quizObject": quizObj, "dueDate": dueDate, "dueTime": dueTime, }
         return render(request, 'quizzes/edit.html', context)
     
 

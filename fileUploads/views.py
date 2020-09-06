@@ -31,7 +31,10 @@ def uploadFile(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 
-    baseContext = {"fileIDtoUse": "file%s" % (timestamp), "moduleObjects": Module.objects.all, }
+    courseObjects = list(Course.objects.all())
+    courseIDs = [i.id for i in courseObjects]
+
+    baseContext = {"fileIDtoUse": "file%s" % (timestamp), "courseObjects": courseObjects, "courseIDs": courseIDs ,"moduleObjects": Module.objects.all, }
     
     #if uploadig file
     if request.method == 'POST':

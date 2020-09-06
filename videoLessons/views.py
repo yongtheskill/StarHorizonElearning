@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 import re
 
 from .models import Video
-from accountManagement.models import Module
+from accountManagement.models import Module, Course
 
 import pytz
 sgp = pytz.timezone('Asia/Singapore')
@@ -18,7 +18,10 @@ def manageVideoLessons(request):
     nowTime = datetime.now()
     timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
 
-    baseContext = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp), "moduleObjects": Module.objects.all, }
+    courseObjects = list(Course.objects.all())
+    courseIDs = [i.id for i in courseObjects]
+
+    baseContext = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp), "courseObjects": courseObjects, "courseIDs": courseIDs ,"moduleObjects": Module.objects.all, }
 
     if request.user.accountType != 'Teacher':
         context = {"notAuthorised": True}

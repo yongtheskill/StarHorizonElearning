@@ -46,18 +46,35 @@
                 </div>  
             </div>
 
+
             <div class="row">
+                <!--select course-->
                 <div class="input-field col s12 m6">
                     <i class="material-icons text-accent-1 prefix">add</i>
-                    <select name="assignedModule" required>
-                        <option value="" disabled>Select module for quiz</option>
-                        {% for i in modObjects %}
-                        <option value="{{i.pk}}" {%if i == quizObject.course%}selected{%endif%}>{{i.moduleName}}</option>
+                    <select id="courseSelect" name="courseSelector" onchange="selectUpdated()" required>
+                        <option value="" disabled selected>Select Course</option>
+                        {% for i in courseObjects %}
+                        <option value="{{i.pk}}">{{i.courseName}}</option>
                         {% endfor %}
                     </select>
-                    <label>Assign quiz to module</label>
+                    <label>Select Course</label>
                 </div>  
+                {% for i in courseIDs %}
+                    <div class="input-field col s12 m6 courseSelectDiv" id="course{{ i }}">
+                        <i class="material-icons text-accent-1 prefix">add</i>
+                        <select id="moduleSelect" name="assignedModule" required>
+                            <option value="" disabled selected>Select module for the quiz</option>
+                            {% for j in modObjects %}
+                                {% if j.courses.id == i %}
+                                    <option value="{{j.pk}}" class="courseId{{j.courses.id}} courseIdOption" {%if i == quizObject.course%}selected{%endif%}>{{j.moduleName}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <label>Assign quiz to module</label>
+                    </div>  
+                {% endfor %}
             </div>
+
             <input hidden name="allQuestionsJSON" id="allQuestionsJSON"></input>
         </form>
 
@@ -516,5 +533,28 @@ function submitForm() {
         $('.datepicker').datepicker();
         $('.timepicker').timepicker();
     });
+
+
+
+
+    $( document ).ready(function() {
+        $('select').formSelect();
+        $('.courseSelectDiv').hide();
+    });
+
+    var modules = {
+        {% for i in moduleObjects %}
+            {{i.courses.id}}: "{{i.moduleName}}",
+        {% endfor %}
+    };
+
+    function selectUpdated(){
+        // get selected course module
+        var selectedCourseID = $("#courseSelect").val();
+        // set module selections
+        $('.courseSelectDiv').hide();
+        $("#course" + selectedCourseID).show(400, "swing");
+    }
+
 </script>
 {% endblock %}

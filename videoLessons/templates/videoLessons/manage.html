@@ -123,6 +123,36 @@
                     </div>
                 </div>
 
+
+                <div class="row">
+                    <!--select course-->
+                    <div class="input-field col s12 m6">
+                        <i class="material-icons text-accent-1 prefix">add</i>
+                        <select id="courseSelect" name="courseSelector" onchange="selectUpdated()" required>
+                            <option value="" disabled selected>Select Course</option>
+                            {% for i in courseObjects %}
+                            <option value="{{i.pk}}">{{i.courseName}}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Select Course</label>
+                    </div>  
+                    {% for i in courseIDs %}
+                        <div class="input-field col s12 m6 courseSelectDiv" id="course{{ i }}">
+                            <i class="material-icons text-accent-1 prefix">add</i>
+                            <select id="moduleSelect" name="assignedMod" required>
+                                <option value="" disabled selected>Select module for the video</option>
+                                {% for j in moduleObjects %}
+                                    {% if j.courses.id == i %}
+                                        <option value="{{j.pk}}" class="courseId{{j.courses.id}} courseIdOption">{{j.moduleName}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label>Assign video to module</label>
+                        </div>  
+                    {% endfor %}
+                </div>
+
+
                 <div class="row">
                     <div class="col s12 m6">
                         <div class="file-field input-field">
@@ -135,61 +165,7 @@
                             </div>
                         </div>
                     </div>
-                        <div class="input-field col s12 m6">
-                            <select name="assignedMod" required>
-                                <option value="" disabled selected>Select module for video</option>
-                                {% for i in moduleObjects %}
-                                <option value="{{i.pk}}">{{i.moduleName}}</option>
-                                {% endfor %}
-                            </select>
-                            <label>Assign video to module</label>
-                        </div>  
-                    </div>
                 </div>
-                <!--
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <select required>
-                            <option selected>None</option>
-                            <option>Quiz</option>
-                            <option>Next Video</option>
-                        </select>
-                        <label>Action to do after video</label>
-                    </div>  
-                    <div id="quizSelect" class="input-field col s12 m6" hidden>
-                        <select>
-                          <option value="1">Quiz 1</option>
-                          <option value="1">Quiz 2</option>
-                          <option value="1">Quiz 3</option>
-                          <option value="1">Quiz 4</option>
-                          <option value="1">Quiz 5</option>
-                          <option value="1">Quiz 6</option>
-                          <option value="1">Quiz 7</option>
-                          <option value="1">Quiz 8</option>
-                          <option value="1">Quiz 9</option>
-                          <option value="1">Quiz 10</option>
-                        </select>
-                        <label>Select Quiz</label>
-                    </div>
-                    <div id="videoSelect" class="input-field col s12 m6" hidden>
-                        <select>
-                          <option value="1">Video 1</option>
-                          <option value="1">Video 2</option>
-                          <option value="1">Video 3</option>
-                          <option value="1">Video 4</option>
-                          <option value="1">Video 5</option>
-                          <option value="1">Video 6</option>
-                          <option value="1">Video 7</option>
-                          <option value="1">Video 8</option>
-                          <option value="1">Video 9</option>
-                          <option value="1">Video 10</option>
-                        </select>
-                        <label>Select Video</label>
-                    </div>
-                </div>
-
-                <input id="afterActionInput" name="afterAction" value="none" hidden/>
-                -->
 
                 <button class="btn accent-1" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
@@ -236,49 +212,6 @@
                     <label class="black-text" for="id_additionalComments">Additional Comments</label>
                     </div>
                 </div>
-                <!--
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <select required>
-                        <option selected>None</option>
-                        <option>Quiz</option>
-                        <option>Next Video</option>
-                        </select>
-                        <label>Action to do after video</label>
-                    </div>  
-                    <div id="quizSelect" class="input-field col s12 m6" hidden>
-                        <select>
-                          <option value="1">Quiz 1</option>
-                          <option value="1">Quiz 2</option>
-                          <option value="1">Quiz 3</option>
-                          <option value="1">Quiz 4</option>
-                          <option value="1">Quiz 5</option>
-                          <option value="1">Quiz 6</option>
-                          <option value="1">Quiz 7</option>
-                          <option value="1">Quiz 8</option>
-                          <option value="1">Quiz 9</option>
-                          <option value="1">Quiz 10</option>
-                        </select>
-                        <label>Select Quiz</label>
-                    </div>
-                    <div id="videoSelect" class="input-field col s12 m6" hidden>
-                        <select>
-                          <option value="1">Video 1</option>
-                          <option value="1">Video 2</option>
-                          <option value="1">Video 3</option>
-                          <option value="1">Video 4</option>
-                          <option value="1">Video 5</option>
-                          <option value="1">Video 6</option>
-                          <option value="1">Video 7</option>
-                          <option value="1">Video 8</option>
-                          <option value="1">Video 9</option>
-                          <option value="1">Video 10</option>
-                        </select>
-                        <label>Select Video</label>
-                    </div>
-                </div>
-                <input id="afterActionInput" name="afterAction" value="none" hidden/>
-            -->
 
                 <button class="btn accent-1" type="submit" name="action">Submit
                     <i class="material-icons right">send</i>
@@ -371,6 +304,29 @@ function setToEdit(selectedVideoID){
 
         M.updateTextFields();
     }
+
+
+
+
+    $( document ).ready(function() {
+        $('select').formSelect();
+        $('.courseSelectDiv').hide();
+    });
+
+    var modules = {
+        {% for i in moduleObjects %}
+            {{i.courses.id}}: "{{i.moduleName}}",
+        {% endfor %}
+    };
+
+    function selectUpdated(){
+        // get selected course module
+        var selectedCourseID = $("#courseSelect").val();
+        // set module selections
+        $('.courseSelectDiv').hide();
+        $("#course" + selectedCourseID).show(400, "swing");
+    }
+
 
 
 </script>
