@@ -35,6 +35,7 @@ class StudentClassAdmin(admin.ModelAdmin):
         ('Details', {'fields':('classInstitution', 'courses', 'id')}),
     )
 
+    filter_horizontal = ('courses',)
     def __str__(self):
         return self.className
 
@@ -91,6 +92,8 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('username', 'password1', 'password2', 'email', 'phoneNumber', 'first_name', 'last_name', 'accountType', 'institution', 'classes',)}
         ),
     )
+    filter_horizontal = ('classes',)
+
     
     def __str__(self):
         return self.username    
