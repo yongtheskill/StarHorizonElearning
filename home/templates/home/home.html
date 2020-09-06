@@ -5,6 +5,15 @@
 
 {% block css %}
 <link type="text/css" rel="stylesheet" href="{% static "home/home.css" %}"/>
+
+<style>
+
+    .gotutor-logo{
+        height: 200px;
+    }
+
+</style>
+
 {% endblock %}
 
 {% block fullWidthContent %}
@@ -14,8 +23,8 @@
     
     <div class="home-options center-align" style="position: absolute; top: 50%; left: 50%;  transform: translate(-50%, -50%);">
             {% if user.is_authenticated %}
-            <h2 class="white-text" style="font-family: Raleway; font-weight: 800;">GOTUTOR</h2>
-            <h2 class="white-text" style="font-family: Raleway; font-weight: 800;">Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
+            <img class="gotutor-logo" src="{% static "img/gotutorLogoOnly.png" %}" alt="Gotutor Logo">
+            <h2 class="white-text" style="font-family: Raleway; font-weight: 800; margin-top: 0;">Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
             {% else %}
             <h2 class="white-text" style="font-family: Raleway; font-weight: 800; padding-bottom: 30px;">GOTUTOR</h2>
             <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/login">Log In</a>
