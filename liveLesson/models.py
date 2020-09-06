@@ -1,5 +1,5 @@
 from django.db import models
-from accountManagement.models import Module
+from accountManagement.models import StudentClass
 
 # Create your models here.
 class LiveLesson(models.Model):
@@ -12,7 +12,7 @@ class LiveLesson(models.Model):
     streamEndTime = models.DateTimeField()
     creationDate = models.DateTimeField(auto_now_add=True)
 
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    studentClass = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
 
     def __str__(self):
          return self.lessonName

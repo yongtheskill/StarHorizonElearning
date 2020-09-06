@@ -44,7 +44,7 @@ class ModuleAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {'fields': ('moduleName',)}),
-        ('Details', {'fields':('courses', 'id', )}),
+        ('Details', {'fields':('course', 'id', )}),
     )
 
     def __str__(self):
