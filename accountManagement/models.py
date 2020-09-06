@@ -43,7 +43,7 @@ class StudentClass(models.Model):
 class Module(models.Model):
 
     moduleName = models.CharField(max_length=200, verbose_name="module name")
-    courses = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.moduleName
