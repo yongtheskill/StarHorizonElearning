@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
-from accountManagement.models import Module
+from accountManagement.models import StudentClass
 from .models import LiveLesson
 
 import requests
@@ -40,10 +40,10 @@ def createLiveLesson(request):
         streamDate = request.POST['streamDate']
         streamTime = request.POST['streamTime']
         streamDuration = request.POST['streamDuration']
-        moduleID = request.POST['moduleID']
+        classID = request.POST['classID']
 
         if not re.match(r"^[a-zA-Z0-9_]+$", lessonName):
-            context = {"moduleObjects": Module.objects.all, "error": "No spaces or special characters are allowed in the lesson name"}
+            context = {"classObjects": StudentClass.objects.all, "error": "No spaces or special characters are allowed in the lesson name"}
             return render(request, 'liveLesson/create.html', context)
 
         streamDate += streamTime
@@ -54,7 +54,7 @@ def createLiveLesson(request):
         streamEndTime = streamDateTime + streamDuration
         print(type(streamDateTime))
 
-        module = Module.objects.get(pk = moduleID)
+        studentClass = StudentClass.objects.get(pk = classID)
 
         newLiveLesson = LiveLesson()
         newLiveLesson.lessonName = lessonName
@@ -63,7 +63,7 @@ def createLiveLesson(request):
         newLiveLesson.streamTime = sgt.localize(streamDateTime)
         newLiveLesson.streamDuration = streamDuration
         newLiveLesson.streamEndTime = sgt.localize(streamEndTime)
-        newLiveLesson.module = module
+        newLiveLesson.studentClass = studentClass
         newLiveLesson.save()
         
         context = {"lessonObjects": LiveLesson.objects.all, "notification": "Successfully created live lesson"}
@@ -71,7 +71,7 @@ def createLiveLesson(request):
 
 
     else:
-        context = {"moduleObjects": Module.objects.all, }
+        context = {"classObjects": StudentClass.objects.all, }
         return render(request, 'liveLesson/create.html', context)
 
 
@@ -90,7 +90,7 @@ def editLiveLesson(request, StreamID):
         streamDate = request.POST['streamDate']
         streamTime = request.POST['streamTime']
         streamDuration = request.POST['streamDuration']
-        moduleID = request.POST['moduleID']
+        classID = request.POST['classID']
 
         streamDate += streamTime
         streamDateTime = datetime.strptime(streamDate, "%b %d, %Y%I:%M %p")
@@ -99,7 +99,7 @@ def editLiveLesson(request, StreamID):
 
         streamEndTime = streamDateTime + streamDuration
 
-        module = Module.objects.get(pk = moduleID)
+        studentClass = StudentClass.objects.get(pk = classID)
 
         newLiveLesson = LiveLesson.objects.get(lessonName = lessonName)
         newLiveLesson.lessonName = lessonName
@@ -108,7 +108,7 @@ def editLiveLesson(request, StreamID):
         newLiveLesson.streamTime = sgt.localize(streamDateTime)
         newLiveLesson.streamDuration = streamDuration
         newLiveLesson.streamEndTime = sgt.localize(streamEndTime)
-        newLiveLesson.module = module
+        newLiveLesson.studentClass = studentClass
         newLiveLesson.save()
         
         context = {"lessonObjects": LiveLesson.objects.all, "notification": "Successfully edited live lesson"}
@@ -127,7 +127,7 @@ def editLiveLesson(request, StreamID):
         else:
             duration = str(duration)
 
-        context = {"lesson": lessonObj, "startDate": startDate, "startTime": startTime, "duration": duration, "moduleObjects": Module.objects.all, }
+        context = {"lesson": lessonObj, "startDate": startDate, "startTime": startTime, "duration": duration, "classObjects": StudentClass.objects.all, }
         return render(request, 'liveLesson/edit.html', context)
 
 

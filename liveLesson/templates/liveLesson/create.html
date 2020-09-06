@@ -52,13 +52,13 @@
             <label class="black-text" for="id_streamDuration">Stream Duration (minutes)</label>
         </div>  
         <div class="input-field col s12 m6">
-            <select name="moduleID" required>
-                <option value="" disabled selected>Select module for lesson</option>
-                {% for i in moduleObjects %}
-                <option value="{{i.pk}}">{{i.moduleName}}</option>
+            <select name="classID" required>
+                <option value="" disabled selected>Select class for lesson</option>
+                {% for i in classObjects %}
+                <option value="{{i.pk}}">{{i.className}}</option>
                 {% endfor %}
             </select>
-            <label>Assign lesson to module</label>
+            <label>Assign lesson to class</label>
         </div>  
     </div>
 
