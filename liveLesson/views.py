@@ -19,8 +19,10 @@ sgt = pytz.timezone("Asia/Singapore")
 #livestream management page
 @login_required
 def manageLiveLessons(request):
-
-    context = {"lessonObjects": LiveLesson.objects.all, }
+    teacherClasses = request.user.classes.all()
+    print(teacherClasses)
+    livelessonObjs = [i for i in LiveLesson.objects.all() if i.studentClass in teacherClasses]
+    context = {"lessonObjects": livelessonObjs, }
 
     return render(request, 'liveLesson/manage.html', context)
 

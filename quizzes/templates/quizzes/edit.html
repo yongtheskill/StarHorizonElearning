@@ -65,8 +65,8 @@
                         <select id="moduleSelect" name="assignedModule" required>
                             <option value="" disabled selected>Select module for the quiz</option>
                             {% for j in modObjects %}
-                                {% if j.courses.id == i %}
-                                    <option value="{{j.pk}}" class="courseId{{j.courses.id}} courseIdOption" {%if i == quizObject.course%}selected{%endif%}>{{j.moduleName}}</option>
+                                {% if j.course.id == i %}
+                                    <option value="{{j.pk}}" class="courseId{{j.course.id}} courseIdOption" {%if i == quizObject.course%}selected{%endif%}>{{j.moduleName}}</option>
                                 {% endif %}
                             {% endfor %}
                         </select>
@@ -544,7 +544,7 @@ function submitForm() {
 
     var modules = {
         {% for i in moduleObjects %}
-            {{i.courses.id}}: "{{i.moduleName}}",
+            {{i.course.id}}: "{{i.moduleName}}",
         {% endfor %}
     };
 

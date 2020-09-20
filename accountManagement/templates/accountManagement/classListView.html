@@ -28,9 +28,12 @@
 
 <br><br>
 
+{% if outstandingQuizzes or outstandingLivelessons%}
 <h3 class="center-align">Today's activities</h3>
 <br>
+{% endif %}
 
+{% if outstandingQuizzes %}
 <table>
     <thead>
         <th>Quizzes Due</th>
@@ -48,9 +51,10 @@
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
 <br><br>
-
+{% if outstandingLivelessons %}
 <table>
     <thead>
         <th>Live Lessons</th>
@@ -68,5 +72,6 @@
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
 {% endblock %}

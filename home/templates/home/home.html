@@ -80,32 +80,6 @@
 
 {% block javascript %}
 {% load static %}
-<!-- change navbar colours based on scroll -->
-<script>
-    
-    function navbarColour() {
-        var light_pos = $(window).height();
-        var menu_pos = $('.nav-wrapper').offset().top;
-        var menu_height = $('.nav-wrapper').height();
-        var scroll = $(window).scrollTop();
-        
-        if(menu_pos >= light_pos) {
-            $('.navlinks').addClass('black-text');
-            $('.navlinks').removeClass('text-primary');
-            $(".brand-logo").attr("src", "{% static "img/gotutorTextOnly.png" %}")
-        }
-        else {
-            $('.navlinks').addClass('text-primary');
-            $('.navlinks').removeClass('black-text');
-            $(".brand-logo").attr("src", "{% static "img/gotutorTextOnly.png" %}")
-        }
-    }
-    
-    window.onload = navbarColour;
-
-    $(window).scroll( navbarColour )
-
-</script>
 
 
 {% if isongoingstream %}

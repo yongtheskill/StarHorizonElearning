@@ -147,6 +147,8 @@ def classListView(request):
 
         outstandingLivelessons = list(LiveLesson.objects.filter(studentClass = studentClass, streamTime__contains = date.today()))
         
+        livelessonObjs = [i for i in outstandingLivelessons if i.studentClass in classes]
+        
         for course in studentClass.courses.all():
             modules = list(Module.objects.filter(course = course))
 

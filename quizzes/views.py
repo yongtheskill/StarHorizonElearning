@@ -34,7 +34,7 @@ def createQuiz(request):
 
     modules = Module.objects.all()
     for module in modules:
-        module.tags = module.courses.quizTags
+        module.tags = module.course.quizTags
 
 
 
