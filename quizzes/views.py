@@ -45,6 +45,12 @@ def createQuiz(request):
     
     #if submitting form
     if request.method == 'POST':
+        if Quiz.objects.filter(quizID=request.POST['quizID']):
+            context = {"quizObjects": Quiz.objects.all, "error": "This quiz ID is already being used, please avoid refreshing the page."}
+            return render(request, 'quizzes/manage.html', context)
+
+
+
         questionsJSON = request.POST['allQuestionsJSON']
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
         
@@ -57,6 +63,7 @@ def createQuiz(request):
         #find matching course
         assignedModuleID = request.POST["assignedModule"]
         assignedModule = Module.objects.get(pk=assignedModuleID)
+
 
         newQuiz = Quiz()
         newQuiz.quizName = request.POST['quizName']

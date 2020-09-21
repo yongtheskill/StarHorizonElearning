@@ -26,7 +26,8 @@
             <img class="gotutor-logo" src="{% static "img/gotutorLogoOnly.png" %}" alt="Gotutor Logo">
             <h2 class="white-text" style="font-family: Raleway; font-weight: 800; margin-top: 0;">Welcome, {{ user.first_name }} {{ user.last_name }}</h2>
             {% else %}
-            <h2 class="white-text" style="font-family: Raleway; font-weight: 800; padding-bottom: 30px;">GOTUTOR</h2>
+            <img class="gotutor-logo" src="{% static "img/gotutorLogoOnly.png" %}" alt="Gotutor Logo">
+            <h2 class="white-text" style="padding-bottom: 1px;"></h2>
             <a class="waves-effect waves-light btn-large login-button accent-2 black-text" href="/login">Log In</a>
             {% endif %}
     </div>

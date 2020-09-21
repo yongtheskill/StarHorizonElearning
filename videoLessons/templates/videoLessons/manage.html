@@ -128,7 +128,7 @@
                     <!--select course-->
                     <div class="input-field col s12 m6">
                         <i class="material-icons text-accent-1 prefix">add</i>
-                        <select id="courseSelect" name="courseSelector" onchange="selectUpdated()" required>
+                        <select id="courseSelect" name="courseSelector" onchange="selectUpdated()">
                             <option value="" disabled selected>Select Course</option>
                             {% for i in courseObjects %}
                             <option value="{{i.pk}}">{{i.courseName}}</option>
@@ -139,7 +139,7 @@
                     {% for i in courseIDs %}
                         <div class="input-field col s12 m6 courseSelectDiv" id="course{{ i }}">
                             <i class="material-icons text-accent-1 prefix">add</i>
-                            <select id="moduleSelect" name="assignedMod" required>
+                            <select id="moduleSelect" name="assignedMod">
                                 <option value="" disabled selected>Select module for the video</option>
                                 {% for j in moduleObjects %}
                                     {% if j.course.id == i %}
