@@ -47,33 +47,6 @@
             </div>
 
 
-            <div class="row">
-                <!--select course-->
-                <div class="input-field col s12 m6">
-                    <i class="material-icons text-accent-1 prefix">add</i>
-                    <select id="courseSelect" name="courseSelector" onchange="selectUpdated()" required>
-                        <option value="" disabled selected>Select Course</option>
-                        {% for i in courseObjects %}
-                        <option value="{{i.pk}}">{{i.courseName}}</option>
-                        {% endfor %}
-                    </select>
-                    <label>Select Course</label>
-                </div>  
-                {% for i in courseIDs %}
-                    <div class="input-field col s12 m6 courseSelectDiv" id="course{{ i }}">
-                        <i class="material-icons text-accent-1 prefix">add</i>
-                        <select id="moduleSelect" name="assignedModule" required>
-                            <option value="" disabled selected>Select module for the quiz</option>
-                            {% for j in modObjects %}
-                                {% if j.course.id == i %}
-                                    <option value="{{j.pk}}" class="courseId{{j.course.id}} courseIdOption" {%if i == quizObject.course%}selected{%endif%}>{{j.moduleName}}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                        <label>Assign quiz to module</label>
-                    </div>  
-                {% endfor %}
-            </div>
 
             <input hidden name="allQuestionsJSON" id="allQuestionsJSON"></input>
         </form>

@@ -218,6 +218,15 @@
                 </button>
 
             </form>
+            <div class="row">
+        
+                <form method="post" action="/videoLessons/deleteVideo/" >{% csrf_token %}
+                    <input readonly class="grey-text text-darken-1" type="text" name="videoID" id="id_videoID2" value="" required hidden>
+                    <button class="btn red darken-2 right" type="submit" name="action">Delete
+                        <i class="material-icons right">delete</i>
+                    </button>
+                </form>
+            </div>
         </div>
     
     </div>
@@ -287,6 +296,7 @@ function goToEditPage(videoIDtoEdit) {
 
 function setToEdit(selectedVideoID){
         $("#editForm input#id_videoID").val(selectedVideoID);
+        $("input#id_videoID2").val(selectedVideoID);
         $("#editForm input#id_videoID").addClass("active");
 
         if (false){}

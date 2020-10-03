@@ -139,13 +139,10 @@ def editQuiz(request, quizID):
 
 
         #find matching course
-        assignedModID = request.POST["assignedModule"]
-        assignedMod = Module.objects.get(pk=assignedModID)
 
         newQuiz = Quiz.objects.get(quizID=request.POST['quizID'])
         newQuiz.quizName = request.POST['quizName']
         newQuiz.quizDueDate = sgt.localize(dueDateTime)
-        newQuiz.module = assignedMod
         newQuiz.quizData = questionsJSON
         newQuiz.save()
         

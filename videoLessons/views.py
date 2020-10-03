@@ -66,8 +66,12 @@ def manageVideoLessons(request):
 
 
                 #find matching mod
-                assignedModID = request.POST["assignedMod"]
-                assignedMod = Module.objects.get(pk=assignedModID)
+                try:
+                    assignedModID = request.POST["assignedMod"]
+                    assignedMod = Module.objects.get(pk=assignedModID)
+                except:                    
+                    context = {**baseContext, "error":"Please provide a module.", }
+                    return render(request, 'videoLessons/manage.html', context)
 
                 #create project with entered values
                 newVideo = Video()
@@ -84,12 +88,51 @@ def manageVideoLessons(request):
 
         #if editing video
         if request.POST["managementAction"] == "edit":  
-            print (request.POST)
+            #get values from submitted form
+            additionalComments = request.POST["additionalComments"]
+            videoID = request.POST["videoIDToEdit"]
+
+            #validate that video name is unique
+            if (Video.objects.filter(videoID=videoID).exists()):
+
+                #create project with entered values
+                newVideo = Video.objects.get(videoID=videoID)
+
+                newVideo.additionalComments = additionalComments
+                newVideo.save()
+                #return success
+                context = {**baseContext, "notification": "Video: %s successfully edited!" % (newVideo.videoName), }
+                return render(request, 'videoLessons/manage.html', context)   
 
 
     else:
         #return empty form
         context = {**baseContext,}
+        return render(request, 'videoLessons/manage.html', context)
+
+
+def deleteVideo(request):
+    nowTime = datetime.now()
+    timestamp = nowTime.strftime("%Y-%m-%d-%H-%M")
+    
+    courseObjects = list(Course.objects.all())
+    courseIDs = [i.id for i in courseObjects]
+
+    if request.method == 'POST':
+        
+        videoID = request.POST['videoID']
+        video = Video.objects.get(videoID = videoID)
+
+        video.delete()
+
+
+        context = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp), "courseObjects": courseObjects, "courseIDs": courseIDs ,"moduleObjects": Module.objects.all, "notification": "Deleted video", }
+
+        return render(request, 'videoLessons/manage.html', context)
+
+    else:
+        context = {"videoLessonObjects": Video.objects.all, "videoIDtoUse": "vid%s" % (timestamp), "courseObjects": courseObjects, "courseIDs": courseIDs ,"moduleObjects": Module.objects.all, "error": "unable to delete video", }
+
         return render(request, 'videoLessons/manage.html', context)
 
 
