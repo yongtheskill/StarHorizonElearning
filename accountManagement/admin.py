@@ -13,6 +13,14 @@ admin.site.unregister(Group)
 
 # Register your models here.
 
+class ModuleInline(admin.TabularInline):
+    model = Module
+    extra = 0
+    max_num = 0
+    readonly_fields = ('moduleName',)
+    can_delete = False
+
+
 
 class CourseAdmin(admin.ModelAdmin):
 
@@ -22,6 +30,7 @@ class CourseAdmin(admin.ModelAdmin):
         (None, {'fields': ('courseName',)}),
         ('Details', {'fields': ('courseInstitution', 'courseDescription', 'quizTags', 'id')}),
     )
+    inlines=[ModuleInline,]
 
     def __str__(self):
         return self.courseName

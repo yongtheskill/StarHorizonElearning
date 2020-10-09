@@ -155,7 +155,6 @@ def classListView(request):
             for module in modules:
                 outstandingQuizzes = list(Quiz.objects.filter(module = module, quizDueDate__contains = date.today()))
 
-    print(classes, outstandingLivelessons)
 
     context = {"classes": classes, "outstandingQuizzes": outstandingQuizzes, "outstandingLivelessons": outstandingLivelessons, }
 
