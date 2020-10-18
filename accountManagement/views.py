@@ -121,8 +121,25 @@ def courseView(request, courseId):
     classes = list(StudentClass.objects.filter(courses = courseId))
     modules = list(Module.objects.filter(course = courseId))
 
+
+
     for module in modules:
-        module.quizzesNew, module.quizzesOld = newnessChecker( list(Quiz.objects.filter(module = module)) )
+        allQuizzes = list(Quiz.objects.filter(module = module))
+
+
+        user = request.user
+        quizResponseJSON = user.quizResponses
+        if quizResponseJSON and "__________RESPONSESPLITTER__________" in quizResponseJSON:
+            allQuizResponses = quizResponseJSON.split("__________RESPONSESPLITTER__________")[1:]
+
+            for i in allQuizResponses:
+                for j in allQuizzes:
+
+                    if j.quizName == json.loads(i)[0]["quizName"]:
+                        allQuizzes.remove(j)
+
+
+        module.quizzesNew, module.quizzesOld = newnessChecker( allQuizzes )
         module.videoLessonsNew, module.videoLessonsOld = newnessChecker( list(Video.objects.filter(module = module)) )
         module.fileUploadsNew, module.fileUploadsOld = newnessChecker( list(FileUpload.objects.filter(module = module)) )
 
@@ -177,7 +194,6 @@ def classListView(request):
 
             for module in modules:
                 outstandingQuizzes = list(Quiz.objects.filter(module = module, quizDueDate__contains = date.today()))
-
 
     context = {"classes": classes, "outstandingQuizzes": outstandingQuizzes, "outstandingLivelessons": outstandingLivelessons, }
 
