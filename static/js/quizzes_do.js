@@ -14,11 +14,18 @@ class QuestionResponse {
         this._____var__questionType = x;
     }
 
-    get checkboxData(){
-        return this._____var__checkboxData;
+    get checkboxValues(){
+        return this._____var__checkboxValues;
     }
-    set checkboxData(x){
-        this._____var__checkboxData = x;
+    set checkboxValues(x){
+        this._____var__checkboxValues = x;
+    }
+
+    get stuedntCheckboxValues(){
+        return this._____var__stuedntCheckboxValues;
+    }
+    set stuedntCheckboxValues(x){
+        this._____var__stuedntCheckboxValues = x;
     }
 
     get isAutoGraded(){
@@ -47,6 +54,13 @@ class QuestionResponse {
     }
     set questionID(x){
         this._____var__questionID = x;
+    }
+
+    get correctAnswer(){
+        return this._____var__correctAnswer;
+    }
+    set correctAnswer(x){
+        this._____var__correctAnswer = x;
     }
 
     get isCorrect(){
@@ -82,17 +96,17 @@ function saAnsChanged(qID) {
 function cbAnsChanged(qID, checkboxIndex) {
     let question = questionResponses.find((o, i) => {
         if (o.questionID === qID) {
-            var currentCheckboxValues = questionResponses[i].checkboxValues;
+            var currentCheckboxValues = questionResponses[i].studentCheckboxValues;
             var optionChanged = questionResponses[i].questionOptions[checkboxIndex];
             currentCheckboxValues[optionChanged] = !currentCheckboxValues[optionChanged];
-            questionResponses[i].checkboxValues = currentCheckboxValues;
+            questionResponses[i].studentCheckboxValues = currentCheckboxValues;
             var responses = [];
             for (j = 0; j < currentCheckboxValues.length; j++) {
                 if (currentCheckboxValues[j] === true) {
                     responses.push(Object.keys(currentCheckboxValues)[j]);
                 }
             }
-            if (questionResponses[i].isAutoGraded === true && responses === questionResponses[i].correctAnswer){
+            if (questionResponses[i].isAutoGraded === true && JSON.stringify(questionResponses[i].studentCheckboxValues) === JSON.stringify(questionResponses[i].checkboxValues)){
                 questionResponses[i].isCorrect = true;
             } else if (questionResponses[i].isAutoGraded === true){
                 questionResponses[i].isCorrect = false;
@@ -103,6 +117,10 @@ function cbAnsChanged(qID, checkboxIndex) {
 }
 
 
+
+function setQuizName(quizName){
+    questionResponses.push({"quizName": quizName});
+}
 
 
 function renderQuizQuestions(quizJSON) {
@@ -115,13 +133,13 @@ function renderQuizQuestions(quizJSON) {
         newQuestionResponse = new QuestionResponse(questionsData[k].questionType, questionsData[k].questionID);
 
         if (questionsData[k].questionType == "cb"){
-            var checkboxData = questionsData[k].checkboxValues;
-            for (i = 0; i < checkboxData.length; i++){
-                checkboxData[i] = false;
-            }
-            newQuestionResponse.checkboxData = checkboxData;
+            newQuestionResponse.checkboxValues = questionsData[k].checkboxValues;
+            newQuestionResponse.studentCheckboxValues = questionsData[k].studentCheckboxValues;
             newQuestionResponse.questionOptions = questionsData[k].questionOptions;
         }
+
+        newQuestionResponse.isAutoGraded = questionsData[k].isAutoGraded;
+        newQuestionResponse.correctAnswer = questionsData[k].correctAnswer;
 
         questionResponses.push(newQuestionResponse);
     }

@@ -38,6 +38,7 @@
 
 <script>
 $( document ).ready(function() {
+    setQuizName("{{ quizObject.quizName }}");
     $('div#allQuesitonsContainer').html(renderQuizQuestions('{{ quizObject.quizData |safe }}'));
     $('select').formSelect();
 });

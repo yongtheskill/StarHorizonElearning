@@ -61,7 +61,7 @@ class User(AbstractUser):
     accountType = models.CharField(verbose_name="account type", max_length=16, choices=ACC_TYPES, default="Administrator")
     classes = models.ManyToManyField(StudentClass, blank=True)
 
-    quizResponses = models.CharField(max_length=1000000000, verbose_name="quizResponses", null=True)
+    quizResponses = models.CharField(max_length=1000000000, verbose_name="quizResponses", null=True, blank=True)
     
 
     def __str__(self):

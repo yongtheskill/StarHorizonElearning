@@ -50,6 +50,13 @@ class Question {
         this._____var__checkboxValues = x;
     }
 
+    get studentCheckboxValues(){
+        return this._____var__studentCheckboxValues;
+    }
+    set studentCheckboxValues(x){
+        this._____var__studentCheckboxValues = x;
+    }
+
     get marksAwarded(){
         return this._____var__marksAwarded;
     }
@@ -120,7 +127,9 @@ function chipsEdited(qID){
             checkboxData = {};
         }
         var newCheckboxData = {};
+        var studentCheckboxData = {};
         for (i = 0; i < parsedChipsData.length; i++){
+            studentCheckboxData[parsedChipsData[i]] = false;
             if (parsedChipsData[i] in checkboxData){
                 newCheckboxData[parsedChipsData[i]] = checkboxData[parsedChipsData[i]];
             }
@@ -130,6 +139,8 @@ function chipsEdited(qID){
         }
         
         question.checkboxValues = newCheckboxData;
+        console.log(studentCheckboxData);
+        question.studentCheckboxValues = studentCheckboxData;
     }
 
     question.questionOptions = parsedChipsData;
@@ -250,7 +261,7 @@ function saValidationChanged(qID) {
 function mcValidationChanged(qID) {
     let question = questions.find((o, i) => {
         if (o.questionID === qID) {
-            questions[i].correctAnswer = $(`#validationAnswer${qID}`).val();
+            questions[i].correctAnswer = questions[i].questionOptions[parseInt($(`#validationAnswer${qID}`).val())];
             return true; // stop searching
         }
     });

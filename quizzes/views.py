@@ -54,6 +54,10 @@ def createQuiz(request):
         questionsJSON = request.POST['allQuestionsJSON']
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
         
+        if not (request.POST['dueDate']!='' and request.POST['dueTime']!='' and request.POST["assignedModule"] and request.POST["assignedModule"]!='' and request.POST['quizName']!=''):
+            context = {"quizObjects": Quiz.objects.all, "error": "Please fill in all fields."}
+            return render(request, 'quizzes/manage.html', context)
+
         dueDate = request.POST['dueDate']
         dueTime = request.POST['dueTime']
 
@@ -102,6 +106,7 @@ def doQuiz(request, quizID):
 
         userId = request.user.id
         user = User.objects.get(id = userId)
+        currentQuizResponses = user.quizResponses
         if currentQuizResponses != None:
             currentQuizResponses = str(user.quizResponses)
         else:

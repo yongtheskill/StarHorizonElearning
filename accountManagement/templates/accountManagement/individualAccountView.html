@@ -56,4 +56,31 @@
     </tbody>
 
 </table>
+
+{% if user.accountType == "Teacher" and quizResults %}
+    <br><br>
+    <h4 class="left-align">Classes</h4>
+    <hr> 
+
+    <table>
+        
+        <thead>
+            <th>Quiz Name</th>
+            <th>score</th>
+        </thead>
+
+        <tbody>
+            {% for quizName, score in quizResults.items %}
+            <tr>
+                <td>
+                    {{ quizName }}
+                </td>
+                <td>{{ score }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p style="padding-top: 50px;"></p>
+{% endif %}
 {% endblock %}

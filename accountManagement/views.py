@@ -14,6 +14,9 @@ import pytz
 sgt = pytz.timezone('Asia/Singapore')
 from datetime import date, datetime, timedelta
 
+import json
+import re
+
 # Create your views here.
 
 # Login Page
@@ -128,15 +131,35 @@ def courseView(request, courseId):
 
     return render(request, 'accountManagement/courseView.html', context)
 
+
+
+
 @login_required
 def individualAccountView(request, userId):
 
     user = User.objects.get(id = userId)
     classes = list(user.classes.all())
 
-    context = {"tempUser": user, "classes": classes, }
+    quizResponseJSON = user.quizResponses
+    if quizResponseJSON and "__________RESPONSESPLITTER__________" in quizResponseJSON:
+        allQuizResponses = quizResponseJSON.split("__________RESPONSESPLITTER__________")[1:]
+
+        quizResults = {}
+        for i in allQuizResponses:
+            fullScore = len(re.findall(r'"isCorrect":', i))
+            score = len(re.findall(r'"isCorrect":true', i))
+
+            quizResults[json.loads(i)[0]["quizName"]] = "{}/{}".format(score, fullScore)
+        context = {"tempUser": user, "classes": classes, "quizResults": quizResults}
+    else:
+        context = {"tempUser": user, "classes": classes}
+
+
 
     return render(request, 'accountManagement/individualAccountView.html', context)
+
+
+
 
 @login_required
 def classListView(request):
