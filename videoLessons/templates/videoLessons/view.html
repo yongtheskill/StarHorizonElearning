@@ -36,7 +36,7 @@
     <div class="col s12">
         <div class="valign-wrapper">
             <div class="customContainer">
-                    <video class="responsive-video" controls controlsList="nodownload">
+                    <video class="responsive-video" controls controlsList="nodownload" id="noContextMenu">
                         <source src="{{ videoObject.videoFile.url }}" type="video/mp4"/>
                         Video expired, please reload page
                     </video>
@@ -54,6 +54,12 @@
 
 
 {% block javascript %}
+<script>
+noContext = document.getElementById('noContextMenu');
 
+noContext.addEventListener('contextmenu', e => {
+  e.preventDefault();
+});
+</script>
 
 {% endblock %}
