@@ -4,3 +4,4 @@ boto3==1.13.10
 python-decouple==3.3
 Pillow==7.2.0
 requests==2.24.0
+humanize==3.1.0

@@ -92,6 +92,7 @@ class UserAdmin(BaseUserAdmin):
         ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'phoneNumber', 'accountType', 'institution', 'profilePic', )}),
         ('Course info', {'fields': ('classes', )}),
         ('Quiz Responses', {'fields': ('quizResponses', )}),
+        ('Time Online', {'fields': ('timeOnline', )}),
         ('Permissions', {'fields': ('is_staff','groups',)}),
         #('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions', )}),
     )

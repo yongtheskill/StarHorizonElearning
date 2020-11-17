@@ -227,6 +227,18 @@
       </script>
 
     {% endif %}
+
+    {% if user.is_authenticated %}
+    <script>
+      $(document).ready(function(){
+        setInterval(addTime, 10000);
+      });
+
+      function addTime() {
+        fetch("/addTime/{{ user.username }}");
+      }
+    </script>
+    {% endif %}
     </main>
   
 

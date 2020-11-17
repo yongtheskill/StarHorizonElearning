@@ -14,6 +14,8 @@ import pytz
 sgt = pytz.timezone('Asia/Singapore')
 from datetime import date, datetime, timedelta
 
+import humanize
+
 import json
 import re
 
@@ -157,6 +159,11 @@ def individualAccountView(request, userId):
     user = User.objects.get(id = userId)
     classes = list(user.classes.all())
 
+    if user.timeOnline:
+        timeOnline = humanize.naturaldelta(user.timeOnline)
+    else:
+        timeOnline = "0 minutes"
+
     quizResponseJSON = user.quizResponses
     if quizResponseJSON and "__________RESPONSESPLITTER__________" in quizResponseJSON:
         allQuizResponses = quizResponseJSON.split("__________RESPONSESPLITTER__________")[1:]
@@ -167,9 +174,9 @@ def individualAccountView(request, userId):
             score = len(re.findall(r'"isCorrect":true', i))
 
             quizResults[json.loads(i)[0]["quizName"]] = "{}/{}".format(score, fullScore)
-        context = {"tempUser": user, "classes": classes, "quizResults": quizResults}
+        context = {"tempUser": user, "classes": classes, "quizResults": quizResults, "timeOnline": timeOnline}
     else:
-        context = {"tempUser": user, "classes": classes}
+        context = {"tempUser": user, "classes": classes, "timeOnline": timeOnline}
 
 
 
