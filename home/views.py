@@ -31,6 +31,10 @@ def addTime(request, username):
     return HttpResponse("Done")
 
 
+def whiteboard(request):
+    return render(request, 'home/whiteboard.html', {})
+
+
 #data demo
 def dataDemo(request):
     return render(request, 'home/dataDemo.html', {})
