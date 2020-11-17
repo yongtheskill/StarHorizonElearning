@@ -21,7 +21,7 @@
         <div class="indeterminate white"></div>
     </div>
 </div>
-<a class="popupBlocked" onclick="setTimeout(function(){window.location.replace('{% if user.accountType == "Teacher" %}/live/ongoingstream/{{ StreamID }}/{% else %}/{% endif %}');}, 1000); " style="display: none;" href="https://live.gotutor.sg/#/{{ StreamID }}?usr={{ usr }}" target="_blank">Click here to join if you are unable to enable popups</a>
+<a class="popupBlocked" onclick="setTimeout(function(){window.location.replace('{% if user.accountType == "Teacher" %}/live/ongoingstream/{{ StreamID }}/{% else %}/{% endif %}');}, 1000); " style="display: none;" href="https://live.gotutor.sg/#/{{ StreamID }}?usr={{ usr }}{% if user.accountType == "Teacher" %}&tchr=true{% endif %}" target="_blank">Click here to join if you are unable to enable popups</a>
 
 
 
@@ -133,7 +133,7 @@ function waitToJoin() {
             console.log(data);
             if(data === "Up"){
                 console.log("yes");
-                var win = window.open("https://live.gotutor.sg/#/{{ StreamID }}?usr={{ usr }}", "_blank");
+                var win = window.open("https://live.gotutor.sg/#/{{ StreamID }}?usr={{ usr }}{% if user.accountType == "Teacher" %}&tchr=true{% endif %}", "_blank");
                 if (win) {
                     //Browser has allowed it to be opened
                     win.focus();
