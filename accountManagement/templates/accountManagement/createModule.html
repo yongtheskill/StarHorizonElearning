@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Module{% endblock %}
+
+
+{% block css %}
+<link type="text/css" rel="stylesheet" href="{% static "css/quizzes.css" %}" />
+{% endblock %}
+
+
+
+{% block content %}
+<a class="waves-effect waves-black btn-flat" onclick="window.history.back();"><i class="material-icons left" style="margin-right: 0px;">arrow_back_ios</i>Back</a>
+
+
+<h2 class="center-align">Create Module</h2>
+
+
+<div class="row">
+    <div class="col s12">
+        <form id="fileUploadForm" method="post" enctype="multipart/form-data" >{% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons text-accent-1 prefix">mode_edit</i>
+                    <input class="black-text" type="text" name="moduleName" id="id_moduleName" autofocus required>
+                    <label class="black-text" for="id_moduleName">Module Name</label>
+                </div>
+            </div>    
+
+
+            <div class="row">
+                <button class="btn accent-1" type="submit" name="action">Create
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+
+    </div>
+  </div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<script>
+
+    $( document ).ready(function() {
+        $('select').formSelect();
+        $('.courseSelectDiv').hide();
+    });
+
+    var modules = {
+        {% for i in moduleObjects %}
+            {{i.course.id}}: "{{i.moduleName}}",
+        {% endfor %}
+    };
+
+    function selectUpdated(){
+        // get selected course module
+        var selectedCourseID = $("#courseSelect").val();
+        // set module selections
+        $('.courseSelectDiv').hide();
+        $("#course" + selectedCourseID).show(400, "swing");
+    }
+
+</script>
+{% endblock %}

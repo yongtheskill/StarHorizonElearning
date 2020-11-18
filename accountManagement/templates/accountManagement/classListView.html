@@ -26,6 +26,16 @@
     </tbody>
 </table>
 
+
+{% if user.accountType == 'Teacher' %}
+<!-- add button -->
+<div class="addBtn">
+    <a class="btn-floating btn-large accent-1" href="/classes/create">
+        <i class="large material-icons">note_add</i>
+    </a>
+</div>
+{% endif %}
+
 <br><br>
 
 {% if outstandingQuizzes or outstandingLivelessons%}

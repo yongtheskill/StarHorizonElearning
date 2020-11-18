@@ -27,6 +27,15 @@
     </tbody>
 </table>
 
+{% if user.accountType == 'Teacher' %}
+<!-- add button -->
+<div class="addBtnClose">
+    <a class="btn-floating btn-large accent-1" href="/course/create/{{ class.id }}">
+        <i class="large material-icons">note_add</i>
+    </a>
+</div>
+{% endif %}
+
 <br><br>
 <h4>People</h4>
 <hr>

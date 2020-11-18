@@ -30,8 +30,17 @@
 </table>
 {% endif %}
 <br><br>
-<h4>Modules</h4>
+<div class="row">
+    <div class="col s10">
+        <h4>Modules</h4> 
+    </div>
+    <div class="col s2">
+        <a class="btn-floating btn-large accent-1 right" href="/module/create/{{ course.id }}"><i class="large material-icons">note_add</i></a>
+    </div>
+</div>
 <hr>
+
+
 
 {% for i in modules %}
 <br>
@@ -44,12 +53,13 @@
         <col style="width: fit-content">
     </colgroup>
 
+
+    {% if i.quizzesNew or i.quizzesOld %}
     <thead>
         <th>Quizzes</th>
         <th>Due Date</th>
         <th></th>
     </thead>
-
     <tbody>
         {% for j in i.quizzesNew %}
         <tr>
@@ -69,7 +79,10 @@
         </tr>
         {% endfor %}
     </tbody>
+    {% endif %}
 
+
+    {% if i.videoLessonsNew or i.videoLessonsOld %}
     <thead>
         <th>Videos</th>
         <th></th>
@@ -94,7 +107,10 @@
         </tr>
         {% endfor %}
     </tbody>
+    {% endif %}
     
+
+    {% if i.fileUploadsNew or i.fileUploadsOld %}
     <thead>
         <th>Files</th>
         <th></th>
@@ -119,6 +135,7 @@
         </tr>
         {% endfor %}
     </tbody>
+    {% endif %}
 
 </table>
 {% endfor %}

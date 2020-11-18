@@ -226,3 +226,96 @@ def newnessChecker(materialList):
             oldMaterials.append(material)
     
     return newMaterials, oldMaterials
+
+
+@login_required
+def createClass(request):
+    courseObjects = list(Course.objects.all())
+    courseIDs = [i.id for i in courseObjects]
+    
+    
+    if request.method == 'POST':
+
+            #find matching course
+            courseIDs = request.POST.getlist("courseSelector")
+            courseList = []
+            for courseID in courseIDs:
+                courseList.append(Course.objects.get(pk=courseID))
+
+            #create project with entered values
+            newClass = StudentClass()
+            newClass.className = request.POST["className"]
+            newClass.institution = request.POST["institution"]
+            newClass.save()
+            newClass.courses.add(*courseList)
+            newClass.save()
+
+            request.user.classes.add(newClass)
+
+            #return success
+            classes = list(request.user.classes.all())
+            for studentClass in classes:
+                outstandingLivelessons = list(LiveLesson.objects.filter(studentClass = studentClass, streamTime__contains = date.today()))
+                livelessonObjs = [i for i in outstandingLivelessons if i.studentClass in classes]                
+                for course in studentClass.courses.all():
+                    modules = list(Module.objects.filter(course = course))
+                    for module in modules:
+                        outstandingQuizzes = list(Quiz.objects.filter(module = module, quizDueDate__contains = date.today()))
+
+            context = {"classes": classes, "outstandingQuizzes": outstandingQuizzes, "outstandingLivelessons": outstandingLivelessons, "notification": "Class successfully uploaded!", }
+
+            return render(request, 'accountManagement/classListView.html', context)
+
+
+    else:
+        return render(request, 'accountManagement/createClass.html', {"courseObjects": courseObjects, "courseIDs": courseIDs ,})
+
+
+@login_required
+def createCourse(request, classId):    
+    
+    
+    if request.method == 'POST':
+
+            #find matching course
+            courseIDs = request.POST.getlist("courseSelector")
+            courseList = []
+            for courseID in courseIDs:
+                courseList.append(Course.objects.get(pk=courseID))
+
+            #create project with entered values
+            newCourse = Course()
+            newCourse.courseName = request.POST["courseName"]
+            newCourse.courseInstitution = request.POST["institution"]
+            newCourse.desc = request.POST["desc"]
+            newCourse.save()
+
+            studentClass = StudentClass.objects.get(id = classId)
+            studentClass.courses.add(newCourse)
+            
+            return courseView(request, newCourse.pk)
+
+
+    else:
+        return render(request, 'accountManagement/createCourse.html', {})
+        
+@login_required
+def createModule(request, courseId):    
+    
+    
+    if request.method == 'POST':
+
+            #find matching course
+            course = Course.objects.get(pk=courseId)
+
+            #create project with entered values
+            newModule = Module()
+            newModule.moduleName = request.POST["moduleName"]
+            newModule.course = course
+            newModule.save()
+            
+            return courseView(request, courseId)
+
+
+    else:
+        return render(request, 'accountManagement/createModule.html', {})

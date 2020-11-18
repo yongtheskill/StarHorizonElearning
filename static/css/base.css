@@ -132,3 +132,14 @@ nav {
     margin-right: 30px;
     font-weight: 500;
 }
+
+/* Add Button */
+.addBtn {
+    float: right;
+    margin-top: 20px;
+    margin-bottom: 50px;
+  }
+  /* Add Button */
+  .addBtnClose {
+      float: right;
+    }
