@@ -91,6 +91,7 @@
     </tbody>
 </table>
 
+{% if liveLessonsNew or liveLessonsOld %}
 <br><br>
 <h4>Live Lessons</h4>
 <hr>
@@ -120,5 +121,29 @@
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
+
+{% if quizCounts %}
+<br><br>
+<h4>All Quizzes</h4>
+<hr>
+<table class="striped responsive-table">
+    <thead>
+        <th>Quiz Name</th>
+        <th>Completed</th>
+    </thead>
+
+    <tbody>
+        {% for qName, completion in quizCounts.items %}
+        <tr>
+            <td>
+                <a>{{ qName }}</a>
+            </td>
+            <td>{{ completion }}/{{ nStudents }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 {% endblock %}

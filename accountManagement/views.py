@@ -111,7 +111,29 @@ def classView(request, classId):
     courses = list(studentClass.courses.all())
     liveLessonsNew, liveLessonsOld = newnessChecker( list(LiveLesson.objects.filter(studentClass = classId)) )
 
-    context = {"class": studentClass, "teachers": teachers, "students": students, "courses": courses, "liveLessonsNew": liveLessonsNew, "liveLessonsOld": liveLessonsOld, }
+    modules = []
+    for i in courses:
+        modules += list(Module.objects.filter(course=i))
+
+    quizzes = []
+    for i in modules:
+        quizzes += list(Quiz.objects.filter(module = i)) 
+    quizNames = [i.quizName for i in quizzes]
+    quizCounts = { i : 0 for i in quizNames}
+
+    for user in students:
+        quizResponseJSON = user.quizResponses
+        if quizResponseJSON and "__________RESPONSESPLITTER__________" in quizResponseJSON:
+            allQuizResponses = quizResponseJSON.split("__________RESPONSESPLITTER__________")[1:]
+            for i in allQuizResponses:
+                quizName = ""
+                quizName = json.loads(i)[0]["quizName"]
+                quizCounts[quizName] += 1
+
+    print(quizCounts)
+
+
+    context = {"class": studentClass, "teachers": teachers, "students": students, "courses": courses, "liveLessonsNew": liveLessonsNew, "liveLessonsOld": liveLessonsOld, "quizCounts": quizCounts, "nStudents": len(students), }
 
     return render(request, 'accountManagement/classView.html', context)
 
