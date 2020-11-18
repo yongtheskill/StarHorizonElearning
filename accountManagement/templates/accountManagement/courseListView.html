@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Class List View{% endblock %}
+
+{% block content %}
+
+<h3 class="center-align">Your courses</h3>
+<br>
+
+{% for i in courses %}
+<table class="striped responsive-table">
+    <caption class="left-align">
+        <h5><a href="/course/{{ i.id }}/accounts">{{ i.courseName }}</a></h5>
+    </caption>
+    
+    <colgroup>
+        <col>
+        <col>
+        <col style="width: fit-content">
+    </colgroup>
+
+    <thead>
+        <th>Modules</th>
+    </thead>
+
+    <tbody>
+        {% for j in i.modules %}
+        <tr>
+            <td>{{ j.moduleName }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+
+{% endblock %}

@@ -111,6 +111,9 @@ def classView(request, classId):
     courses = list(studentClass.courses.all())
     liveLessonsNew, liveLessonsOld = newnessChecker( list(LiveLesson.objects.filter(studentClass = classId)) )
 
+    for course in courses:
+        course.modules = list(Module.objects.filter(course = course))
+
     modules = []
     for i in courses:
         modules += list(Module.objects.filter(course=i))
@@ -229,6 +232,30 @@ def classListView(request):
     return render(request, 'accountManagement/classListView.html', context)
 
 
+
+def courseListView(request):
+    
+    classes = list(request.user.classes.all())
+
+    courseList = []
+
+    for studentClass in classes:
+
+        courses = list(Course.objects.filter(studentclass = studentClass))
+
+        for entry in courses:
+            if entry not in courseList:
+                courseList.append(entry)
+            else:
+                pass
+    
+
+    for course in courseList:
+        course.modules = list(Module.objects.filter(course = course))
+
+    context = {"courses": courseList, }
+
+    return render(request, 'accountManagement/courseListView.html', context)
 
 
 def newnessChecker(materialList):

@@ -13,6 +13,7 @@ urlpatterns = [
     path('module/create/<str:courseId>', views.createModule, name='Create Module'),
     path('account/<str:userId>', views.individualAccountView, name='Individual Account View'),
     path('classes/', views.classListView, name='Class List View'),
+    path('courses/', views.courseListView, name='Course List View'),
     path('classes/create/', views.createClass, name='Create Class'),
 
 ]

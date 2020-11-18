@@ -46,6 +46,7 @@
       <!-- if logged in -->
       {% if user.is_authenticated %}
       <li><a href='/classes/'>Classes</a></li>
+      <li><a href='/courses/'>Courses</a></li>
       <li><a href='/account/manage/'>Manage Account</a></li>
       <li><a href='/logout/'>Log Out</a></li>
       {% else %}
@@ -80,6 +81,7 @@
               <!-- if logged in -->
               {% if user.is_authenticated %}
               <li><a href='/classes/'>Classes</a></li>
+              <li><a href='/courses/'>Courses</a></li>
               <li><a href='/account/manage/'>Manage Account</a></li>
               <li><a href='/logout/'>Log Out</a></li>
               {% else %}
@@ -112,6 +114,7 @@
           <!-- if logged in -->
           {% if user.is_authenticated %}
           <li><a href='/classes/'>Classes</a></li>
+          <li><a href='/courses/'>Courses</a></li>
           <li><a href='/account/manage/'>Manage Account</a></li>
           <li><a href='/logout/'>Log Out</a></li>
           {% else %}
