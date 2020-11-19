@@ -155,6 +155,10 @@ def joinLiveLesson(request, StreamID):
         ttl = startTime - sgt.localize(datetime.now())
         ttl = ttl.total_seconds()
 
+        endTime = LiveLesson.objects.get(lessonName = StreamID).streamEndTime
+        endTime = endTime.timestamp() * 1000
+        endTime -= 300000
+
         
     context = {"ttl": ttl, "StreamID": StreamID, "usr": username, "timeToCheck": endTime}
 
