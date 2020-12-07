@@ -123,6 +123,7 @@ def createQuiz(request):
         newQuiz.quizDueDate = sgt.localize(dueDateTime)
         newQuiz.module = assignedModule
         newQuiz.quizData = questionsJSON
+        newQuiz.repeatNumber = 0
         newQuiz.save()
         
         context = {"quizObjects": Quiz.objects.all, "notification": "Successfully created quiz"}
