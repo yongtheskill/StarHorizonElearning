@@ -337,6 +337,7 @@ def createCourse(request, classId):
             newCourse.courseName = request.POST["courseName"]
             newCourse.courseInstitution = request.POST["institution"]
             newCourse.desc = request.POST["desc"]
+            newCourse.quizTags = "[]"
             newCourse.save()
 
             studentClass = StudentClass.objects.get(id = classId)
