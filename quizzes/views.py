@@ -17,10 +17,58 @@ from datetime import datetime
 @login_required
 def manageQuizzes(request):
 
-    context = {"quizObjects": Quiz.objects.all, }
+    anyDue = False
+    for i in Quiz.objects.all():
+        print(i)
+        if i.isDue:
+            anyDue = True
+
+    context = {"quizObjects": Quiz.objects.all, "anyDue": anyDue}
 
     return render(request, 'quizzes/manage.html', context)
     
+
+
+
+#quiz view page
+@login_required
+def repeatQuiz(request, quizID):
+
+    newQuiz = Quiz.objects.get(quizID=quizID)
+    
+    newQuiz.pk = None
+    if newQuiz.repeatNumber > 0:
+        newQuiz.repeatNumber += 1
+        newQuiz.quizName = newQuiz.quizName[:-1] + str(newQuiz.repeatNumber)
+    else:
+        newQuiz.repeatNumber = 1
+        newQuiz.quizName += " repeat 1"
+
+    if request.method == 'POST':
+        
+        dueDate = request.POST['dueDate']
+        dueTime = request.POST['dueTime']
+
+        dueDate += dueTime
+        dueDateTime = datetime.strptime(dueDate, "%b %d, %Y%I:%M %p")
+        
+        newQuiz.quizDueDate = sgt.localize(dueDateTime)
+        newQuiz.quizID += "r"
+        newQuiz.save()
+        
+
+        anyDue = False
+        for i in Quiz.objects.all():
+            print(i)
+            if i.isDue:
+                anyDue = True
+        context = {"quizObjects": Quiz.objects.all, "anyDue": anyDue, "notification": "Successfully repeated quiz"}
+        return render(request, 'quizzes/manage.html', context)
+
+    else:
+        context = {"newQuizName": newQuiz.quizName}
+        return render(request, 'quizzes/repeat.html', context)
+
 
 
 

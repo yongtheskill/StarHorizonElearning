@@ -63,7 +63,7 @@ class User(AbstractUser):
 
     quizResponses = models.CharField(max_length=1000000000, verbose_name="quizResponses", null=True, blank=True)
 
-    timeOnline = models.DurationField(verbose_name="timeOnline")
+    timeOnline = models.DurationField(verbose_name="timeOnline", blank=True, null=True)
     
 
     def __str__(self):

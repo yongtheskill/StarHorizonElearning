@@ -40,6 +40,9 @@ th, td {
               <th>Quiz ID</th>
               <th>Preview Quiz</th>
               <th>Edit Quiz</th>
+              {% if anyDue %}
+              <th>Repeat Quiz</th>
+              {% endif %}
           </tr>
         </thead>
 
@@ -50,6 +53,7 @@ th, td {
                 <td>{{ i.quizID }}</td>
                 <td><a href="/quizzes/view/{{ i.quizID }}"><i class="material-icons text-accent-1">visibility</i></a></td>
                 <td><a href="/quizzes/edit/{{ i.quizID }}"><i class="material-icons text-accent-1">edit</i></a></td>
+                {% if i.isDue %}<td><a href="/quizzes/repeat/{{ i.quizID }}"><i class="material-icons text-accent-1">replay</i></td>{% endif %}
             </tr>
             {% endfor %}
         </tbody>
