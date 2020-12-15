@@ -40,6 +40,14 @@ def repeatQuiz(request, quizID):
     if newQuiz.repeatNumber > 0:
         newQuiz.repeatNumber += 1
         newQuiz.quizName = newQuiz.quizName[:-1] + str(newQuiz.repeatNumber)
+    elif newQuiz.repeatNumber > 3:
+        anyDue = False
+        for i in Quiz.objects.all():
+            print(i)
+            if i.isDue:
+                anyDue = True
+        context = {"quizObjects": Quiz.objects.all, "anyDue": anyDue, "notification": "You cannot repeat a quiz more than 3 times."}
+        return render(request, 'quizzes/manage.html', context)
     else:
         newQuiz.repeatNumber = 1
         newQuiz.quizName += " repeat 1"
@@ -176,9 +184,18 @@ def doQuiz(request, quizID):
         context = {"classes": classes, "notification": "Quiz Submitted", }
         return render(request, 'accountManagement/classListView.html', context)
 
-    context = {"quizObject": Quiz.objects.get(quizID=quizID), }
+    quizObj = Quiz.objects.get(quizID=quizID)
+    print(pytz.utc.localize(datetime.now()))
+    if quizObj.quizDueDate > pytz.utc.localize(datetime.now()):
+        context = {"quizObject": Quiz.objects.get(quizID=quizID), }
 
-    return render(request, 'quizzes/do.html', context)
+        return render(request, 'quizzes/do.html', context)
+    else:
+
+        classes = list(request.user.classes.all())
+        context = {"classes": classes, "error": "Quiz is over.", }
+        return render(request, 'accountManagement/classListView.html', context)
+
     
 
 
