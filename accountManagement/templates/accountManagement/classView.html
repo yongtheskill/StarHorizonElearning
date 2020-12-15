@@ -135,12 +135,12 @@
 {% endif %}
 
 
+{% if user.accountType == "Teacher" %}
 {% if quizCounts %}
 <br><br>
 <h4>All Quizzes</h4>
 <hr>
 
-{% if user.accountType == "Teacher" %}
 <table class="striped responsive-table">
     <thead>
         <th>Quiz Name</th>
