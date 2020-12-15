@@ -110,7 +110,7 @@ def createQuiz(request):
         
         questionsJSON = json.dumps(questionsJSON)
         
-        if not (request.POST['dueDate']!='' and request.POST['dueTime']!='' and request.POST["assignedModule"] and request.POST["assignedModule"]!='' and request.POST['quizName']!=''):
+        if not "assignedModule" in request.POST or not (request.POST['dueDate']!='' and request.POST['dueTime']!='' and request.POST["assignedModule"] and request.POST["assignedModule"]!='' and request.POST['quizName']!=''):
             context = {"quizObjects": Quiz.objects.all, "error": "Please fill in all fields."}
             return render(request, 'quizzes/manage.html', context)
 
