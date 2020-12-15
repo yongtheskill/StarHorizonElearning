@@ -165,7 +165,8 @@ def courseView(request, courseId):
 
             for i in allQuizResponses:
                 for j in allQuizzes:
-
+                    
+                    print(json.loads(i))
                     if j.quizName == json.loads(i)[0]["quizName"]:
                         allQuizzes.remove(j)
 
