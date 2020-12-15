@@ -223,14 +223,13 @@ def classListView(request):
     for studentClass in classes:
 
         outstandingLivelessons = list(LiveLesson.objects.filter(studentClass = studentClass, streamTime__contains = date.today()))
-        
-        livelessonObjs = [i for i in outstandingLivelessons if i.studentClass in classes]
-        
+        outstandingQuizzes = []
+
         for course in studentClass.courses.all():
             modules = list(Module.objects.filter(course = course))
 
             for module in modules:
-                outstandingQuizzes = list(Quiz.objects.filter(module = module, quizDueDate__contains = date.today()))
+                outstandingQuizzes += list(Quiz.objects.filter(module = module, quizDueDate__contains = date.today()))
 
     context = {"classes": classes, "outstandingQuizzes": outstandingQuizzes, "outstandingLivelessons": outstandingLivelessons, }
 
