@@ -221,7 +221,7 @@ def classListView(request):
     classes = list(request.user.classes.all())
 
     outstandingQuizzes = []
-    outstandingLiveLessons = []
+    outstandingLivelessons = []
 
     for studentClass in classes:
 
