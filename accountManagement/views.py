@@ -220,11 +220,13 @@ def classListView(request):
 
     classes = list(request.user.classes.all())
 
+    outstandingQuizzes = []
+    outstandingLiveLessons = []
+
     for studentClass in classes:
 
-        outstandingLivelessons = list(LiveLesson.objects.filter(studentClass = studentClass, streamTime__contains = date.today()))
-        outstandingQuizzes = []
-
+        outstandingLivelessons += list(LiveLesson.objects.filter(studentClass = studentClass, streamTime__contains = date.today()))
+        
         for course in studentClass.courses.all():
             modules = list(Module.objects.filter(course = course))
 
