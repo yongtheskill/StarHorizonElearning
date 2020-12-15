@@ -34,9 +34,12 @@
     <div class="col s10">
         <h4>Modules</h4> 
     </div>
+    {% if user.accountType == 'Teacher' %}
+    <!-- add button -->
     <div class="col s2">
         <a class="btn-floating btn-large accent-1 right" href="/module/create/{{ course.id }}"><i class="large material-icons">note_add</i></a>
     </div>
+    {% endif %}
 </div>
 <hr>
 
