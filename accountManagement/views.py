@@ -124,13 +124,17 @@ def classView(request, classId):
     quizNames = [i.quizName for i in quizzes]
     quizCounts = { i : 0 for i in quizNames}
 
+    
     for user in students:
         quizResponseJSON = user.quizResponses
         if quizResponseJSON and "__________RESPONSESPLITTER__________" in quizResponseJSON:
             allQuizResponses = quizResponseJSON.split("__________RESPONSESPLITTER__________")[1:]
             for i in allQuizResponses:
                 quizName = ""
-                quizName = json.loads(i)[0]["quizName"]
+                try:
+                    quizName = json.loads(i)[0]["quizName"]
+                except(e):
+                    pass
                 quizCounts[quizName] += 1
 
     print(quizCounts)
