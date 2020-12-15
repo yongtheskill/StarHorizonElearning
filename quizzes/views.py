@@ -104,8 +104,9 @@ def createQuiz(request):
         
 
         questionsJSON = json.loads(questionsJSON)
+        print(questionsJSON)
 
-        questionsJSON["quizName"] = request.POST['quizName']
+        questionsJSON[0]["quizName"] = request.POST['quizName']
         
         questionsJSON = json.dumps(questionsJSON)
         
