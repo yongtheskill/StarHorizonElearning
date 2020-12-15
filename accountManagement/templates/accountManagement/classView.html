@@ -139,6 +139,8 @@
 <br><br>
 <h4>All Quizzes</h4>
 <hr>
+
+{% if user.accountType == "Teacher" %}
 <table class="striped responsive-table">
     <thead>
         <th>Quiz Name</th>
@@ -156,5 +158,6 @@
         {% endfor %}
     </tbody>
 </table>
+{% endif %}
 {% endif %}
 {% endblock %}
