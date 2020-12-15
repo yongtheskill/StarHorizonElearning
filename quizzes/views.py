@@ -185,8 +185,8 @@ def doQuiz(request, quizID):
         return render(request, 'accountManagement/classListView.html', context)
 
     quizObj = Quiz.objects.get(quizID=quizID)
-    print(pytz.utc.localize(datetime.now()))
-    if quizObj.quizDueDate > pytz.utc.localize(datetime.now()):
+
+    if quizObj.quizDueDate > sgt.localize(datetime.now()):
         context = {"quizObject": Quiz.objects.get(quizID=quizID), }
 
         return render(request, 'quizzes/do.html', context)

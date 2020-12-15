@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
-from accountManagement.models import StudentClass
+from accountManagement.models import StudentClass, User
 from .models import LiveLesson
+
 
 import requests
 from datetime import datetime, timedelta
@@ -166,6 +167,10 @@ def joinLiveLesson(request, StreamID):
 
 
 def cleanupLivestreamServer(request):
+    if datetime.now().hour == 0:
+        for user in User.objects.all():
+            user.timeOnline = 0
+            user.save()
     
     ec2 = boto3.resource('ec2', region_name="ap-southeast-1", aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
 
@@ -209,7 +214,6 @@ def cleanupLivestreamServer(request):
         return HttpResponse("Server is Up" + actionTaken)
     else:
         return HttpResponse("Server is Down" + actionTaken)
-    
 
 #server status check api
 def serverStatus(request):
