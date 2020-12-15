@@ -133,7 +133,7 @@ def classView(request, classId):
                 quizName = ""
                 try:
                     quizName = json.loads(i)[0]["quizName"]
-                except(e):
+                except:
                     pass
                 quizCounts[quizName] += 1
 
