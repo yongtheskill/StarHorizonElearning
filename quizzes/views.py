@@ -102,6 +102,13 @@ def createQuiz(request):
         questionsJSON = request.POST['allQuestionsJSON']
         questionsJSON = re.sub("_____var__", "", questionsJSON) #remove js stuff
         
+
+        questionsJSON = json.loads(questionsJSON)
+
+        questionsJSON["quizName"] = request.POST['quizName']
+        
+        questionsJSON = json.dumps(questionsJSON)
+        
         if not (request.POST['dueDate']!='' and request.POST['dueTime']!='' and request.POST["assignedModule"] and request.POST["assignedModule"]!='' and request.POST['quizName']!=''):
             context = {"quizObjects": Quiz.objects.all, "error": "Please fill in all fields."}
             return render(request, 'quizzes/manage.html', context)
