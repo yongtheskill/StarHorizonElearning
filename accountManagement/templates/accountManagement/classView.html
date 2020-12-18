@@ -136,7 +136,7 @@
 
 
 {% if user.accountType == "Teacher" %}
-{% if quizCounts %}
+{% if quizData %}
 <br><br>
 <h4>All Quizzes</h4>
 <hr>
@@ -145,15 +145,15 @@
     <thead>
         <th>Quiz Name</th>
         <th>Completed</th>
+        <th>Passed</th>
     </thead>
 
     <tbody>
-        {% for qName, completion in quizCounts.items %}
+        {% for quizDataRow in quizData %}
         <tr>
-            <td>
-                <a>{{ qName }}</a>
-            </td>
-            <td>{{ completion }}/{{ nStudents }}</td>
+            <td>{{ quizDataRow.0 }}</td>
+            <td>{{ quizDataRow.1 }}/{{ nStudents }}</td>
+            <td>{{ quizDataRow.2 }}/{{ nStudents }}</td>
         </tr>
         {% endfor %}
     </tbody>

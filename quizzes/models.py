@@ -15,6 +15,8 @@ class Quiz(models.Model):
     quizDueDate = models.DateTimeField(blank=True, null=True)
     creationDate = models.DateTimeField(auto_now_add=True)
 
+    passingScore = models.IntegerField(verbose_name="passing score", blank=True, null=True)
+
     quizData = models.CharField(max_length=10000000, verbose_name="quiz data")
 
     module = models.ForeignKey(Module, on_delete=models.CASCADE)

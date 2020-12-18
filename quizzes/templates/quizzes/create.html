@@ -35,16 +35,21 @@
             
             
             <div class="row">
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m4">
                     <i class="material-icons text-accent-1 prefix">today</i>
                     <input type="text" name="dueDate" class="datepicker" id="id_dueDate" required>
                     <label class="black-text" for="id_dueDate">Due Date</label>
                 </div>  
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m4">
                     <i class="material-icons text-accent-1 prefix">schedule</i>
                     <input type="text" name="dueTime" class="timepicker" id="id_dueTime" required>
                     <label class="black-text" for="id_dueTime">Due Time</label>
-                </div>  
+                </div>
+                <div class="input-field col s12 m4">
+                    <i class="material-icons text-accent-1 prefix">done</i>
+                    <input class="black-text" type="number" name="passingScore" id="id_passingScore" min=0 max=1 step=1 required>
+                    <label class="black-text" for="id_passingScore">Passing Score</label>
+                </div>
             </div>
 
 
@@ -161,6 +166,39 @@ $( document ).ready(function() {
         $('.courseSelectDiv').hide();
         $("#course" + selectedCourseID).show(400, "swing");
     }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('#baseModal');
+          var instances = M.Modal.init(elems, {onCloseEnd: modalClosed});
+          var instance = M.Modal.getInstance($("#baseModal"));
+          instance.open();
+        });
+
+
+$(function () {
+  $("#id_passingScore").keydown(function () {
+    // Save old value.
+    if (!$(this).val() || (parseInt($(this).val()) <= $(this).attr("max") && parseInt($(this).val()) >= $(this).attr("min")))
+    $(this).data("old", $(this).val());
+  });
+  $("#id_passingScore").keyup(function () {
+    // Check correct, else revert back to old value.
+    if (!$(this).val() || (parseInt($(this).val()) <= $(this).attr("max") && parseInt($(this).val()) >= $(this).attr("min")))
+      ;
+    else{
+      $(this).val($(this).data("old"));
+      const errorNotif = window.createNotification({
+          theme: 'warning',
+          showDuration: 5000,
+          });
+          // Invoke success notification
+          errorNotif({ 
+              message: 'The passing score should be positive and less than the maximum possible score' 
+          });}
+  });
+});
+
 
 
 </script>

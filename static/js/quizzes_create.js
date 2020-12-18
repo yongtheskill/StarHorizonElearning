@@ -87,6 +87,7 @@ function createQuestion (qType) {
     initialiseChips(qType, availableQuestionID);
     moduleChanged();
     $('select').formSelect();
+    $("#id_passingScore").attr("max", questions.length);
 }
 
 function initialiseChips (qType, qID){
@@ -167,6 +168,7 @@ function deleteQuestion (qID) {
     });
     $(`.questionWrapper.question-div-identifier-id-${qID}`).remove();
     updateNumberedList();
+    $("#id_passingScore").attr("max", questions.length);
 }
 
 function generateQuesionHTML (question) {

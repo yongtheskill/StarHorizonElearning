@@ -123,6 +123,7 @@ def classView(request, classId):
         quizzes += list(Quiz.objects.filter(module = i)) 
     quizNames = [i.quizName for i in quizzes]
     quizCounts = { i : 0 for i in quizNames}
+    quizCountsPass = { i : 0 for i in quizNames}
 
     
     for user in students:
@@ -134,13 +135,19 @@ def classView(request, classId):
                 try:
                     quizName = json.loads(i)[0]["quizName"]
                     quizCounts[quizName] += 1
+                    if json.loads(i)[0]["isPassed"]:
+                        quizCountsPass[quizName] += 1
                 except:
                     pass
 
-    print(quizCounts)
+    quizData = []
+    for i in quizCounts:
+        try:
+            quizData.append((i, str(quizCounts[i]), str(quizCountsPass[i])))
+        except:
+            quizData.append((i, str(quizCounts[i]), "0"))
 
-
-    context = {"class": studentClass, "teachers": teachers, "students": students, "courses": courses, "liveLessonsNew": liveLessonsNew, "liveLessonsOld": liveLessonsOld, "quizCounts": quizCounts, "nStudents": len(students), }
+    context = {"class": studentClass, "teachers": teachers, "students": students, "courses": courses, "liveLessonsNew": liveLessonsNew, "liveLessonsOld": liveLessonsOld, "quizData": quizData, "nStudents": len(students), }
 
     return render(request, 'accountManagement/classView.html', context)
 
@@ -165,8 +172,6 @@ def courseView(request, courseId):
 
             for i in allQuizResponses:
                 for j in allQuizzes:
-                    
-                    print(json.loads(i))
                     if j.quizName == json.loads(i)[0]["quizName"]:
                         allQuizzes.remove(j)
 
@@ -208,6 +213,10 @@ def individualAccountView(request, userId):
     else:
         context = {"tempUser": user, "classes": classes, "timeOnline": timeOnline}
 
+    if request.method == "POST":
+        print(user)
+        user.quizResponses = ""
+        user.save()
 
 
     return render(request, 'accountManagement/individualAccountView.html', context)

@@ -84,6 +84,9 @@
             {% endfor %}
         </tbody>
     </table>
+    <form method="POST">{% csrf_token %}<button class="submitButton red waves-effect waves-light btn" style="margin-top: 20px;" type="submit"><i class="material-icons right">remove_circle</i>clear quiz responses</button>
+    </form>
+
 
     <p style="padding-top: 50px;"></p>
 {% endif %}

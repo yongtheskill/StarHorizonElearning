@@ -34,16 +34,21 @@
             </div>    
             
             <div class="row">
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m4">
                     <i class="material-icons text-accent-1 prefix">today</i>
                     <input type="text" name="dueDate" class="datepicker" id="id_dueDate" value="{{ dueDate }}" required>
                     <label class="black-text" for="id_dueDate">Due Date</label>
                 </div>  
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m4">
                     <i class="material-icons text-accent-1 prefix">schedule</i>
                     <input type="text" name="dueTime" class="timepicker" id="id_dueTime" value="{{ dueTime }}" required>
                     <label class="black-text" for="id_dueTime">Due Time</label>
                 </div>  
+                <div class="input-field col s12 m4">
+                    <i class="material-icons text-accent-1 prefix">done</i>
+                    <input class="black-text" type="number" name="passingScore" id="id_passingScore" min=0 max=1 step=1 value={{passingScore}}  required>
+                    <label class="black-text" for="id_passingScore">Passing Score</label>
+                </div>
             </div>
 
 

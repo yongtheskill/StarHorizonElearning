@@ -19,7 +19,6 @@ def manageQuizzes(request):
 
     anyDue = False
     for i in Quiz.objects.all():
-        print(i)
         if i.isDue:
             anyDue = True
 
@@ -37,17 +36,16 @@ def repeatQuiz(request, quizID):
     newQuiz = Quiz.objects.get(quizID=quizID)
     
     newQuiz.pk = None
-    if newQuiz.repeatNumber > 0:
-        newQuiz.repeatNumber += 1
-        newQuiz.quizName = newQuiz.quizName[:-1] + str(newQuiz.repeatNumber)
-    elif newQuiz.repeatNumber > 3:
+    if newQuiz.repeatNumber > 3:
         anyDue = False
         for i in Quiz.objects.all():
-            print(i)
             if i.isDue:
                 anyDue = True
-        context = {"quizObjects": Quiz.objects.all, "anyDue": anyDue, "notification": "You cannot repeat a quiz more than 3 times."}
+        context = {"quizObjects": Quiz.objects.all, "anyDue": anyDue, "error": "You cannot repeat a quiz more than 3 times."}
         return render(request, 'quizzes/manage.html', context)
+    elif newQuiz.repeatNumber > 0:
+        newQuiz.repeatNumber += 1
+        newQuiz.quizName = newQuiz.quizName[:-1] + str(newQuiz.repeatNumber)
     else:
         newQuiz.repeatNumber = 1
         newQuiz.quizName += " repeat 1"
@@ -67,7 +65,6 @@ def repeatQuiz(request, quizID):
 
         anyDue = False
         for i in Quiz.objects.all():
-            print(i)
             if i.isDue:
                 anyDue = True
         context = {"quizObjects": Quiz.objects.all, "anyDue": anyDue, "notification": "Successfully repeated quiz"}
@@ -112,7 +109,6 @@ def createQuiz(request):
         
 
         questionsJSON = json.loads(questionsJSON)
-        print(questionsJSON)
 
         questionsJSON[0]["quizName"] = request.POST['quizName']
         
@@ -136,6 +132,7 @@ def createQuiz(request):
         newQuiz = Quiz()
         newQuiz.quizName = request.POST['quizName']
         newQuiz.quizID = request.POST['quizID']
+        newQuiz.passingScore = request.POST['passingScore']
         newQuiz.quizDueDate = sgt.localize(dueDateTime)
         newQuiz.module = assignedModule
         newQuiz.quizData = questionsJSON
@@ -169,6 +166,20 @@ def doQuiz(request, quizID):
         responsesJSON = request.POST['submissionData']
         responsesJSON = re.sub("_____var__", "", responsesJSON) #remove js stuff
 
+        score = len(re.findall(r'"isCorrect":true', responsesJSON))
+
+        responsesJSON = json.loads(responsesJSON)
+        
+        quizObj = Quiz.objects.get(quizName=responsesJSON[0]["quizName"])
+        passingScore = quizObj.passingScore
+        print(quizObj)
+        if score >= int(passingScore):
+            responsesJSON[0]["isPassed"] = True
+        else:
+            responsesJSON[0]["isPassed"] = False
+        
+        responsesJSON = json.dumps(responsesJSON)
+
         userId = request.user.id
         user = User.objects.get(id = userId)
         currentQuizResponses = user.quizResponses
@@ -177,6 +188,8 @@ def doQuiz(request, quizID):
         else:
             currentQuizResponses = ""
         user.quizResponses = currentQuizResponses + "__________RESPONSESPLITTER__________" + responsesJSON
+
+
         user.save()
         
 
@@ -235,11 +248,13 @@ def editQuiz(request, quizID):
         dueDate = sgt.normalize(quizObj.quizDueDate).strftime("%b %d, %Y")
         dueTime = sgt.normalize(quizObj.quizDueDate).strftime("%I:%M %p")
 
+        passingScore = quizObj.passingScore
+
         
         courseObjects = list(Course.objects.all())
         courseIDs = [i.id for i in courseObjects]
 
-        context = {"courseObjects": courseObjects, "courseIDs": courseIDs ,"modObjects": Module.objects.all, "quizObject": quizObj, "dueDate": dueDate, "dueTime": dueTime, }
+        context = {"courseObjects": courseObjects, "courseIDs": courseIDs ,"modObjects": Module.objects.all, "quizObject": quizObj, "dueDate": dueDate, "dueTime": dueTime, "passingScore": passingScore}
         return render(request, 'quizzes/edit.html', context)
     
 
