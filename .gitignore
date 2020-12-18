@@ -3,3 +3,4 @@
 *.pem
 *.ppk
 *.pyc
+.vscode/settings.json
