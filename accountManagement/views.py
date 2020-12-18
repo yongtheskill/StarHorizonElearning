@@ -192,6 +192,12 @@ def courseView(request, courseId):
 def individualAccountView(request, userId):
 
     user = User.objects.get(id = userId)
+
+    if request.method == "POST":
+        print(user)
+        user.quizResponses = ""
+        user.save()
+
     classes = list(user.classes.all())
 
     if user.timeOnline:
@@ -212,11 +218,6 @@ def individualAccountView(request, userId):
         context = {"tempUser": user, "classes": classes, "quizResults": quizResults, "timeOnline": timeOnline}
     else:
         context = {"tempUser": user, "classes": classes, "timeOnline": timeOnline}
-
-    if request.method == "POST":
-        print(user)
-        user.quizResponses = ""
-        user.save()
 
 
     return render(request, 'accountManagement/individualAccountView.html', context)
