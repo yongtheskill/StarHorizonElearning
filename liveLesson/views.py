@@ -21,7 +21,6 @@ sgt = pytz.timezone("Asia/Singapore")
 @login_required
 def manageLiveLessons(request):
     teacherClasses = request.user.classes.all()
-    print(teacherClasses)
     livelessonObjs = [i for i in LiveLesson.objects.all() if i.studentClass in teacherClasses]
     context = {"lessonObjects": livelessonObjs, }
 
@@ -55,7 +54,6 @@ def createLiveLesson(request):
         streamDuration = timedelta(minutes = float(streamDuration))
 
         streamEndTime = streamDateTime + streamDuration
-        print(type(streamDateTime))
 
         studentClass = StudentClass.objects.get(pk = classID)
 
@@ -223,7 +221,6 @@ def serverStatus(request):
     except:
         return HttpResponse("Down")
 
-    print(x.status_code)
     if x.status_code == 200:
         return HttpResponse("Up")
     else:
