@@ -165,9 +165,9 @@ def joinLiveLesson(request, StreamID):
 
 
 def cleanupLivestreamServer(request):
-    if datetime.now().hour == 0:
+    if datetime.now().hour == 0 and datetime.now().minute < 5:
         for user in User.objects.all():
-            user.timeOnline = 0
+            user.timeOnline = timedelta(days=0)
             user.save()
     
     ec2 = boto3.resource('ec2', region_name="ap-southeast-1", aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
