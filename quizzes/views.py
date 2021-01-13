@@ -87,7 +87,7 @@ def createQuiz(request):
 
     modules = Module.objects.all()
     for module in modules:
-        module.tags = module.course.quizTags
+        module.tags = list(set(list(module.course.quizTags.split(","))))
 
 
 

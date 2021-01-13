@@ -372,13 +372,15 @@ function submitForm() {
 var tags = {};
 
 function setTags(retrievedTags) {
+    console.log(retrievedTags);
     tags = retrievedTags;
 
 }
 
 
 function moduleChanged() {
-    assignedModule = $(`#assignedModule`).val();
+    assignedModule = $(`#moduleSelect${selectedCourseID}`).val();
+    console.log(assignedModule);
     console.log(tags[assignedModule]);
     selectOptions = `
     <option value="" disabled selected>Choose question tag</option>

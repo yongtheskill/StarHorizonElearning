@@ -68,7 +68,7 @@
                 {% for i in courseIDs %}
                     <div class="input-field col s12 m6 courseSelectDiv" id="course{{ i }}">
                         <i class="material-icons text-accent-1 prefix">add</i>
-                        <select id="moduleSelect" name="assignedModule" required>
+                        <select id="moduleSelect{{ i }}" name="assignedModule" required>
                             <option value="" disabled selected>Select module for the quiz</option>
                             {% for j in moduleObjects %}
                                 {% if j.course.id == i %}
@@ -158,10 +158,10 @@ $( document ).ready(function() {
             {{i.course.id}}: "{{i.moduleName}}",
         {% endfor %}
     };
-
+    var selectedCourseID;
     function selectUpdated(){
         // get selected course module
-        var selectedCourseID = $("#courseSelect").val();
+        selectedCourseID = $("#courseSelect").val();
         // set module selections
         $('.courseSelectDiv').hide();
         $("#course" + selectedCourseID).show(400, "swing");
