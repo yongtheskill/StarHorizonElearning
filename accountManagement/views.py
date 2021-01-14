@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 
 from .models import User, Course, StudentClass, Module
+from quizzes.models import Quiz
 from videoLessons.models import Video
 from quizzes.models import Quiz
 from fileUploads.models import FileUpload
@@ -187,6 +188,67 @@ def courseView(request, courseId):
 
 
 
+@login_required
+def individualAccountQuizView(request, userId, quizName):
+
+    user = User.objects.get(id = userId)
+
+    origQuiz = Quiz.objects.get(quizName=quizName)
+    origQuizData = json.loads(origQuiz.quizData)
+
+    if user.timeOnline:
+        timeOnline = humanize.naturaldelta(user.timeOnline)
+    else:
+        timeOnline = "0 minutes"
+
+    quizResponseJSON = user.quizResponses
+    if quizResponseJSON and "__________RESPONSESPLITTER__________" in quizResponseJSON:
+        allQuizResponses = quizResponseJSON.split("__________RESPONSESPLITTER__________")[1:]
+
+        for i in allQuizResponses:
+            if(json.loads(i)[0]["quizName"]):
+                quiz = json.loads(i)
+                break
+                
+        questionTypeLookup = {"la": "Long Answer", "sa": "Short Answer", "cb": "Checkboxes", "mc": "Multiple Choice"}
+
+
+        quizResData = []
+
+        for question in quiz[1:]:
+            quizDataElem = {}
+
+            origQuestion = origQuizData[next((index for (index, d) in enumerate(origQuizData) if d["questionID"] == question["questionID"]), None)]
+
+            quizDataElem["type"] = questionTypeLookup[question["questionType"]]
+            quizDataElem["title"] = origQuestion["questionTitle"]
+
+            if "isAutoGraded" in origQuestion and origQuestion["isAutoGraded"]:
+                quizDataElem["correct"] = str(origQuestion["correctAnswer"])
+            else:
+                quizDataElem["correct"] = "-"
+            
+            if question["questionType"] == "cb":
+                answers = ""
+                for j in question["studentCheckboxValues"]:
+                    if question["studentCheckboxValues"][j] == True:
+                        answers += "{}, ".format(j)
+                answers = answers[:-2]
+                quizDataElem["ans"] = answers 
+            else:
+                quizDataElem["ans"] = question["studentResponse"]
+
+            quizResData.append(quizDataElem)
+            
+            
+        context = {"tempUser": user, "timeOnline": timeOnline, "qData": quizResData, "qName": quizName}
+    else:
+        context = {"tempUser": user, "timeOnline": timeOnline}
+
+
+    return render(request, 'accountManagement/inidvidualAccountQuizView.html', context)
+
+
 
 @login_required
 def individualAccountView(request, userId):
@@ -194,7 +256,6 @@ def individualAccountView(request, userId):
     user = User.objects.get(id = userId)
 
     if request.method == "POST":
-        print(user)
         user.quizResponses = ""
         user.save()
 
@@ -211,7 +272,6 @@ def individualAccountView(request, userId):
 
         quizResults = {}
         for i in allQuizResponses:
-            print(i)
             fullScore = len(re.findall(r'"isCorrect":', i))
             score = len(re.findall(r'"isCorrect": true', i))
 

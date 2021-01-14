@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Individual View{% endblock %}
+
+{% block content %}
+<a class="waves-effect waves-black btn-flat" onclick="window.history.back();"><i class="material-icons left" style="margin-right: 0px;">arrow_back_ios</i>Back</a>
+
+<h3 class="center-align">{{ tempUser }}: {{ qName }}</h3>
+<hr><br><br>
+
+{% if user.accountType == "Teacher" and qData %}
+
+<table>
+    
+    <thead>
+        <th>Question Type</th>
+        <th>Question</th>
+        <th>Correct Answer</th>
+        <th>Student Response</th>
+    </thead>
+
+    <tbody>
+        {% for i in qData %}
+        <tr>
+            <td>
+                {{ i.type }}
+            </td>
+            <td>{{ i.title }}</td>
+            <td>{{ i.correct }}</td>
+            <td>{{ i.ans }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+{% endif %}
+{% endblock %}
