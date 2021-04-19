@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% load misc_tags %}
+
 {% block title %}Manage Video Lessons{% endblock %}
 
 {% block css %}
@@ -63,27 +65,32 @@
     <!-- LIST VIDEOS -->
 
     <div id="all" class="col s12">
-        <table style="margin-top: 10px;">
-            <thead>
-              <tr>
-                  <th>Video Name</th>
-                  <th>Video ID</th>
-                  <th>View Video</th>
-                  <th>Edit Details</th>
-              </tr>
-            </thead>
+        <div style="overflow-y: scroll; height: 100%;">
+            <table style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Video Name</th>
+                        <th>Video ID</th>
+                        <th>View Video</th>
+                        <th>Edit Details</th>
+                    </tr>
+                </thead>
     
-            <tbody>
-                {% for i in videoLessonObjects %}
-                <tr>
-                    <td>{{ i.videoName }}</td>
-                    <td>{{ i.videoID }}</td>
-                    <td><a href="../view/{{ i.videoID }}"><i class="material-icons text-accent-1">visibility</i></a></td>
-                    <td><a onclick="goToEditPage('{{ i.videoID }}')" href="#"><i class="material-icons text-accent-1">edit</i></a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                <tbody>
+                    {% for i in videoLessonObjects %}
+                    <tr>
+                        <td>{{ i.videoName }}</td>
+                        <td>{{ i.videoID }}</td>
+                        <td><a href="../view/{{ i.videoID }}"><i class="material-icons text-accent-1">visibility</i></a>
+                        </td>
+                        <td><a onclick="goToEditPage('{{ i.videoID }}')" href="#"><i
+                                    class="material-icons text-accent-1">edit</i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    
+        </div>
     </div>
 
 
@@ -305,7 +312,7 @@ function setToEdit(selectedVideoID){
         else if (selectedVideoID === "{{ i.videoID }}"){
             $("#videoToEditSelector").val("{{ i.videoID }}").closest('.select-wrapper').find('li').removeClass("active").closest('.select-wrapper').find('.select-dropdown').val("{{ i.videoID }}").find('span:contains(' + "{{ i.videoID }}" + ')').parent().addClass('selected active');
             $("#videoToEditSelector").formSelect();
-            $("#editForm textarea#id_additionalComments").val("{{ i.additionalComments }}");
+            $("#editForm textarea#id_additionalComments").val("{{ i.additionalComments|remove_newlines }}");
             $("#editForm textarea#id_additionalComments").addClass("active");
             //other options
         }

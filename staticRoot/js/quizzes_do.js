@@ -101,8 +101,8 @@ function cbAnsChanged(qID, checkboxIndex) {
             currentCheckboxValues[optionChanged] = !currentCheckboxValues[optionChanged];
             questionResponses[i].studentCheckboxValues = currentCheckboxValues;
             var responses = [];
-            for (j = 0; j < currentCheckboxValues.length; j++) {
-                if (currentCheckboxValues[j] === true) {
+            for (j = 0; j < Object.keys(currentCheckboxValues).length; j++) {
+                if (currentCheckboxValues[Object.keys(currentCheckboxValues)[j]] === true) {
                     responses.push(Object.keys(currentCheckboxValues)[j]);
                 }
             }
@@ -111,6 +111,13 @@ function cbAnsChanged(qID, checkboxIndex) {
             } else if (questionResponses[i].isAutoGraded === true){
                 questionResponses[i].isCorrect = false;
             }
+            if(responses.length == 0){
+                document.getElementById(`checkbox-question${qID}`).value = "";
+            }
+            else{
+                document.getElementById(`checkbox-question${qID}`).value = "filled";
+            }
+
             return true; // stop searching
         }
     });
@@ -161,7 +168,7 @@ function renderQuizQuestions(quizJSON) {
             generatedHTML += `
             <div class="row answerInputContainer">
                 <div class="input-field col s12 m6">
-                    <select id="answerField${question.questionID}" onchange="saAnsChanged(${question.questionID})">
+                    <select id="answerField${question.questionID}" class="fillValidation"  onchange="saAnsChanged(${question.questionID})">
                         <option value="" disabled selected>Select correct option</option>
                         `
             question.questionOptions.forEach(function (option, index) {
@@ -180,7 +187,8 @@ function renderQuizQuestions(quizJSON) {
             generatedHTML += `
             <div class="row answerInputContainer">
                 <div style="margin-top: 10px; margin-bottom: 0px;" class="input-field col s12 m6">
-                    <p style="margin-top: 0px;">Select Correct Options</p>`;
+                <p style="margin-top: 0px;">Select Correct Options</p>
+                <input hidden class="fillValidation" id="checkbox-question${question.questionID}">`;
             question.questionOptions.forEach(function (option, index) {
                 generatedHTML += `
                     <p>
@@ -199,7 +207,7 @@ function renderQuizQuestions(quizJSON) {
             generatedHTML += `
             <div class="row answerInputContainer">
                 <div class="input-field col s12 m6">
-                    <input id="answerField${question.questionID}"  type="text" class="validate" onfocusout="saAnsChanged(${question.questionID})">
+                    <input id="answerField${question.questionID}" class="fillValidation" type="text" class="validate" onfocusout="saAnsChanged(${question.questionID})">
                     <label for="answerField${question.questionID}">Your answer</label>
                 </div>
             </div>`;
@@ -209,7 +217,7 @@ function renderQuizQuestions(quizJSON) {
             generatedHTML += `
             <div class="row answerInputContainer">
                 <div class="input-field col s12">
-                    <textarea  id="answerField${question.questionID}"  type="text" class="materialize-textarea" onfocusout="saAnsChanged(${question.questionID})"></textarea>
+                    <textarea  id="answerField${question.questionID}" class="fillValidation"  type="text" class="materialize-textarea" onfocusout="saAnsChanged(${question.questionID})"></textarea>
                     <label for="answerField${question.questionID}">Your answer</label>
                 </div>
             </div>`;
@@ -238,5 +246,19 @@ function convertToJSON(quizID) {
 
 function submitForm(quizID) {
     convertToJSON(quizID);
+    const inputs = document.getElementsByClassName("fillValidation");
+    for(var i=0; i<inputs.length; i++) {
+        if (!inputs[i].value.trim()){
+            const successNotification = window.createNotification({
+            theme: 'warning',
+            showDuration: 10000,
+            });
+            // Invoke success notification
+            successNotification({ 
+                message: 'please complete the quiz before submitting' 
+            });
+            return;
+        }
+    }
     $("#quizDataForm").submit();
 }

@@ -67,7 +67,7 @@
         {% for j in i.quizzesNew %}
         <tr>
             <td>
-                <a href="/quizzes/do/{{ j.quizID }}">{{ j.quizName }}</a>
+                <a href="/quizzes/do/{{ j.quizID }}" class="markVisited">{{ j.quizName }}</a>
             </td>
             <td>{{ j.quizDueDate }}</td>
             <td style="color: red">New</td>
@@ -76,7 +76,7 @@
         {% for j in i.quizzesOld %}
         <tr>
             <td>
-                <a href="/quizzes/do/{{ j.quizID }}">{{ j.quizName }}</a>
+                <a href="/quizzes/do/{{ j.quizID }}" class="markVisited">{{ j.quizName }}</a>
             </td>
             <td>{{ j.quizDueDate }}</td>
         </tr>
@@ -95,7 +95,7 @@
         {% for j in i.videoLessonsNew %}
         <tr>
             <td>
-                <a href="/videoLessons/view/{{ j.videoID }}/">{{ j.videoName }}</a>
+                <a href="/videoLessons/view/{{ j.videoID }}/" class="markVisited">{{ j.videoName }}</a>
             </td>
             <td></td>
             <td style="color: red">New</td>
@@ -104,7 +104,7 @@
         {% for j in i.videoLessonsOld %}
         <tr>
             <td>
-                <a href="/videoLessons/view/{{ j.videoID }}/">{{ j.videoName }}</a>
+                <a href="/videoLessons/view/{{ j.videoID }}/" class="markVisited">{{ j.videoName }}</a>
             </td>
             <td></td>
         </tr>
@@ -123,7 +123,7 @@
         {% for j in i.fileUploadsNew %}
         <tr>
             <td>
-                <a href="{{ j.uploadedFile.url }}">{{ j.fileName }}</a>
+                <a href="{{ j.uploadedFile.url }}" class="markVisited">{{ j.fileName }}</a>
             </td>
             <td></td>
             <td style="color: red">New</td>
@@ -132,7 +132,7 @@
         {% for j in i.fileUploadsOld %}
         <tr>
             <td>
-                <a href="{{ j.uploadedFile.url }}">{{ j.fileName }}</a>
+                <a href="{{ j.uploadedFile.url }}" class="markVisited">{{ j.fileName }}</a>
             </td>
             <td></td>
         </tr>

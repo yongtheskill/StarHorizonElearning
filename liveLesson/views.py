@@ -217,8 +217,8 @@ def cleanupLivestreamServer(request):
 def serverStatus(request):
     url = "https://live.gotutor.sg/#/"
     try:
-        x = requests.get(url, timeout=4)
-    except:
+        x = requests.get(url, timeout=4, verify=False)
+    except Exception as e:
         return HttpResponse("Down")
 
     if x.status_code == 200:

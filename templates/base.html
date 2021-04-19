@@ -22,6 +22,10 @@
     * {
       font-family: "Montserrat", "Roboto";
     }
+    
+    a.markVisited:visited {
+      color: #111111;
+    }
   </style>
   
   <body>
@@ -31,9 +35,9 @@
         <div class="background">
           <img class="responsive-img" src="{% static "img/sky.jpg" %}">
         </div>
-        <a href="/account/manage/"><img class="circle" style="object-fit: cover;" src="{% if user.profilePic %}{{ user.profilePic.url }}{% else %}{% static "img/blankProfile.svg" %}{% endif %}"></a>
-        <a href="/account/manage/"><span class="name white-text">{{ user.username }}</span></a>
-        <a href="/account/manage/"><span class="email white-text">{{ user.institution }}</span></a>
+        <a href="/account/{{ user.id }}"><img class="circle" style="object-fit: cover;" src="{% if user.profilePic %}{{ user.profilePic.url }}{% else %}{% static "img/blankProfile.svg" %}{% endif %}"></a>
+        <a href="/account/{{ user.id }}"><span class="name white-text">{{ user.username }}</span></a>
+        <a href="/account/{{ user.id }}"><span class="email white-text">{{ user.institution }}</span></a>
       </div></li>
       <!-- if teacher -->
       {% if user.accountType == "Teacher" %}
@@ -47,6 +51,7 @@
       {% if user.is_authenticated %}
       <li><a href='/classes/'>Classes</a></li>
       <li><a href='/courses/'>Courses</a></li>
+      <li><a href='/account/{{ user.id }}'>My Account</a></li>
       <li><a href='/account/manage/'>Manage Account</a></li>
       <li><a href='/logout/'>Log Out</a></li>
       {% else %}
@@ -82,6 +87,7 @@
               {% if user.is_authenticated %}
               <li><a href='/classes/'>Classes</a></li>
               <li><a href='/courses/'>Courses</a></li>
+              <li><a href='/account/{{ user.id }}'>My Account</a></li>
               <li><a href='/account/manage/'>Manage Account</a></li>
               <li><a href='/logout/'>Log Out</a></li>
               {% else %}

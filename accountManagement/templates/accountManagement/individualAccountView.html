@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
+{% load misc_tags %}
+
+
 {% block title %}Individual View{% endblock %}
 
 {% block content %}
@@ -25,6 +29,7 @@
             <td>Institution:</td>
             <td>{{ tempUser.institution }}</td>
         </tr>
+        {% if user.accountType == "Teacher" %}
         <tr>
             <td>Account Type:</td>
             <td>{{ tempUser.accountType }}</td>
@@ -33,6 +38,7 @@
             <td>Time Online Today:</td>
             <td>{{ timeOnline }}</td>
         </tr>
+        {% endif %}
     </tbody>
 
 </table>
@@ -61,7 +67,7 @@
 
 </table>
 
-{% if user.accountType == "Teacher" and quizResults %}
+{% if quizResults %}
     <br><br>
     <h4 class="left-align">Quizzes</h4>
     <hr> 
@@ -77,14 +83,16 @@
             {% for quizName, score in quizResults.items %}
             <tr>
                 <td>
-                    <a href="/account/{{ tempUser.id }}/{{ quizName }}"> {{ quizName }} </a>
+                    <a href="/quizzes/viewAns/{{ quizName|b64encode }}/{{ tempUser.id|urlencode:"" }}"> {{ quizName }} </a>
                 </td>
                 <td>{{ score }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% if user.accountType == "Teacher" %}
     <form method="POST">{% csrf_token %}<button class="submitButton red waves-effect waves-light btn" style="margin-top: 20px;" type="submit"><i class="material-icons right">remove_circle</i>clear quiz responses</button>
+    {% endif %}
     </form>
 
 
