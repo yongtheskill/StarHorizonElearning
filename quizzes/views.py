@@ -131,10 +131,15 @@ def createQuiz(request):
         assignedModule = Module.objects.get(pk=assignedModuleID)
 
 
+
+
         newQuiz = Quiz()
         newQuiz.quizName = request.POST['quizName']
         newQuiz.quizID = request.POST['quizID']
-        newQuiz.passingScore = request.POST['passingScore']
+        if 'passingScore' in request.POST and request.POST['passingScore'] != '':
+            newQuiz.passingScore = int(request.POST['passingScore'])
+        else:
+            newQuiz.passingScore = 0
         newQuiz.quizDueDate = sgt.localize(dueDateTime)
         newQuiz.module = assignedModule
         newQuiz.quizData = questionsJSON
@@ -160,8 +165,6 @@ def viewQuiz(request, quizID):
 
 
 
-
-
 #quiz view page
 @login_required
 def doQuiz(request, quizID):
@@ -169,46 +172,53 @@ def doQuiz(request, quizID):
     if request.method == 'POST':
         responsesJSON = request.POST['submissionData']
         responsesJSON = re.sub("_____var__", "", responsesJSON) #remove js stuff
+
         score = len(re.findall(r'"isCorrect":true', responsesJSON))
+
         responsesJSON = json.loads(responsesJSON)
         
         quizObj = Quiz.objects.get(quizName=responsesJSON[0]["quizName"])
         passingScore = quizObj.passingScore
-        
         if score >= int(passingScore):
             responsesJSON[0]["isPassed"] = True
         else:
             responsesJSON[0]["isPassed"] = False
         
         responsesJSON = json.dumps(responsesJSON)
+
         userId = request.user.id
         user = User.objects.get(id = userId)
         currentQuizResponses = user.quizResponses
 
-        
         if currentQuizResponses and "__________RESPONSESPLITTER__________" in currentQuizResponses:
             allQuizResponses = currentQuizResponses.split("__________RESPONSESPLITTER__________")[1:]
             for i in allQuizResponses:
                 quizName = ""
                 try:
                     quizName = json.loads(i)[0]["quizName"]
+                    print(quizObj.quizName)
                     if quizName == quizObj.quizName:
                         return redirect("./")
                 except:
                     pass
-
 
         if currentQuizResponses != None:
             currentQuizResponses = str(user.quizResponses)
         else:
             currentQuizResponses = ""
         user.quizResponses = currentQuizResponses + "__________RESPONSESPLITTER__________" + responsesJSON
+
+
         user.save()
         
+
         return redirect("./")
+
     quizObj = Quiz.objects.get(quizID=quizID)
+
     #if quizObj.quizDueDate > sgt.localize(datetime.now()):
     context = {"quizObject": Quiz.objects.get(quizID=quizID), }
+
     user = request.user
     quizResponseJSON = user.quizResponses
     if quizResponseJSON and "__________RESPONSESPLITTER__________" in quizResponseJSON:
@@ -216,15 +226,24 @@ def doQuiz(request, quizID):
         for i in allQuizResponses:
             if quizObj.quizName == json.loads(i)[0]["quizName"]:
                 #quiz done already
+
                 
                 def searchForQn(questions, questionID):
                     for i in questions:
                         if i["questionID"] == questionID:
                             return i
+
+
+
+
                 quizObjToCombine = json.loads(Quiz.objects.get(quizID=quizID).quizData)
+
                 quizResponsesToCombine = json.loads(i)[1:]
+
                 for j in quizObjToCombine:
                     j.update(searchForQn(quizResponsesToCombine, j["questionID"]))
+
+
                 context = {"quizObject": Quiz.objects.get(quizID=quizID), "responsesObject": json.dumps(quizObjToCombine), }
                 return render(request, 'quizzes/viewAns.html', context)
     return render(request, 'quizzes/do.html', context)
@@ -243,9 +262,9 @@ def doQuiz(request, quizID):
 
 
 
-
 @login_required
-def viewQuizAns(request, quizName, userId):   
+def viewQuizAns(request, quizNameEncoded, userId):   
+    quizName = base64.b64decode(quizNameEncoded).decode('utf-8')
 
     quizObj = Quiz.objects.get(quizName=quizName)
 
@@ -257,7 +276,7 @@ def viewQuizAns(request, quizName, userId):
             if quizObj.quizName == json.loads(i)[0]["quizName"]:
                 #quiz done already
 
-
+                
                 def searchForQn(questions, questionID):
                     for i in questions:
                         if i["questionID"] == questionID:
@@ -284,10 +303,16 @@ def viewQuizAns(request, quizName, userId):
 
 
 
+
+
+
+
+
+
+
 #quiz edit page
 @login_required
-def viewQuizAns(request, quizNameEncoded, userId):   
-    quizName = base64.b64decode(quizNameEncoded).decode('utf-8')
+def editQuiz(request, quizID):
     
     #if submitting form
     if request.method == 'POST':
@@ -302,6 +327,7 @@ def viewQuizAns(request, quizNameEncoded, userId):
 
 
         #find matching course
+
         newQuiz = Quiz.objects.get(quizID=request.POST['quizID'])
         if 'passingScore' in request.POST and request.POST['passingScore'] != '':
             newQuiz.passingScore = int(request.POST['passingScore'])
@@ -349,5 +375,3 @@ def deleteQuiz(request):
         context = {"quizObjects": Quiz.objects.all, "error": "unable to delete quiz", }
 
         return render(request, 'quizzes/manage.html', context)
-
-        
